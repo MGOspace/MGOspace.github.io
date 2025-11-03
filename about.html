@@ -4,135 +4,34 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>About — MGO_radio</title>
-
-  <style>
-    :root {
-      --rail: 200px;
-      --header: 100px;
-      --bg: #0b0b12;
-    }
-
-    * { box-sizing: border-box; margin: 0; }
-
-    body {
-      min-height: 100dvh;
-      background: var(--bg);
-      color: #e9ecff;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      padding-right: var(--rail);
-      overflow-x: hidden;
-    }
-
-    main.page {
-      padding: 32px;
-      max-width: 960px;
-      min-height: 100vh;
-      padding-top: var(--header);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* === HEADER === */
-    .site-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: calc(100% - var(--rail));
-      height: var(--header);
-      background: #fff;
-      border-bottom: 1px solid #e6e6e6;
-      z-index: 2000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 60px;
-    }
-
-    /* Bloc noir derrière le logo */
-    .logo-wrapper {
-      background: #000;
-      padding: 10px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 150px;
-      height: 50px; /* ← hauteur indépendante du header */
-    }
-
-    .logo {
-      height: 60px;
-      width: auto;
-      display: block;
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-    }
-    .logo:hover { opacity: 0.8; }
-
-    /* Menu centré horizontalement */
-    .menu {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 40px;
-      font-size: 1.2em;
-      font-weight: 500;
-    }
-
-    .menu a,
-    .menu a:visited {
-      color: #000;
-      text-decoration: none;
-      text-shadow: none;
-      font-family: Arial, sans-serif;
-      transition: opacity 0.2s ease;
-    }
-
-    .menu a:hover { opacity: 0.5; }
-
-    /* === BARRE DROITE === */
-    .rail {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: var(--rail);
-      height: 100dvh;
-      background: #fff;
-      border-left: 1px solid #e6e6e6;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      padding: 12px 10px 14px;
-    }
-
-    /* === CONTENU ABOUT === */
-    .about-content {
-      text-align: center;
-      max-width: 600px;
-      line-height: 1.6;
-      font-size: 1.1em;
-      color: #e9ecff;
-    }
-
-  </style>
+  <link rel="stylesheet" href="assets/site.css">
 </head>
 
 <body>
 
   <!-- Header -->
-  <header class="site-header">
-    <div class="logo-wrapper">
-      <a href="index.html" class="logo-link">
-        <img src="assets/MGO_radio_logo.svg" alt="MGO_radio logo" class="logo">
-      </a>
-    </div>
+<header class="site-header">
+  <div class="logo-wrapper" role="button" aria-label="Accueil MGO_radio">
+    <a href="index.html" class="logo-link">
+      <img src="assets/MGO_radio_logo.svg" alt="MGO_radio logo" class="logo">
+    </a>
+  </div>
 
-    <nav class="menu">
-      <a href="about.html">About</a>
+  <div class="header-right">
+    <nav class="piano-menu" aria-label="Menu principal">
+      <button class="piano-toggle" aria-controls="piano-list" aria-expanded="false" title="Menu">
+        <span class="hamburger" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+      <ul id="piano-list" class="piano-list">
+        <li><a href="about.html"><span class="label-text">About</span></a></li>
+      </ul>
     </nav>
-  </header>
+
+    <div class="header-gif">
+      <img src="assets/PaParisBoutique2652construction.gif" alt="Header GIF">
+    </div>
+  </div>
+</header>
 
   <!-- Contenu principal -->
   <main class="page">
@@ -153,7 +52,14 @@
 </main>
 
   <!-- Barre verticale droite (vide mais présente) -->
-  <aside class="rail"></aside>
+<aside class="rail">
+  <div class="vgrid">
+    <!-- (vide pour l’instant) -->
+  </div>
+  <div class="rail-footer">
+  <a href="https://www.mixcloud.com/M_GO/" target="_blank" class="rail-link">Mixcloud</a>
+</div>
+</aside>
 
 </body>
 </html>

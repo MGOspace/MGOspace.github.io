@@ -4,245 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MGO_radio</title>
+  <link rel="stylesheet" href="assets/site.css">
 
-  <style>
-    :root {
-      --rail: 200px;
-      --header: 100px;
-      --size: 180px;
-      --seed: 22px;
-      --gap: 12px;
-      --border: 8px;
-      --dur: 1.4s;
-      --ease: cubic-bezier(.2, .7, .2, 1);
-      --bg: #0b0b12;
-    }
-
-    * { box-sizing: border-box; margin: 0; }
-
-    body {
-      min-height: 100dvh;
-      background: var(--bg);
-      color: #e9ecff;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      padding-right: var(--rail);
-      overflow-x: hidden;
-    }
-
-    main.page {
-      padding: 32px;
-      max-width: 960px;
-      min-height: 200vh;
-      padding-top: var(--header);
-    }
-
-    :root{
-  --gutter: 20px;  /* marge autour de la fenêtre */
-}
-
-
-
-
-    /* === HEADER === */
-    .site-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: calc(100% - var(--rail));
-      height: var(--header);
-      background: #fff; /* gris clair subtil pour logo blanc */
-      border-bottom: 1px solid #e6e6e6;
-      z-index: 2000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 60px;
-    }
-
-    /* Logo à gauche */
-    .logo {
-      height: 60px;
-      width: auto;
-      display: block;
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-    }
-    .logo:hover { opacity: 0.8; }
-
-    /* Menu centré horizontalement */
-    .menu {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 40px;
-      font-size: 1.2em;
-      font-weight: 500;
-    }
-
-    .menu a,
-    .menu a:visited {
-      color: #000;
-      text-decoration: none;
-      text-shadow: none;
-      font-family: Arial, sans-serif;
-      transition: opacity 0.2s ease;
-    }
-
-    .menu a:hover { opacity: 0.5; }
-
-    /* === BARRE DROITE === */
-    .rail {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: var(--rail);
-      height: 100dvh;
-      background: #fff;
-      border-left: 1px solid #e6e6e6;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      padding: 12px 10px 14px;
-      gap: 10px;
-    }
-
-    .vgrid {
-      overflow: auto;
-      display: grid;
-      grid-auto-rows: min-content;
-      gap: var(--gap);
-      padding-right: 2px;
-      place-items: center;
-    }
-
-    /* === TUILES === */
-    .tile {
-      width: 100%;
-      max-width: var(--size);
-      aspect-ratio: 1 / 1;
-      position: relative;
-      overflow: hidden;
-      background: transparent;
-      border: none;
-      outline: none;
-    }
-
-    .media {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      clip-path: inset(50% 50% 50% 50%);
-      opacity: 0;
-      transition: clip-path var(--dur) var(--ease), opacity 0.8s ease 0.2s;
-    }
-    .tile:hover .media,
-    .tile:focus-within .media {
-      clip-path: inset(0 0 0 0);
-      opacity: 1;
-    }
-
-    .media > img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      user-select: none; pointer-events: none;
-    }
-
-    .seed {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-    }
-    .seed::before {
-      content: "";
-      position: absolute;
-      left: 50%; top: 50%;
-      width: var(--seed);
-      height: var(--seed);
-      transform: translate(-50%, -50%);
-      background: #000;
-      transition: width var(--dur) var(--ease),
-                  height var(--dur) var(--ease),
-                  opacity 0.8s ease 0.2s;
-      opacity: 1;
-    }
-    .seed::after {
-      content: "";
-      position: absolute;
-      left: 50%; top: 50%;
-      width: var(--seed);
-      height: var(--seed);
-      transform: translate(-50%, -50%);
-      border: var(--border) solid #000;
-      background: transparent;
-      transition: width var(--dur) var(--ease),
-                  height var(--dur) var(--ease);
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    .tile:hover .seed::before,
-    .tile:focus-within .seed::before,
-    .tile:hover .seed::after,
-    .tile:focus-within .seed::after {
-      width: 100%;
-      height: 100%;
-    }
-    .tile:hover .seed::before,
-    .tile:focus-within .seed::before { opacity: 0; }
-
-    /* === LIENS GLOBAUX === */
-    a, a:visited {
-      color: #fff;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      text-decoration-thickness: 2px;
-    }
-    a:hover, a:focus-visible { color: #f5f5f5; }
-    a { text-shadow: 0 1px 2px rgba(0,0,0,.35); }
-
-    /* === LIEN MIXCLOUD === */
-    .fixed-link {
-      position: fixed;
-      bottom: 10px;
-      left: 20px;
-      color: white;
-      text-decoration: underline;
-      font-size: 0.9em;
-      text-shadow: none;
-      z-index: 1000;
-    }
-    .fixed-link:hover { color: #ccc; }
-
-    /* === GIF EN BAS DE PAGE === */
-    .corner-gif {
-      position: relative;
-      bottom: 0;
-      right: 0;
-      margin-top: 100px;
-      display: flex;
-      justify-content: flex-end;
-    }
-    .corner-gif img {
-      width: 200px;
-      height: auto;
-      transform: scaleX(-1);
-      display: block;
-    }
-
-    /* Bloc noir derrière le logo */
-.logo-wrapper {
-  background: #000;
-  padding: 10px;             /* marge interne autour du logo */
-  border-radius: 4px;        /* léger arrondi optionnel */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;              /* taille du carré */
-  height: 50px;             /* taille du carré */
-}
-
-  </style>
 </head>
 
 <body>
@@ -250,79 +13,76 @@
   <!-- Header -->
   <header class="site-header">
     <div class="logo-wrapper" role="button" aria-label="Accueil MGO_radio">
-      <!-- Tu peux supprimer .pilot si tu n'en veux plus -->
-      <!-- <span class="pilot" aria-hidden="true"></span> -->
       <a href="index.html" class="logo-link">
         <img src="assets/MGO_radio_logo.svg" alt="MGO_radio logo" class="logo">
       </a>
     </div>
 
-    <div class="window-fixed">
-    <!-- contenu futur -->
-    </div>
+    <div class="header-right">
+      <nav class="piano-menu" aria-label="Menu principal">
+        <button class="piano-toggle" aria-controls="piano-list" aria-expanded="false" title="Menu">
+          <span class="hamburger" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
 
-    <nav class="menu">
-      <a href="about.html">About</a>
-      <!-- futurs liens -->
-      <!-- <a href="projects.html">Projects</a> -->
-      <!-- <a href="contact.html">Contact</a> -->
-    </nav>
+        <ul id="piano-list" class="piano-list">
+          <li><a href="about.html"><span class="label-text">About</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-gif">
+        <img src="assets/PaParisBoutique2652construction.gif" alt="Header GIF">
+      </div>
+    </div>
   </header>
 
-  <!-- Contenu principal : UN SEUL <main> -->
+  <!-- Contenu principal -->
   <main class="page">
-    <!-- Fenêtre en relief (dans le premier main, juste sous le header) -->
-    <section class="window">
-      <div class="panel-media"></div>
-      <!-- Ton contenu viendra ici (titres, texte, images, etc.) -->
-    </section>
-
-    <!-- Lien Mixcloud fixe (peut rester ici, il est en position: fixed) -->
-    <p><a href="https://www.mixcloud.com/M_GO/" target="_blank" class="fixed-link">mixcloud</a></p>
-
-    <!-- GIF bas de page (fait partie du flux, donc visible en scroll) -->
-    <div class="corner-gif">
-      <img src="assets/PaParisBoutique2652construction.gif" alt="Corner GIF">
-    </div>
   </main>
 
-  <!-- Barre verticale droite (fixe) -->
-  <aside class="rail">
-    <div class="vgrid">
-      <div class="tile" tabindex="0">
-        <a href="https://www.mixcloud.com/M_GO/1110driving-in-berlin-20251011-151806/" target="_blank" class="tile-link">
-          <div class="media">
-            <img src="https://d2w9rnfcy7mm78.cloudfront.net/924380/original_afa246531ddeb8a08c72cca9e947e6b6.gif" alt="GIF 1" />
-          </div>
-          <div class="seed"></div>
-        </a>
-      </div>
-      <div class="tile" tabindex="0">
-        <a href="https://www.mixcloud.com/M_GO/4_mix/" target="_blank" class="tile-link">
-          <div class="media">
-            <img src="https://d2w9rnfcy7mm78.cloudfront.net/671775/original_fe908fae61da164843658f7a162acdce.gif" alt="GIF 2" />
-          </div>
-          <div class="seed"></div>
-        </a>
-      </div>
-      <div class="tile" tabindex="0">
-        <a href="https://www.mixcloud.com/M_GO/in-response-to-rhythm-we-dance/" target="_blank" class="tile-link">
-          <div class="media">
-            <img src="https://d2w9rnfcy7mm78.cloudfront.net/908649/original_d1bdf297330de22d56126a7ef4c00f1e.gif" alt="GIF 3" />
-          </div>
-          <div class="seed"></div>
-        </a>
-      </div>
-      <div class="tile" tabindex="0">
-        <a href="https://www.mixcloud.com/M_GO/3_mix/" target="_blank" class="tile-link">
-          <div class="media">
-            <img src="https://d2w9rnfcy7mm78.cloudfront.net/268537/original_58d1cac00d1fb3ec4ada44451ff7bfe6.gif" alt="GIF 4" />
-          </div>
-          <div class="seed"></div>
-        </a>
-      </div>
+  <!-- Barre verticale droite -->
+  <!-- Barre verticale droite -->
+<aside class="rail">
+  <div class="vgrid">
+    <div class="tile" tabindex="0">
+      <a href="https://www.mixcloud.com/M_GO/1110driving-in-berlin-20251011-151806/" target="_blank" class="tile-link">
+        <div class="media">
+          <img src="https://d2w9rnfcy7mm78.cloudfront.net/924380/original_afa246531ddeb8a08c72cca9e947e6b6.gif" alt="GIF 1" />
+        </div>
+        <div class="seed"></div>
+      </a>
     </div>
-  </aside>
+
+    <div class="tile" tabindex="0">
+      <a href="https://www.mixcloud.com/M_GO/4_mix/" target="_blank" class="tile-link">
+        <div class="media">
+          <img src="https://d2w9rnfcy7mm78.cloudfront.net/671775/original_fe908fae61da164843658f7a162acdce.gif" alt="GIF 2" />
+        </div>
+        <div class="seed"></div>
+      </a>
+    </div>
+
+    <div class="tile" tabindex="0">
+      <a href="https://www.mixcloud.com/M_GO/in-response-to-rhythm-we-dance/" target="_blank" class="tile-link">
+        <div class="media">
+          <img src="https://d2w9rnfcy7mm78.cloudfront.net/908649/original_d1bdf297330de22d56126a7ef4c00f1e.gif" alt="GIF 3" />
+        </div>
+        <div class="seed"></div>
+      </a>
+    </div>
+
+    <div class="tile" tabindex="0">
+      <a href="https://www.mixcloud.com/M_GO/3_mix/" target="_blank" class="tile-link">
+        <div class="media">
+          <img src="https://d2w9rnfcy7mm78.cloudfront.net/268537/original_58d1cac00d1fb3ec4ada44451ff7bfe6.gif" alt="GIF 4" />
+        </div>
+        <div class="seed"></div>
+      </a>
+    </div>
+  </div>
+  <div class="rail-footer">
+  <a href="https://www.mixcloud.com/M_GO/" target="_blank" class="rail-link">Mixcloud</a>
+</div>
+</aside>
 
 </body>
 </html>
