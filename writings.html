@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Writings — MGO_radio</title>
+  <link rel="stylesheet" href="assets/site.css">
+  <style>
+    body {
+      background: #000;
+      margin: 0;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="writing-layout">
+
+  <!-- Colonne gauche : titre + arborescence -->
+  <aside class="writing-nav">
+    <a href="index.html" class="writing-heading">MGO</a>
+
+    <ul class="writing-tree">
+      <li class="tree-item">
+        <button class="tree-label js-toggle-branch" data-target="writings-branch">
+          Writings
+        </button>
+        <ul class="tree-children" id="writings-branch">
+          <li class="tree-item">
+            <button class="tree-sublabel js-toggle-branch" data-target="folder-1">
+              Dossier 1
+            </button>
+            <ul class="tree-children" id="folder-1">
+              <li><button class="tree-sublabel">Sous-sous dossier 1</button></li>
+              <li><button class="tree-sublabel">Sous-sous dossier 2</button></li>
+            </ul>
+          </li>
+
+          <li class="tree-item">
+            <button class="tree-sublabel js-toggle-branch" data-target="folder-2">
+              Dossier 2
+            </button>
+            <ul class="tree-children" id="folder-2">
+              <li><button class="tree-sublabel">Sous-sous dossier A</button></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Colonne droite : liste des writings -->
+  <section class="writing-content">
+    <h1 class="writing-title">Essays</h1>
+    <ul class="writing-list">
+      <li><a href="#" class="writing-link">Titre de writing 1</a></li>
+      <li><a href="#" class="writing-link">Titre de writing 2</a></li>
+      <li><a href="#" class="writing-link">Titre de writing 3</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<script>
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.js-toggle-branch');
+  if (!btn) return;
+
+  const targetId = btn.dataset.target;
+  const branch = document.getElementById(targetId);
+  if (!branch) return;
+
+  const item = btn.closest('.tree-item');
+  item.classList.toggle('is-open');
+});
+</script>
+
+</body>
+</html>

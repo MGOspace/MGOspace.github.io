@@ -1,3 +1,6 @@
+/* =========================
+   VARIABLES (root)
+   ========================= */
 :root{
   --rail: 200px;
   --header: 100px;
@@ -13,9 +16,15 @@
   --logo-block-h: 60px;
   --menu-gap-l: 16px;
   --menu-gap-r: 16px;
+
+  /* Cards */
+  --card-w: 150px;
+  --card-gap: 78px;
 }
 
-/* Reset minimal */
+/* =========================
+   RESET MINIMAL
+   ========================= */
 *{ box-sizing:border-box; margin:0; }
 
 body{
@@ -26,6 +35,16 @@ body{
   padding-right: var(--rail);
   overflow-x:hidden;
 }
+
+/* Liens globaux (les .btn les surchargent localement) */
+a, a:visited{ 
+  color:#fff; 
+  text-decoration:underline; 
+  text-underline-offset:3px; 
+  text-decoration-thickness:2px; 
+}
+a:hover, a:focus-visible{ color:#f5f5f5; }
+a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
 
 /* =========================
    HEADER
@@ -40,28 +59,17 @@ body{
   z-index:2000;
 
   display:grid;
-  grid-template-columns: auto 1.5fr auto; /* logo | menu | search */
+  grid-template-columns: auto 1.5fr auto; /* logo | nav | search */
   align-items:center;
   column-gap:16px;
 
   padding:0 60px;
-  overflow:visible; /* laisse passer le dropdown */
+  overflow:visible;
 }
 
 /* Aplatit le wrapper : ses enfants deviennent des items de la grille */
 .header-right{ 
   display: contents;
-}
-
-/* Place explicitement les colonnes */
-.piano-menu{ grid-column: 2; }
-.header-search{ 
-  grid-column: 3;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 20px;
 }
 
 /* Logo (pavé noir) */
@@ -84,8 +92,150 @@ body{
 }
 .logo:hover{ opacity:.8; }
 
-/* ===== Barre de menu ===== */
-.piano-menu{
+/* ===== NAV GLITCH BUTTONS (HEADER) ===== */
+
+.btn-nav{
+  grid-column: 2;
+  height: var(--logo-block-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Wrapper fixe la taille du bouton */
+.btn-nav .radio-wrapper{
+  position: relative;
+  width: 84px;
+  height: 38px;
+  margin: 3px;
+}
+
+/* Bouton glitch monochrome (le lien) */
+.btn-nav .btn{
+  --primary: #000;
+  --shadow-primary: #fff;
+  --color: #f5f5f5;
+  --font-size: 9px;
+  --shadow-secondary-hue: 0;
+  --shadow-secondary: hsl(var(--shadow-secondary-hue), 0%, 60%);
+  --clip: polygon(11% 0, 95% 0, 100% 25%, 90% 90%, 95% 90%, 85% 90%, 85% 100%, 7% 100%, 0 80%);
+  --border: 5px;
+  --shimmy-distance: 5;
+  --clip-one: polygon(0 2%, 100% 2%, 100% 95%, 95% 95%, 95% 90%, 85% 90%, 85% 95%, 8% 95%, 0 70%);
+  --clip-two: polygon(0 78%, 100% 78%, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 78%);
+  --clip-three: polygon(0 44%, 100% 44%, 100% 54%, 95% 54%, 95% 54%, 85% 54%, 85% 54%, 8% 54%, 0 54%);
+  --clip-four: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
+  --clip-five: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
+  --clip-six: polygon(0 40%, 100% 40%, 100% 85%, 95% 85%, 95% 85%, 85% 85%, 85% 85%, 8% 85%, 0 70%);
+  --clip-seven: polygon(0 63%, 100% 63%, 100% 80%, 95% 80%, 95% 80%, 85% 80%, 85% 80%, 8% 80%, 0 70%);
+
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  line-height: 38px;
+  text-align: center;
+  font-weight: 900;
+  font-size: var(--font-size);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, font-size 0.2s;
+}
+
+/* Calques de base */
+.btn-nav .btn:before,
+.btn-nav .btn:after{
+  content:'';
+  position:absolute;
+  inset:0;
+  clip-path: var(--clip);
+  z-index:-1;
+}
+.btn-nav .btn:before{
+  background: var(--shadow-primary);
+  transform: translate(var(--border), 0);
+}
+.btn-nav .btn:after{
+  background: var(--primary);
+}
+
+.btn-nav .btn__glitch{
+  position:absolute;
+  top: calc(var(--border) * -1);
+  left: calc(var(--border) * -1);
+  right: calc(var(--border) * -1);
+  bottom: calc(var(--border) * -1);
+  background: var(--shadow-primary);
+  text-shadow: 2px 2px var(--shadow-primary),
+               -2px -2px var(--shadow-secondary);
+  clip-path: var(--clip-one);
+  display:none;
+  z-index:0; /* <- METS 0 ICI, surtout pas -1 */
+}
+.btn-nav .btn__glitch:before{
+  content:'';
+  position:absolute;
+  inset: var(--border);
+  clip-path: var(--clip);
+  background: var(--primary);
+  z-index:-1; /* ok, lui reste dessous le texte glitch */
+}
+
+/* Label numéro */
+.btn-nav .number{
+  background: var(--shadow-primary);
+  color: #323232;
+  font-size: 5.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  position: absolute;
+  width: 15px;
+  height: 6px;
+  top: 0;
+  left: 81%;
+  line-height: 6.2px;
+}
+
+/* Hover / focus : déclenche le glitch (sur le wrapper) */
+.btn-nav .radio-wrapper:hover .btn,
+.btn-nav .radio-wrapper:focus-within .btn{
+  --primary:#111;
+  --font-size:11px;
+}
+
+.btn-nav .radio-wrapper:hover .btn__glitch,
+.btn-nav .radio-wrapper:focus-within .btn__glitch{
+  display:block;
+  animation:glitch 2s infinite;
+}
+
+/* Animation glitch */
+@keyframes glitch {
+  0%   { clip-path: var(--clip-one); transform: translate(0,0); }
+  2%,8%{ clip-path: var(--clip-two); transform: translate(calc(var(--shimmy-distance) * -1%), 0); }
+  6%   { clip-path: var(--clip-two); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+  9%   { clip-path: var(--clip-two); transform: translate(0,0); }
+  10%  { clip-path: var(--clip-three); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+  13%  { clip-path: var(--clip-three); transform: translate(0,0); }
+  14%,21%{ clip-path: var(--clip-four); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+  25%  { clip-path: var(--clip-five); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+  30%  { clip-path: var(--clip-five); transform: translate(calc(var(--shimmy-distance) * -1%), 0); }
+  35%,45%{ clip-path: var(--clip-six); transform: translate(calc(var(--shimmy-distance) * -1%), 0); }
+  40%  { clip-path: var(--clip-six); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+  50%  { clip-path: var(--clip-six); transform: translate(0,0); }
+  55%  { clip-path: var(--clip-seven); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+  60%  { clip-path: var(--clip-seven); transform: translate(0,0); }
+  61%,100%{ clip-path: var(--clip-four); transform: translate(0,0); }
+}
+
+/* =========================
+   (LEGACY) DROPDOWN — OPTIONNEL, NON UTILISÉ
+   ========================= */
+/*.piano-menu{
   position:relative;
   height:var(--logo-block-h);
   display:flex;
@@ -93,8 +243,6 @@ body{
   min-width:0;
   padding-inline: var(--menu-gap-l) var(--menu-gap-r);
 }
-
-/* “Pont” invisible pour maintenir le hover jusqu’au dropdown */
 .piano-menu::after{
   content:"";
   position:absolute;
@@ -103,8 +251,6 @@ body{
   top:100%;
   height:10px;
 }
-
-/* Bouton noir avec hamburger aligné à droite */
 .piano-toggle{
   width:100%;
   height:100%;
@@ -119,23 +265,11 @@ body{
   justify-content:flex-end;
   padding-right:14px;
 }
-
-/* icône hamburger */
 .hamburger{
-  width:28px; 
-  height:16px;
-  display:grid; 
-  align-content:center; 
-  gap:4px;
+  width:28px; height:16px;
+  display:grid; align-content:center; gap:4px;
 }
-.hamburger i{
-  display:block; 
-  height:2px; 
-  background:#fff; 
-  border-radius:1px;
-}
-
-/* ===== Dropdown ===== */
+.hamburger i{ display:block; height:2px; background:#fff; border-radius:1px; }
 .piano-list{
   --item-h: 42px;
   position:absolute;
@@ -143,25 +277,20 @@ body{
   left:var(--menu-gap-l);
   right:var(--menu-gap-r);
   width:auto;
-  box-sizing:border-box;
   list-style:none;
-  margin:0; 
-  padding:0;
+  margin:0; padding:0;
   border:1px solid #e6e6e6;
   box-shadow:0 12px 28px rgba(0,0,0,.22);
   background:#fff;
   transform:translateY(6px);
-  opacity:0; 
-  pointer-events:none;
+  opacity:0; pointer-events:none;
   transition:opacity .18s ease, transform .18s ease;
   z-index:3000;
   text-transform: uppercase;
 }
 .piano-menu:hover .piano-list,
 .piano-menu:focus-within .piano-list,
-.piano-list:hover{
-  opacity:1; pointer-events:auto; transform:translateY(0);
-}
+.piano-list:hover{ opacity:1; pointer-events:auto; transform:translateY(0); }
 .piano-list li{ height:var(--item-h); }
 .piano-list a{
   height:100%;
@@ -176,10 +305,10 @@ body{
   width:100%;
 }
 .piano-list li:nth-child(odd)  a{ background:#0b0b12; color:#fff; }
-.piano-list li:nth-child(even) a{ background:#fff;     color:#0b0b12; }
+.piano-list li:nth-child(even) a{ background:#fff; color:#0b0b12; }
 .piano-list a:hover{ filter:brightness(1.05); }
 .piano-list li:first-child a{ border-top-left-radius:3px; border-top-right-radius:3px; }
-.piano-list li:last-child  a{ border-bottom-left-radius:3px; border-bottom-right-radius:3px; border-bottom:none; }
+.piano-list li:last-child  a{ border-bottom-left-radius:3px; border-bottom-right-radius:3px; border-bottom:none; } */
 
 /* =========================
    BANDEAU DROIT (rail)
@@ -202,7 +331,7 @@ body{
   place-items:center;
 }
 
-/* Tuiles */
+/* Tuiles (Mixcloud) */
 .tile{
   width:100%; 
   max-width:var(--size); 
@@ -242,17 +371,7 @@ body{
 .tile:hover .seed::after,  .tile:focus-within .seed::after{ width:100%; height:100%; }
 .tile:hover .seed::before, .tile:focus-within .seed::before{ opacity:0; }
 
-/* Liens globaux */
-a, a:visited{ 
-  color:#fff; 
-  text-decoration:underline; 
-  text-underline-offset:3px; 
-  text-decoration-thickness:2px; 
-}
-a:hover, a:focus-visible{ color:#f5f5f5; }
-a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
-
-/* Footer du rail (Mixcloud centré) */
+/* Footer rail (Mixcloud centré) */
 .rail-footer{
   display:flex;
   justify-content:center;
@@ -271,7 +390,7 @@ a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
 .rail-link:hover{ color:#333; }
 
 /* =========================
-   PAGE
+   PAGE & CARTES
    ========================= */
 main.page{
   padding:32px;
@@ -280,70 +399,265 @@ main.page{
   padding-top:calc(var(--header) + 24px);
   margin:0 auto;
 
-  /* Grille 12 colonnes pour positionner le contenu */
   display:grid;
   grid-template-columns: repeat(12, minmax(0,1fr));
   column-gap:16px;
   row-gap:24px;
 }
 
-.about-content{
+.cards{
   grid-column: 2 / span 10;
-  max-width: 720px;
-  margin: 0 auto;
-  text-align:center;
-  line-height:1.6;
-  color:#e9ecff;
+  display:grid;
+  grid-template-columns: repeat(4, var(--card-w));
+  justify-content:center;
+  margin-top:160px;
+  column-gap: var(--card-gap);
+  row-gap: 62px;
+  grid-auto-rows: 200px;
 }
-.about-image{
-  grid-column: 3 / span 8;
-  max-width:100%;
-  height:auto;
-  display:block;
-  margin:0 auto 32px;
-  object-fit:contain;
+
+.card {
+  width: 150px;
+  height: 200px;
+  background: #000;
+  position: relative;
+  transform: skewY(-10deg);
+  border: 3px solid #fff;
+  box-sizing: border-box;
+  transition: all 0.3s;
+}
+.card::before,
+.card::after {
+  content: '';
+  position: absolute;
+  background: #fff;
+  transition: all 0.5s;
+}
+.card::before {
+  width: 10px;
+  height: 200px;
+  top: -3px;
+  left: -11px;
+  transform-origin: right;
+  transform: skewY(45deg);
+}
+.card::after {
+  height: 10px;
+  width: 150px;
+  top: -11px;
+  left: -3px;
+  transform-origin: bottom;
+  transform: skewX(45deg);
+}
+.card:hover { transform: skewY(0deg); }
+.card:hover::before { width: 0; height: 195px; left: 0; top: 0; }
+.card:hover::after  { width: 145px; height: 0; left: 0; top: 0; }
+.card__content { padding: 10px; color: #e9ecff; }
+
+/* Liens autour des cards */
+.card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-link:hover .card,
+.card-link:focus-visible .card {
+  transform: skewY(0deg);
+  border-color: #fff; /* exemple : effet visuel léger */
+}
+
+.card-link:focus-visible {
+  outline: none;
 }
 
 /* =========================
-   BREADCRUMBS & PAGER
+   PAGE WRITINGS
    ========================= */
-.breadcrumbs{
-  max-width: 960px;
-  margin: 0 auto 16px;
-  padding: 0 32px;
-  font: 500 13px/1.6 Arial, sans-serif;
-  color:#cfd3ff;
-}
-.breadcrumbs a{
-  color:#e9ecff;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(233,236,255,.35);
-}
-.breadcrumbs a:hover{ opacity:.75; }
-.breadcrumbs .sep{ opacity:.5; padding:0 6px; }
 
-.pager{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  max-width:960px;
-  margin: 32px auto 0;
-  padding: 0 32px 48px;
+.writing-layout {
+  max-width: 1200px;      /* largeur maximale du contenu total (menu + corps) */
+  margin: 0 auto;         /* centre horizontalement le layout dans la page */
+  padding-top: 40px;      /* retire l’espace en haut (inutile sans header fixe) */
+  padding-bottom: 80px;   /* espace sous le contenu, avant le bas de page */
+  display: flex;         
+  gap: 100px;             /* espace horizontal entre le menu et le contenu */
+  margin-left: 50px;      /* décale légèrement tout le bloc vers la droite */
 }
-.pager a{
-  color:#e9ecff;
-  text-decoration:none;
-  border:1px solid rgba(233,236,255,.35);
-  padding:10px 14px;
-  border-radius:6px;
+
+/* Colonne de gauche : titre + arborescence */
+.writing-nav {
+  flex: 0 0 220px;                  /* largeur fixe du menu */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 0;
 }
-.pager a:hover{ background:rgba(233,236,255,.08); }
+
+.writing-content {
+  flex: 1;                /* prend tout l’espace restant */
+  max-width: 700px;
+  margin-top: 40px;
+}
+
+/* "MGO" */
+.writing-heading {
+  position: relative;
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e9ecff;
+  margin: 0 0 24px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  overflow: hidden;
+}
+
+.writing-heading:hover {
+  color: #999;
+}
+
+.writing-heading:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Liste principale de l'arborescence */
+.writing-tree {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #e9ecff;
+}
+
+/* Optionnel : cacher tout l'arbre (si JS ajoute .is-collapsed) */
+.writing-tree.is-collapsed {
+  display: none;
+}
+
+/* Chaque entrée de l'arborescence */
+.tree-item {
+  margin-bottom: 10px;
+}
+
+/* Niveau 1 (ex: "Writings", "Dossier 1") */
+.tree-label {
+  display: block;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #e9ecff;              /* même couleur */
+  font-size: 12px;             /* même taille */
+  font-weight: 400;            /* poids léger pour correspondre */
+  text-transform: uppercase;   /* majuscules */
+  letter-spacing: 0.16em;      /* même espacement */
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* Sous-listes (dossiers & sous-dossiers), cachées par défaut */
+.tree-children {
+  list-style: none;
+  margin: 0 0 0 14px;
+  padding: 0;
+  display: none;
+}
+
+/* Espace uniquement entre "Writings" et son premier sous-dossier */
+.writing-tree > .tree-item > .tree-children {
+  margin-top: 16px;  /* ajuste la valeur à ton goût */
+}
+
+/* Espace entre "Dossier 1" et son premier sous-dossier */
+.tree-children > .tree-item > .tree-children {
+  margin-top: 10px; /* ajuste à ton goût : 8–14px */
+}
+
+/* Quand un item est ouvert via JS */
+.tree-item.is-open > .tree-children {
+  display: block;
+}
+
+/* Niveau 2 / sous-dossiers */
+.tree-sublabel {
+  display: block;
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 11px;
+  color: #e9ecff;
+  opacity: 0.8;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* Hover / états actifs */
+.tree-label:hover,
+.tree-sublabel:hover {
+  color: #ffffff;
+}
+
+.tree-label.is-active,
+.tree-sublabel.is-active {
+  color: #ffffff;
+  opacity: 1;
+}
+
+/* Colonne de droite : contenu (liste des writings, PDF, etc.) */
+.writing-content {
+  flex: 1;
+  max-width: 640px;                  /* rend la colonne plus lisible */
+}
+
+/* Titre principal de la zone contenu */
+.writing-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #e9ecff;
+  margin: 0 0 24px;
+}
+
+/* Style du texte de la liste de writings */
+.writing-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* police principale */
+  font-size: 12px;          /* taille du texte */
+  line-height: 1.6;         /* hauteur de ligne, pour l’aération */
+  font-weight: 400;         /* 300 = light / 400 = normal / 600 = semi-bold */
+  letter-spacing: 0.02em;   /* espace entre les lettres */
+  color: #e9ecff;           /* couleur du texte */
+}
+
+.writing-list li {
+  margin-bottom: 5px;
+}
+
+.writing-link {
+  display: inline-block;             /* un lien par ligne, sans casse bizarre */
+  color: #e9ecff;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.writing-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
 
 /* =========================
    SEARCH INPUT (Uiverse)
    ========================= */
-/* From Uiverse.io by andrew-demchenk0 */
 .input {
   --input-focus: #2d8cf0;
   --font-color: #323232;
@@ -362,7 +676,7 @@ main.page{
   padding: 5px 10px;
   outline: none;
 }
-.input::placeholder { color: var(--font-color-sub); opacity: .8; }
+.input::placeholder { color: var(--font-color-sub); opacity:.8; }
 .input:focus { border: 2px solid var(--input-focus); }
 
 /* =========================
@@ -370,7 +684,6 @@ main.page{
    ========================= */
 @media (max-width: 768px) {
   .site-header { width:100%; padding:0 24px; grid-template-columns:auto 1fr auto; }
-
   .rail { display:none; }
 
   main.page {
@@ -379,107 +692,102 @@ main.page{
   }
   .about-image { grid-column: 1 / span 6; }
   .about-content { grid-column: 1 / span 6; padding: 80px 16px 60px; }
-}
 
-/* === Correction espacement sous le header sur la page About === */
-.about-content {
-  padding-top: calc(var(--header) + 60px); /* ajoute 40px d’air sous le header */
-}
-
-/* === CARD === */
-
-/* === CARDS GRID (centered, 3 per row) === */
-:root{
-  --card-w: 150px;  /* matches your .card width */
-  --card-gap: 78px; /* spacing between cards */
-}
-
-.cards{
-  grid-column: 2 / span 10;           /* centered band in your 12-col page grid */
-  display: grid;
-  grid-template-columns: repeat(3, var(--card-w));
-  justify-content: center;            /* centers the 3 fixed-width columns */
-  margin-top: 160px;                  /* pushes the block down from header */
-  column-gap: var(--card-gap);
-  row-gap: 62px;
-  grid-auto-rows: 200px;   /* <— range la grille plus serrée verticalement */
-}
-
-@media (max-width: 900px){
   .cards{ grid-template-columns: repeat(2, var(--card-w)); }
 }
 @media (max-width: 560px){
   .cards{ grid-template-columns: repeat(1, var(--card-w)); }
 }
 
-.card {
-  width: 150px;
-  height: 200px;
-  background: #000;
+/* === Correction espacement sous le header sur les pages type About === */
+.about-content { padding-top: calc(var(--header) + 60px); }
+
+
+
+
+/* =========================
+   PAGE WHO
+   ========================= */
+.who-section {
+  grid-column: 1 / span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  align-items: start;
+  margin-top: 50px;
+  /* supprime le gap pour coller le texte à l’image */
+}
+
+/* Conteneur des images superposées */
+.who-image-stack {
+  grid-column: 1 / span 5;
+  grid-row: 1;
   position: relative;
-  transform: skewY(-10deg);
-  border: 3px solid #fff;
-  box-sizing: border-box;
-  transition: all 0.3s;
+  margin-left: -100px; /* pour recoller à gauche */
+  margin-top: 40px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  cursor: pointer;
+  width: 80%;
 }
 
-.card::before,
-.card::after {
-  content: '';
+/* Chaque image de la stack */
+.who-image-stack .who-image {
   position: absolute;
-  background: #fff;
-  transition: all 0.5s;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
 }
 
-.card::before {
-  width: 10px;
-  height: 200px;
-  top: -3px;
-  left: -11px;
-  transform-origin: right;
-  transform: skewY(45deg);
+/* Image actuellement visible */
+.who-image-stack .who-image.is-active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.card::after {
-  height: 10px;
-  width: 150px;
-  top: -11px;
-  left: -3px;
-  transform-origin: bottom;
-  transform: skewX(45deg);
-}
-
-.card:hover {
-  transform: skewY(0deg);
-}
-
-.card:hover::before {
-  width: 0;
-  height: 195px;
-  left: 0;
-  top: 0;
-}
-
-.card:hover::after {
-  width: 145px;
-  height: 0;
-  left: 0;
-  top: 0;
-}
-
-.card__content {
-  padding: 10px;
+/* Texte collé à l’image */
+.who-text {
+  grid-column: 6 / span 6; /* commence dès la colonne 6 */
+  grid-row: 1;
   color: #e9ecff;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-top: 40px;
+  margin-left: -100px;
 }
 
-/* === Placement helpers sur ta grille 12 colonnes === */
-/* Milieu de page : démarre en colonne 4 et occupe 6 colonnes (4→9) */
-.place-mid { 
-  grid-column: 4 / span 6; 
-  justify-self: center;       /* centre l’élément dans sa colonne */
+.who-text h1 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400; /* gras */
+  font-size: 2rem;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
 }
 
-/* Option mobile : la card prend toute la largeur centrale */
-@media (max-width: 768px) {
-  .place-mid { grid-column: 2 / span 4; }  /* ou 1 / span 6 si tu veux full width */
+
+/* =========================
+   PAGE WHEN
+   ========================= */
+.when-section {
+  grid-column: 1 / span 12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh; /* prend toute la hauteur de la fenêtre */
+  padding: 0;
+  margin: 0;
+  background-color: #000; /* fond noir */
+  overflow: hidden;
+  margin-top: 50px;
 }
+
+.when-gif {
+  width: auto;
+  height: 50vh;
+  object-fit: contain;
+  display: block;
+}
+
