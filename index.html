@@ -85,31 +85,148 @@
 
   <!-- Contenu principal -->
   <main class="page">
-    <section class="cards">
-      <a href="radio.html" class="card-link">
-        <div class="card">
-          <div class="card__content">Radio</div>
-        </div>
-      </a>
-      <a href="writings.html" class="card-link">
-        <div class="card">
-          <div class="card__content">Writings</div>
-        </div>
-      </a>
-      <a href="images.html" class="card-link">
-        <div class="card">
-          <div class="card__content">Images</div>
-        </div>
-      </a>
-      <a href="video.html" class="card-link">
-      <div class="card">
-        <div class="card__content">Video</div>
-      </div>
-    </a>
-    </section>
-  </main>
 
-  <!-- Barre verticale droite -->
+      <!-- SLOT CONTENU DU MOMENT -->
+<section class="feature">
+  <div class="feature-inner feature-inner--overlay-bottom">
+
+    <div class="feature-media">
+      <img 
+        src="assets/water_dakar.png"
+        alt=""
+        class="feature-media-el"
+        data-lightbox="feature-gallery"
+        data-caption=""
+        data-zoom="true"
+      >
+    </div>
+
+<!-- images supplémentaires pour la lightbox, cachées dans la page -->
+<div class="feature-gallery-hidden" aria-hidden="true" style="display:none;">
+
+  <img 
+    src="assets/water_dakar/water1.jpg" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water2.png" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water3.jpg" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water4.jpg" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water5.jpg" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water6.jpg" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water7.jpg" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water8.gif" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water9.jpg" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water10.png" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water11.gif" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+  <img 
+    src="assets/water_dakar/water12.gif" 
+    alt=""
+    data-lightbox-item
+    data-caption=""
+  >
+
+</div>
+
+    <div class="feature-text feature-text--below">
+      <h2 class="feature-title">DAKAR - WATER</h2>
+      <p class="feature-body">
+      </p>
+    </div>
+
+  </div>
+</section>
+
+  <!-- Tes cards existantes -->
+
+    <div class="cards-wrapper">
+      <section class="cards">
+        <a href="radio.html" class="card-link">
+          <div class="card">
+            <div class="card__content">Radio</div>
+          </div>
+        </a>
+        <a href="writings.html" class="card-link">
+          <div class="card">
+            <div class="card__content">Writings</div>
+          </div>
+        </a>
+        <a href="images.html" class="card-link">
+          <div class="card">
+            <div class="card__content">Images</div>
+          </div>
+        </a>
+        <a href="video.html" class="card-link">
+          <div class="card">
+            <div class="card__content">Video</div>
+          </div>
+        </a>
+      </section>
+    </div>
+
+
   <!-- Barre verticale droite -->
 <aside class="rail">
 <div class="vgrid">
@@ -219,5 +336,252 @@
   </div>
 </div>
 </aside>
+
+<div class="lightbox" data-lightbox-root aria-hidden="true">
+  <button class="lightbox-close" type="button" aria-label="Close">
+    ×
+  </button>
+
+  <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous">
+    ‹
+  </button>
+
+  <figure class="lightbox-figure">
+    <img src="" alt="" class="lightbox-image">
+    <figcaption class="lightbox-caption"></figcaption>
+  </figure>
+
+  <button class="lightbox-nav lightbox-next" type="button" aria-label="Next">
+    ›
+  </button>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const trigger  = document.querySelector('[data-lightbox="feature-gallery"]');
+  const lightbox = document.querySelector('[data-lightbox-root]');
+  if (!trigger || !lightbox) return;
+
+  const img          = lightbox.querySelector('.lightbox-image');
+  const captionEl    = lightbox.querySelector('.lightbox-caption');
+  const closeBtn     = lightbox.querySelector('.lightbox-close');
+  const prevBtn      = lightbox.querySelector('.lightbox-prev');
+  const nextBtn      = lightbox.querySelector('.lightbox-next');
+
+  // ---- CONSTRUCTION DE LA LISTE D’IMAGES ----
+  const items = [];
+
+  // 1) Moodboard (image principale du slot)
+  items.push({
+    src: trigger.getAttribute('src'),
+    caption: trigger.dataset.caption || ''
+  });
+
+  // 2) Autres images cachées dans .feature-gallery-hidden
+  document.querySelectorAll('[data-lightbox-item]').forEach(el => {
+    items.push({
+      src: el.getAttribute('src'),
+      caption: el.dataset.caption || ''
+    });
+  });
+
+  let currentIndex = 0;
+
+  // ---- ÉTAT ZOOM / PAN (uniquement pour l’index 0 : moodboard) ----
+  let scale       = 1;
+  const zoomLevel = 2;      // niveau de zoom unique
+  let panX        = 0;
+  let panY        = 0;
+
+  let isDragging   = false;
+  let didDrag      = false;
+  let startMouseX  = 0;
+  let startMouseY  = 0;
+  let startPanX    = 0;
+  let startPanY    = 0;
+  const DRAG_THRESHOLD = 4; // px
+
+  // désactiver le drag natif
+  img.addEventListener('dragstart', (e) => e.preventDefault());
+
+  function applyTransform() {
+    img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+
+    if (scale === 1) {
+      img.classList.add('is-not-zoomed');
+    } else {
+      img.classList.remove('is-not-zoomed');
+    }
+  }
+
+  function resetTransform() {
+    scale = 1;
+    panX  = 0;
+    panY  = 0;
+    applyTransform();
+  }
+
+  function showImage(index) {
+    if (!items.length) return;
+
+    // boucle (0 → n-1)
+    if (index < 0) {
+      index = items.length - 1;
+    } else if (index >= items.length) {
+      index = 0;
+    }
+    currentIndex = index;
+
+    const item = items[currentIndex];
+    img.setAttribute('src', item.src);
+    captionEl.textContent = item.caption || '';
+
+    // on reset toujours la transform quand on change d’image
+    resetTransform();
+
+    // zoom / drag UNIQUEMENT pour la première image (moodboard)
+    if (currentIndex !== 0) {
+      img.classList.add('is-not-zoomed');
+    }
+  }
+
+  function openLightbox(startIndex = 0) {
+    showImage(startIndex);
+    lightbox.classList.add('is-open');
+    document.body.classList.add('has-lightbox-open');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.body.classList.remove('has-lightbox-open');
+  }
+
+  // ---- OUVERTURE VIA L’IMAGE PRINCIPALE ----
+  trigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    openLightbox(0);   // moodboard en premier
+  });
+
+  // ---- FERMETURE ----
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeLightbox();
+    });
+  }
+
+  // clic sur le fond (en dehors de la figure) => fermer
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  // ---- NAVIGATION BOUTONS ----
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentIndex - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentIndex + 1);
+    });
+  }
+
+  // ---- NAVIGATION CLAVIER ----
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+
+    if (e.key === 'Escape') {
+      closeLightbox();
+    } else if (e.key === 'ArrowRight') {
+      showImage(currentIndex + 1);
+    } else if (e.key === 'ArrowLeft') {
+      showImage(currentIndex - 1);
+    }
+  });
+
+  // ---- CLICK POUR TOGGLER ZOOM (seulement moodboard) ----
+  img.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    // si on vient de drag, on ignore ce clic
+    if (didDrag) {
+      didDrag = false;
+      return;
+    }
+
+    // zoom ONLY sur la première image
+    if (currentIndex !== 0) return;
+
+    if (scale === 1) {
+      scale = zoomLevel;   // zoom in
+    } else {
+      resetTransform();    // retour à 1
+      return;
+    }
+
+    applyTransform();
+  });
+
+  // ---- DRAG / PAN À LA SOURIS (uniquement quand zoomé et sur moodboard) ----
+  img.addEventListener('mousedown', (e) => {
+    if (currentIndex !== 0) return; // pas de drag sur les autres images
+    if (scale === 1) return;        // pas de drag si pas zoomé
+
+    isDragging  = true;
+    didDrag     = false;
+    lightbox.classList.add('is-dragging');
+
+    startMouseX = e.clientX;
+    startMouseY = e.clientY;
+    startPanX   = panX;
+    startPanY   = panY;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    const dx = e.clientX - startMouseX;
+    const dy = e.clientY - startMouseY;
+
+    if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
+      didDrag = true;
+    }
+
+    panX = startPanX + dx;
+    panY = startPanY + dy;
+
+    applyTransform();
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    lightbox.classList.remove('is-dragging');
+  });
+
+  // ---- PAN AVEC LA MOLETTE / TRACKPAD (seulement si zoomé et moodboard) ----
+  lightbox.addEventListener('wheel', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (currentIndex !== 0) return;
+    if (scale === 1) return;
+
+    e.preventDefault(); // ne pas scroller la page
+
+    panX -= e.deltaX;
+    panY -= e.deltaY;
+
+    applyTransform();
+  }, { passive: false });
+});
+</script>
+
+
 </body>
 </html>

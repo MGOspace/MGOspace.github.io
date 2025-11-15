@@ -18,8 +18,10 @@
   --menu-gap-r: 16px;
 
   /* Cards */
-  --card-w: 150px;
-  --card-gap: 78px;
+  --card-w: 120px;
+  --card-h: 160px;
+  --card-edge: 8px;
+  --card-gap-v: 35px;
 }
 
 /* =========================
@@ -406,19 +408,19 @@ main.page{
 }
 
 .cards{
-  grid-column: 2 / span 10;
+  grid-column: 1 / span 3;
   display:grid;
-  grid-template-columns: repeat(4, var(--card-w));
-  justify-content:center;
-  margin-top:160px;
-  column-gap: var(--card-gap);
-  row-gap: 62px;
-  grid-auto-rows: 200px;
+  grid-template-columns: var(--card-w);
+  justify-content:flex-start;
+  align-content:flex-start;
+  margin-top:50px;
+  margin-left: 30px;
+  row-gap: var(--card-gap-v);
 }
 
 .card {
-  width: 150px;
-  height: 200px;
+  width: var(--card-w);
+  height: var(--card-h);
   background: #000;
   position: relative;
   transform: skewY(-10deg);
@@ -434,25 +436,42 @@ main.page{
   transition: all 0.5s;
 }
 .card::before {
-  width: 10px;
-  height: 200px;
+  width: var(--card-edge);
+  height: var(--card-h);
   top: -3px;
-  left: -11px;
+  left: calc(-1 * var(--card-edge) - 3px);
   transform-origin: right;
   transform: skewY(45deg);
 }
 .card::after {
-  height: 10px;
-  width: 150px;
-  top: -11px;
+  height: var(--card-edge);
+  width: var(--card-w);
+  top: calc(-1 * var(--card-edge) - 3px);
   left: -3px;
   transform-origin: bottom;
   transform: skewX(45deg);
 }
-.card:hover { transform: skewY(0deg); }
-.card:hover::before { width: 0; height: 195px; left: 0; top: 0; }
-.card:hover::after  { width: 145px; height: 0; left: 0; top: 0; }
-.card__content { padding: 10px; color: #e9ecff; }
+.card:hover { 
+  transform: skewY(0deg); 
+}
+.card:hover::before { 
+  width: 0; 
+  height: calc(var(--card-h) - 5px); 
+  left: 0; 
+  top: 0; 
+}
+
+.card:hover::after  { 
+  width: calc(var(--card-w) - 5px); 
+  height: 0; 
+  left: 0; 
+  top: 0; 
+}
+.card__content { 
+  padding: 10px; 
+  color: #e9ecff; 
+  
+}
 
 /* Liens autour des cards */
 .card-link {
@@ -470,6 +489,269 @@ main.page{
 .card-link:focus-visible {
   outline: none;
 }
+
+.cards-wrapper {
+  position: fixed;           /* reste visible pendant le scroll global */
+  top: var(--header);        /* juste sous le header */
+  left: 0;                   /* collé à gauche */
+  width: 220px;              /* largeur de ta colonne de cartes */
+  height: calc(100vh - var(--header));  /* prend tout l’espace vertical dispo */
+  overflow-y: auto;          /* scroll vertical interne */
+  padding-left: 24px;        /* petit décalage visuel */
+  background: transparent;   /* ou une couleur si tu veux marquer la zone */
+  z-index: 100;              /* sous le header mais au-dessus du fond */
+}
+
+
+
+/* =========================
+   MAIN PAGE
+   ========================= */
+
+/* SLOT CONTENU DU MOMENT */
+.feature {
+  grid-column: 1 / span 12;   /* ou 1 / span 12 si tu veux full largeur */
+}
+
+/* Layout interne du slot */
+.feature-inner {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Variante : média à gauche, texte à droite */
+.feature-inner--media-left {
+  flex-direction: row;
+}
+
+/* Variante possible : média à droite, texte à gauche */
+/* (tu l'utiliseras plus tard si tu veux inverser) */
+.feature-inner--media-right {
+  flex-direction: row-reverse;
+}
+
+/* === Layout overlay (texte en bas de l’image) === */
+.feature-inner--overlay-bottom {
+  position: relative;
+  display: block;       /* le container devient un bloc */
+  width: 100%;     /* ajustable selon ton image */
+  max-width: none;
+  margin: 0;       /* centre le slot si tu veux */
+  transform: translateX(110px) translateY(50px);
+}
+
+/* La zone média occupe toute la largeur */
+.feature-inner--overlay-bottom .feature-media {
+  max-width: 100%;
+}
+
+/* Image = largeur 100% */
+.feature-inner--overlay-bottom .feature-media-el {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Texte superposé en bas */
+.feature-text--overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  padding: 20px;
+  color: #e9ecff;
+
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.65) 0%,
+    rgba(0,0,0,0.40) 40%,
+    rgba(0,0,0,0.00) 100%
+  );
+
+  pointer-events: none; /* texte non cliquable — optionnel */
+}
+
+/* Ajustements typographiques */
+.feature-text--overlay .feature-title {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.feature-text--overlay .feature-body {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* === Texte en dessous de l’image (pas overlay) === */
+.feature-text--below {
+  position: relative;      /* plus d'absolu = plus d’overlay */
+  padding: 20px 0 0;       /* espace entre l’image et le texte */
+  text-align: center;        /* aligné bas-gauche */
+  max-width: 600px;        /* joli bloc de texte */
+  margin-left: 0;     
+  margin: 40px auto 0; 
+}
+
+.feature-text--below .feature-title {
+  margin-bottom: 8px;
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #e9ecff;
+}
+
+.feature-text--below .feature-body {
+  font-size: 13px;
+  line-height: 1.45;
+  color: #e9ecff;
+  opacity: 0.9;
+}
+
+/* Variante possible : empiler media au-dessus du texte */
+.feature-inner--stacked {
+  flex-direction: column;
+}
+
+/* Zone média : prend une largeur max mais reste flexible */
+.feature-media {
+  flex: 0 0 auto;          /* largeur contrôlée par max-width */
+  max-width: 420px;        /* tu peux ajuster */
+}
+
+/* Élément média (img, iframe, vidéo…) */
+.feature-media-el {
+  display: block;
+  width: 100%;
+  height: auto;            /* images : garde les proportions */
+  border: 1px solid #e9ecff;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+}
+
+/* Zone texte : prend le reste de la largeur */
+.feature-text {
+  flex: 1 1 auto;
+}
+
+
+/* =========================
+   LIGHTBOX / SPOTLIGHT
+   ========================= */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: none;                /* caché par défaut */
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+}
+
+.lightbox.is-open {
+  display: flex;
+}
+
+/* Contenu central : image + caption à droite */
+.lightbox-figure {
+  margin: 0;
+  max-width: min(96vw, 1200px);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Image dans le spotlight */
+.lightbox-image {
+  max-width: min(80vw, 900px);
+  max-height: 90vh;
+  object-fit: contain;
+  display: block;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65);
+
+  /* POUR LE ZOOM / PAN */
+  transform-origin: center center;
+  transition: transform 0.08s ease-out;
+}
+
+/* Quand on n’est pas zoomé (scale = 1) -> pas de drag */
+.lightbox-image.is-not-zoomed {
+  cursor: default;
+}
+
+/* Quand on est zoomé mais pas en train de drag */
+.lightbox:not(.is-dragging) .lightbox-image:not(.is-not-zoomed) {
+  cursor: grab;
+}
+
+/* Pendant le drag */
+.lightbox.is-dragging .lightbox-image {
+  cursor: grabbing;
+}
+
+/* Caption à droite, petit texte */
+.lightbox-caption {
+  max-width: 260px;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #e9ecff;
+  opacity: 0.8;
+  text-align: left;
+}
+
+/* Bouton fermer (coin haut droit) */
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 26px;
+  border: none;
+  background: transparent;
+  color: #f5f5f5;
+  font-size: 26px;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Nav gauche / droite */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #f5f5f5;
+  font-size: 32px;
+  cursor: pointer;
+  padding: 0 12px;
+}
+
+.lightbox-prev {
+  left: 24px;
+}
+
+.lightbox-next {
+  right: 24px;
+}
+
+/* Curseur sur le trigger (l’image dans le slot) */
+[data-lightbox="feature-gallery"] {
+  cursor: pointer;
+}
+
+/* Désactiver le scroll de la page quand le lightbox est ouvert */
+body.has-lightbox-open {
+  overflow: hidden;
+}
+
+
 
 /* =========================
    PAGE WRITINGS
@@ -656,6 +938,210 @@ main.page{
 }
 
 /* =========================
+   PAGE IMAGES
+   ========================= */
+
+.images-body {
+  background: #fbfbfb;
+  color: #000;
+
+  /* on annule le rail / padding global comme pour .gallery-body */
+  padding-right: 0;
+  min-height: 100vh;
+  overflow-x: auto;
+}
+
+/* Header fin, un peu plus haut que celui de gallery */
+.images-thin-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100px;                  /* un peu plus haut que 32px */
+  background: #ffffff;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 3000;
+
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 13px;
+  color: #000;
+
+  border-bottom: 1px solid #e3e3e3;  /* la fine ligne de séparation */
+}
+
+/* Liens + textes */
+.images-thin-header a,
+.images-thin-header div {
+  text-decoration: none;
+  color: #000;
+  font-weight: 400;
+}
+
+/* Hover seulement sur MGO et Gallery (pas sur la page active) */
+.images-thin-header a:hover,
+.images-thin-header a:focus-visible {
+  opacity: 0.6;
+}
+
+/* alignements */
+.ih-left   { justify-self: start; }
+.ih-center { justify-self: center; }
+.ih-right  { justify-self: end; }
+
+/* page active (Images à droite) */
+.ih-active {
+  opacity: 1;
+  cursor: default;
+}
+
+/* Contenu de la page : décalé sous le header */
+.images-page {
+  padding: 100px 24px 80px;   /* 44px = hauteur du header */
+}
+
+/* === GALLERY PAGE === */
+
+.gallery-body {
+  background: #fbfbfb;        /* blanc très léger */
+  color: #3f3f3f;
+
+  /* OVERRIDE des règles globales du <body> */
+  padding-right: 0;           /* enlève l’espace réservé au rail */
+  min-height: 100vh;          /* garde un body plein écran */
+  overflow-x: auto;           /* plus besoin de cacher le scroll horizontal */
+}
+
+.gallery-page {
+  width: 100vw;               /* prend toute la largeur de la fenêtre */
+  max-width: 100vw;
+  margin: 40px 0 60px 0;
+  padding: 0 8px 60px;       /* un peu de respiration à gauche/droite, ajuste si tu veux bord à bord */
+}
+
+.gallery-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.gallery-title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.gallery-back {
+  text-decoration: none;
+  color: #b4b4b4;
+}
+
+.gallery-back:hover {
+  color: #7f7f7f;
+}
+
+/* Grille petites tuiles serrées */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  width: 100%;
+}
+
+.gallery-item {
+  display: block;
+  background: #f2f2f2;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* recadrage pour garder une grille propre */
+  transition: opacity 0.25s ease;
+}
+
+.gallery-item:hover img {
+  opacity: 0.9;        /* léger feedback au survol */
+}
+
+/* -----------------------------
+   HEADER SUPER FIN POUR GALLERY
+   ----------------------------- */
+
+.gallery-thin-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 32px;               /* ultra fin */
+  background: #ffffff;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 18px;
+  z-index: 3000;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 15px;
+  color: #000;
+}
+
+/* Liens + textes */
+.gallery-thin-header a,
+.gallery-thin-header div {
+  text-decoration: none;
+  color: #000;
+  font-weight: 400;
+  text-shadow: none;
+}
+
+/* Hover minimal : légère baisse d'opacité */
+.gallery-thin-header a:hover,
+.gallery-thin-header div:hover {
+  opacity: 0.5;
+}
+
+/* Désactiver le hover pour l'onglet actif */
+.gallery-thin-header .active {
+  opacity: 1 !important;     /* reste normal */
+  pointer-events: none;      /* pas cliquable */
+}
+
+.gallery-thin-header .active:hover {
+  opacity: 1 !important;     /* pas de fade */
+}
+
+/* Alignements */
+.gh-left {
+  justify-self: start;
+}
+
+.gh-center {
+  justify-self: center;
+}
+
+.gh-right {
+  justify-self: end;
+}
+
+.gallery-page {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;                     /* plus de marge en haut = colle au header */
+  padding: 32px 8px 60px;        /* 32px = hauteur du header */
+}
+
+/* =========================
    SEARCH INPUT (Uiverse)
    ========================= */
 .input {
@@ -708,6 +1194,7 @@ main.page{
 /* =========================
    PAGE WHO
    ========================= */
+
 .who-section {
   grid-column: 1 / span 12;
   display: grid;
@@ -767,6 +1254,58 @@ main.page{
   margin-bottom: 20px;
 }
 
+.accordion-item {
+  margin-top: 10px;
+}
+
+.accordion-toggle {
+  all: unset;                 /* reset propre */
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 10px;
+  cursor: pointer;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e9ecff;
+}
+
+.accordion-toggle:hover {
+  color: #ffffff;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.accordion-content p {
+  margin: 0;
+  line-height: 1.4; /* resserre ou élargit l’espace global entre lignes */
+}
+
+.accordion-icon {
+  font-size: 12px;
+}
+
+/* Conteneur du contenu déroulant */
+.accordion-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #e9ecff;
+  padding-top: 10px;
+}
+
+/* État ouvert (ajouté en JS) */
+.accordion-panel.is-open {
+  max-height: 500px; /* ajuste si besoin */
+}
 
 /* =========================
    PAGE WHEN

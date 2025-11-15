@@ -94,10 +94,71 @@
     </div>
 
     <!-- Texte à droite -->
-    <div class="who-text">
-      <h1>MGO</h1>
-      <p>Lorem ipsum dolor sit amet, etc.</p>
+<div class="who-text">
+  <h1>MGO</h1>
+
+  <div class="accordion-item">
+    <button class="accordion-toggle" type="button">
+      <span>Academic background</span>
+      <span class="accordion-icon">+</span>
+    </button>
+
+    <div class="accordion-panel">
+      <p>
+        Political science <br> 
+        Philosophy <br>
+        International relations <br>
+        Theory of organisations <br>
+      </p>
+      <div style="margin-top:20px;"></div>
+      <p>
+        Philosophy of science and logic
+      </p>
+      <div style="margin-top:20px;"></div>
+      <p> 
+        Media Theory <br>
+        Media Philosophy <br>
+        Philosophy of technology <br>
+      </p>
     </div>
+  </div>
+
+  <div class="accordion-item">
+  <button class="accordion-toggle" type="button">
+    <span>Research interests</span>
+    <span class="accordion-icon">+</span>
+  </button>
+    <div class="accordion-panel">
+      <p>
+      Post-phenomenology<br>
+      Media Ecology<br>
+      Algorithmic Media Theory<br>
+      Affective and Sensory Media Theory <br>
+      Ecological and Environmental Media Theory <br>
+      Decolonial Media theory <br>
+      German Media Theory <br>
+      Ontology of Technology <br>
+      Postmodern Media Theory <br>
+      Elemental Media <br>
+      Psychedelic media <br>
+      Rhythmanalysis 
+      </p>
+    </div>
+  </div>
+
+    <div class="accordion-item">
+  <button class="accordion-toggle" type="button">
+    <span>Current research</span>
+    <span class="accordion-icon">+</span>
+  </button>
+    <div class="accordion-panel">
+      <p>
+        Rhythm & individuation 
+      </p>
+    </div>
+  </div>
+
+</div>
   </section>
 </main>
 
@@ -223,15 +284,46 @@ document.addEventListener('DOMContentLoaded', function () {
   const stack = document.querySelector('[data-who-gallery]');
   if (!stack) return;
 
+  // --- Étape 1 : récupérer les images ---
   const images = Array.from(stack.querySelectorAll('.who-image'));
-  if (images.length <= 1) return; // s'il n'y a qu'une image, rien à faire
+  if (images.length <= 1) return;
 
+  // --- Étape 2 : mélanger l’ordre des images ---
+  for (let i = images.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [images[i], images[j]] = [images[j], images[i]];
+  }
+
+  // --- Étape 3 : vider le conteneur et réinsérer dans le nouvel ordre ---
+  stack.innerHTML = '';
+  images.forEach(img => stack.appendChild(img));
+
+  // --- Étape 4 : marquer la première image comme active ---
+  images.forEach(img => img.classList.remove('is-active'));
+  images[0].classList.add('is-active');
+
+  // --- Étape 5 : gérer le clic pour faire défiler ---
   let index = 0;
-
   stack.addEventListener('click', function () {
     images[index].classList.remove('is-active');
     index = (index + 1) % images.length;
     images[index].classList.add('is-active');
+  });
+});
+
+document.querySelectorAll('.accordion-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const panel = btn.nextElementSibling;
+    const icon = btn.querySelector('.accordion-icon');
+    const isOpen = panel.classList.contains('is-open');
+
+    if (isOpen) {
+      panel.classList.remove('is-open');
+      icon.textContent = '+';   // fermé → plus
+    } else {
+      panel.classList.add('is-open');
+      icon.textContent = '–';   // ouvert → tiret long
+    }
   });
 });
 </script>
