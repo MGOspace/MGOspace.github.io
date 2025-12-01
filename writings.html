@@ -15,66 +15,498 @@
 </head>
 
 <body>
-  <main class="writing-layout">
+  <main>
+    <div class="writing-shell">
 
-  <!-- Colonne gauche : titre + arborescence -->
-  <aside class="writing-nav">
-    <a href="index.html" class="writing-heading">MGO</a>
+      <!-- Colonne gauche : titre + arborescence -->
+      <aside class="writing-nav">
+        <a href="index.html" class="writing-heading">MGO</a>
+        <div class="writing-divider"></div>
 
-    <ul class="writing-tree">
-      <li class="tree-item">
-        <button class="tree-label js-toggle-branch" data-target="writings-branch">
-          Writings
-        </button>
-        <ul class="tree-children" id="writings-branch">
+        <ul class="writing-tree">
+          <!-- SECTION 1 : WRITINGS (manuel) -->
           <li class="tree-item">
-            <button class="tree-sublabel js-toggle-branch" data-target="folder-1">
-              Dossier 1
+            <button
+              class="tree-label tree-root js-toggle-branch"
+              data-target="writings-branch"
+            >
+              Writings
             </button>
-            <ul class="tree-children" id="folder-1">
-              <li><button class="tree-sublabel">Sous-sous dossier 1</button></li>
-              <li><button class="tree-sublabel">Sous-sous dossier 2</button></li>
+
+            <ul class="tree-children" id="writings-branch">
+              <li>
+                <button
+                  class="tree-sublabel js-show-list"
+                  data-list="writings-university"
+                  data-title="Writings — University"
+                >
+                  University
+                </button>
+              </li>
+
+              <li>
+                <button
+                  class="tree-sublabel js-show-list"
+                  data-list="writings-other"
+                  data-title="Writings — Other"
+                >
+                  Other
+                </button>
+              </li>
             </ul>
           </li>
 
+          <!-- SECTION 2 : READINGS (Are.na) -->
           <li class="tree-item">
-            <button class="tree-sublabel js-toggle-branch" data-target="folder-2">
-              Dossier 2
+            <button
+              class="tree-label tree-root js-toggle-branch"
+              data-target="readings-branch"
+            >
+              Readings
             </button>
-            <ul class="tree-children" id="folder-2">
-              <li><button class="tree-sublabel">Sous-sous dossier A</button></li>
+
+            <ul class="tree-children" id="readings-branch">
+              <li>
+                <button
+                  class="tree-sublabel js-show-list"
+                  data-list="readings-current"
+                  data-title="Readings — Current"
+                >
+                  Current
+                </button>
+              </li>
+
+              <li>
+                <button
+                  class="tree-sublabel js-show-list"
+                  data-list="readings-library"
+                  data-title="Readings — Library"
+                >
+                  Library
+                </button>
+              </li>
             </ul>
+          </li>
+
+        </ul>
+      </aside>
+
+      <!-- Colonne droite : contenu -->
+      <section class="writing-content">
+        <!-- Titre mis à jour au clic -->
+        <h1 class="writing-title"></h1>
+
+        <!-- Writings → University (manuel) -->
+        <ul class="writing-list" data-list-id="writings-university">
+          <li>
+            <a class="writing-link" href="assets/pdfs/example_university_1.pdf" target="_blank" rel="noopener noreferrer">
+              <div class="bookwrapper">
+                <div class="bookwrapper__anchor"></div>
+                <div class="book">
+                  <div class="book__back"></div>
+                  <div class="book__spine"></div>
+                  <div class="book__front">
+                    <span class="book__title writing-card-title">
+                      Titre University — PDF 1
+                    </span>
+                    <span class="book__author writing-card-meta">
+                      Auteur — Année
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+
+          <li>
+            <a class="writing-link" href="assets/pdfs/example_university_2.pdf" target="_blank" rel="noopener noreferrer">
+              <div class="bookwrapper">
+                <div class="bookwrapper__anchor"></div>
+                <div class="book">
+                  <div class="book__back"></div>
+                  <div class="book__spine"></div>
+                  <div class="book__front">
+                    <span class="book__title writing-card-title">
+                      Titre University — PDF 2
+                    </span>
+                    <span class="book__author writing-card-meta">
+                      Auteur — Année
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+
+          <li>
+            <a class="writing-link" href="assets/pdfs/example_university_3.pdf" target="_blank" rel="noopener noreferrer">
+              <div class="bookwrapper">
+                <div class="bookwrapper__anchor"></div>
+                <div class="book">
+                  <div class="book__back"></div>
+                  <div class="book__spine"></div>
+                  <div class="book__front">
+                    <span class="book__title writing-card-title">
+                      Titre University — PDF 3
+                    </span>
+                    <span class="book__author writing-card-meta">
+                      Auteur — Année
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </aside>
 
-  <!-- Colonne droite : liste des writings -->
-  <section class="writing-content">
-    <h1 class="writing-title">Essays</h1>
-    <ul class="writing-list">
-      <li><a href="#" class="writing-link">Titre de writing 1</a></li>
-      <li><a href="#" class="writing-link">Titre de writing 2</a></li>
-      <li><a href="#" class="writing-link">Titre de writing 3</a></li>
-    </ul>
-  </section>
+        <!-- Writings → Other (manuel) -->
+        <ul class="writing-list" data-list-id="writings-other">
+          <li>
+            <a class="writing-link" href="assets/pdfs/example_other_1.pdf" target="_blank" rel="noopener noreferrer">
+              <div class="bookwrapper">
+                <div class="bookwrapper__anchor"></div>
+                <div class="book">
+                  <div class="book__back"></div>
+                  <div class="book__spine"></div>
+                  <div class="book__front">
+                    <span class="book__title writing-card-title">
+                      Other — PDF 1
+                    </span>
+                    <span class="book__author writing-card-meta">
+                      Auteur — Année
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
 
-</main>
+          <li>
+            <a class="writing-link" href="assets/pdfs/example_other_2.pdf" target="_blank" rel="noopener noreferrer">
+              <div class="bookwrapper">
+                <div class="bookwrapper__anchor"></div>
+                <div class="book">
+                  <div class="book__back"></div>
+                  <div class="book__spine"></div>
+                  <div class="book__front">
+                    <span class="book__title writing-card-title">
+                      Other — PDF 2
+                    </span>
+                    <span class="book__author writing-card-meta">
+                      Auteur — Année
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
 
-<script>
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.js-toggle-branch');
-  if (!btn) return;
+          <li>
+            <a class="writing-link" href="assets/pdfs/example_other_3.pdf" target="_blank" rel="noopener noreferrer">
+              <div class="bookwrapper">
+                <div class="bookwrapper__anchor"></div>
+                <div class="book">
+                  <div class="book__back"></div>
+                  <div class="book__spine"></div>
+                  <div class="book__front">
+                    <span class="book__title writing-card-title">
+                      Other — PDF 3
+                    </span>
+                    <span class="book__author writing-card-meta">
+                      Auteur — Année
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
 
-  const targetId = btn.dataset.target;
-  const branch = document.getElementById(targetId);
-  if (!branch) return;
+        <!-- Readings → Current (Are.na : MGO_readings_curr) -->
+        <ul
+          class="writing-list writing-list--arena"
+          data-list-id="readings-current"
+          data-arena-channel="mgo_reading_curr"
+        ></ul>
 
-  const item = btn.closest('.tree-item');
-  item.classList.toggle('is-open');
-});
-</script>
+        <!-- Readings → Library (Are.na : MGO_readings_lib) -->
+        <ul
+          class="writing-list writing-list--arena"
+          data-list-id="readings-library"
+          data-arena-channel="mgo_reading_lib"
+        ></ul>
+      </section>
 
-</body>
+    </div>
+  </main>
+
+  <script>
+    /* =========================
+       MAPPING ARE.NA
+       ========================= */
+
+    // Quel sous-dossier pointe vers quel channel Are.na
+    const ARENA_CHANNELS = {
+      "readings-current": "mgo_reading_curr", // slug exact
+      "readings-library": "mgo_reading_lib"   // slug exact
+    };
+
+    const ARENA_API_BASE = "https://api.are.na/v2/channels/";
+    const DEBUG_ARENA    = false; // passe à true si tu veux voir tous les logs
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+      /* =========================
+         NAV : toggle branches + changement de liste
+         ========================= */
+
+      document.addEventListener("click", (e) => {
+        // 1) Ouvrir / fermer les branches (Writings / Readings)
+        const branchBtn = e.target.closest(".js-toggle-branch");
+        if (branchBtn) {
+          const branch = document.getElementById(branchBtn.dataset.target);
+          if (!branch) return;
+          const item = branchBtn.closest(".tree-item");
+          if (item) item.classList.toggle("is-open");
+        }
+
+        // 2) Clic sur un sous-item (University, Other, Current, Library)
+        const listBtn = e.target.closest(".js-show-list");
+        if (listBtn) {
+          const targetKey = listBtn.dataset.list;   // ex. "readings-current"
+          const newTitle  = listBtn.dataset.title || "";
+
+          // Met à jour le titre
+          const titleEl = document.querySelector(".writing-title");
+          if (titleEl) titleEl.textContent = newTitle;
+
+          // Masque toutes les listes, puis affiche la bonne
+          const lists = document.querySelectorAll(".writing-list");
+          lists.forEach((ul) => ul.classList.remove("is-active"));
+
+          const activeList = document.querySelector(
+            '.writing-list[data-list-id="' + targetKey + '"]'
+          );
+          if (activeList) {
+            activeList.classList.add("is-active");
+
+            // Si ce sous-dossier correspond à un channel Are.na,
+            // on charge dynamiquement les cards (une seule fois)
+            const slug = ARENA_CHANNELS[targetKey];
+            if (slug && !activeList.dataset.loaded) {
+              loadArenaChannelIntoList(slug, activeList);
+            }
+          }
+        }
+      });
+
+      /* =========================
+         Tous les liens .writing-link → nouvel onglet
+         (utile surtout pour Writings manuel)
+         ========================= */
+      document.querySelectorAll(".writing-link").forEach((link) => {
+        if (!link.target) {
+          link.target = "_blank";
+          link.rel    = "noopener noreferrer";
+        }
+      });
+
+      /* =========================
+         FONCTION : charger un channel Are.na dans une <ul>
+         ========================= */
+
+      async function loadArenaChannelIntoList(slug, listEl) {
+        if (!slug || !listEl) return;
+
+        let page        = 1;
+        const per       = 40;   // nombre de blocks par page
+        let hasMore     = true;
+        const seenHrefs = new Set();
+        let loadedCount = 0;
+
+        if (DEBUG_ARENA) {
+          console.log("Appel API Are.na pour le channel:", slug);
+        }
+
+        try {
+          while (hasMore) {
+            const url = ARENA_API_BASE + encodeURIComponent(slug) +
+                        "?page=" + page +
+                        "&per=" + per +
+                        "&direction=desc" +
+                        "&cacheBust=" + Date.now();  // anti-cache
+
+            if (DEBUG_ARENA) {
+              console.log("→ fetch:", url);
+            }
+
+            const res = await fetch(url, { cache: "no-store" });
+            if (!res.ok) {
+              console.error("Erreur Are.na", res.status, url);
+              break;
+            }
+
+            const data     = await res.json();
+            const contents = data.contents || [];
+
+            contents.forEach((block) => {
+              const li = createArenaCardFromBlock(block, seenHrefs);
+              if (li) {
+                listEl.appendChild(li);
+                loadedCount++;
+              }
+            });
+
+            hasMore = contents.length === per;
+            page++;
+          }
+
+          // Marque la liste comme déjà chargée pour éviter de re-fetch
+          listEl.dataset.loaded = "1";
+
+          // Aucun block exploitable → message fallback
+          if (loadedCount === 0) {
+            const li  = document.createElement("li");
+            li.innerHTML = `
+              <div class="bookwrapper">
+                <div class="bookwrapper__anchor"></div>
+                <div class="book">
+                  <div class="book__back"></div>
+                  <div class="book__spine"></div>
+                  <div class="book__front">
+                    <span class="book__title writing-card-title">Channel unavailable</span>
+                    <span class="book__author writing-card-meta">No readable blocks found in “${slug}”.</span>
+                  </div>
+                </div>
+              </div>
+            `;
+            listEl.appendChild(li);
+          }
+
+        } catch (err) {
+          console.error("Erreur en chargeant Are.na:", err);
+          const li  = document.createElement("li");
+          li.innerHTML = `
+            <div class="bookwrapper">
+              <div class="bookwrapper__anchor"></div>
+              <div class="book">
+                <div class="book__back"></div>
+                <div class="book__spine"></div>
+                <div class="book__front">
+                  <span class="book__title writing-card-title">Channel error</span>
+                  <span class="book__author writing-card-meta">Unable to load channel “${slug}”.</span>
+                </div>
+              </div>
+            </div>
+          `;
+          listEl.appendChild(li);
+        }
+      }
+
+      /* =========================
+         FONCTION : transformer un block Are.na en book
+         ========================= */
+
+      function createArenaCardFromBlock(block, seenHrefs) {
+        if (DEBUG_ARENA) {
+          console.log(
+            "[ARENA BLOCK]",
+            "class:", block.class,
+            "title:", block.title,
+            "content_type:", block.attachment?.content_type
+          );
+        }
+
+        const title = block.title || "(untitled)";
+        let meta    = "";
+
+        // Meta : petit label de type
+        if (block.class === "Image") {
+          meta = "Image";
+        }
+        else if (block.class === "Attachment") {
+          const type = block.attachment?.content_type || "";
+          if (type.includes("pdf")) {
+            meta = "PDF";
+          } else if (type.startsWith("application/")) {
+            meta = type.replace("application/", "").toUpperCase();
+          } else {
+            meta = "File";
+          }
+        }
+        else if (block.class === "Link") {
+          meta = "Link";
+        } else {
+          meta = "";
+        }
+
+        let href = null;
+
+        // 1) Image → grande image
+        if (block.class === "Image" &&
+            block.image &&
+            block.image.display &&
+            block.image.display.url
+          ) {
+            href = block.image.display.url;
+          }
+
+          // 2) Attachment (PDF, etc.)
+          else if (
+            block.class === "Attachment" &&
+            block.attachment &&
+            block.attachment.url
+          ) {
+            href = block.attachment.url;
+          }
+
+          // 3) Link → URL externe
+          else if (
+            block.class === "Link" &&
+            block.source &&
+            block.source.url
+          ) {
+            href = block.source.url;
+          }
+
+          // 4) Text ou autres → ignorés pour l’instant
+          else {
+            return null;
+          }
+
+          // Pas de doublons si même href déjà vu
+          if (href && seenHrefs.has(href)) {
+            return null;
+          }
+          if (href) {
+            seenHrefs.add(href);
+          }
+
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <a class="writing-link" href="${href}" target="_blank" rel="noopener noreferrer">
+              <div class="bookwrapper">
+                <div class="bookwrapper__anchor"></div>
+                <div class="book">
+                  <div class="book__back"></div>
+                  <div class="book__spine"></div>
+                  <div class="book__front">
+                    <span class="book__title writing-card-title">${title}</span>
+                    ${
+                      meta
+                        ? `<span class="book__author writing-card-meta">${meta}</span>`
+                        : ``
+                    }
+                  </div>
+                </div>
+              </div>
+            </a>
+          `;
+          return li;
+        }
+
+      });
+    </script>
+
+  </body>
 </html>
