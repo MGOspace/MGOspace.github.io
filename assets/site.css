@@ -3,7 +3,7 @@
    ========================= */
 :root{
   --rail: 200px;
-  --header: 100px;
+  --header: 70px;
   --size: 180px;
   --seed: 22px;
   --gap: 12px;
@@ -12,28 +12,31 @@
   --ease: cubic-bezier(.2,.7,.2,1);
   --bg: #0b0b12;
 
-  /* Header/menu */
-  --logo-block-h: 60px;
-  --menu-gap-l: 16px;
-  --menu-gap-r: 16px;
-
   /* Cards */
-  --card-w: 100px;
-  --card-h: 133px;
-  --card-edge: 8px;
-  --card-gap-v: 24px;
+  --card-w: 200px;
+  --card-h: 266px;
+  --card-edge: 14px;
+
+  /* Footer */
+  --logo-block-h: 60px;
 }
 
 *{ box-sizing:border-box; margin:0; }
 
-body{
-  min-height:100dvh;
-  background:var(--bg);
-  color:#e9ecff;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  padding-right: 0;
-  overflow-x:hidden;
+html {
+  height: 100%;
 }
+
+  body{
+    min-height: 100vh;
+    background:var(--bg);
+    color:#e9ecff;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    padding-right: 0;
+    overflow-x:hidden;
+    display: flex;
+    flex-direction: column;
+  }
 
 /* Uniquement les pages qui ont le rail radio */
 body.has-rail {
@@ -63,13 +66,11 @@ a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
   border-bottom:1px solid #e6e6e6;
   z-index:2000;
 
-  display:grid;
-  grid-template-columns: auto 1.5fr auto; /* logo | nav | search */
+  display:flex;
   align-items:center;
-  column-gap:16px;
+  justify-content: center;
 
-  padding:0 60px;
-  overflow:visible;
+  padding:0 100px;
 }
 
 /* Aplatit le wrapper : ses enfants deviennent des items de la grille */
@@ -77,35 +78,448 @@ a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
   display: contents;
 }
 
-/* Logo (pavé noir) */
-.logo-wrapper{
-  background:#000;
-  padding:0 10px;
-  border-radius:4px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:150px;
-  height:var(--logo-block-h);
-}
-.logo{
-  height:60px;
-  width:auto;
-  display:block;
-  cursor:pointer;
-  transition:opacity .2s ease;
-}
-.logo:hover{ opacity:.8; }
+/* =========================
+   PAGE & CARTES
+   ========================= */
 
-/* ===== NAV GLITCH BUTTONS (HEADER) ===== */
+main.page{
+  max-width:960px;
+  margin:0 auto;
+  flex: 1 0 auto;
 
-.btn-nav{
-  grid-column: 2;
+  display:grid;
+  grid-template-columns: repeat(12, minmax(0,1fr));
+  column-gap:16px;
+  row-gap:40px;
+
+  /* espace sous le header + marge bas pour le footer */
+  padding:120px 12px 160px;
+}
+
+/* LABEL AU-DESSUS DES DOORS */
+.doors-label {
+  grid-column: 3 / span 8;
+  grid-row: 2;
+
+  text-align: center;
+  font-size: 32px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/* LIGNE DES DOORS (cards) */
+.index-doors {
+  grid-column: 3 / span 8;
+  grid-row: 2;
+
+  display: flex;
+  justify-content: center;
+  gap: 96px;
+  margin-top: 160px;
+
+  position: relative;
+  z-index: 2; /* devant le feature */
+}
+
+.card {
+  width: var(--card-w);
+  height: var(--card-h);
+  background: #000;
+  position: relative;
+  transform: skewY(-10deg);
+  border: 4px solid #fff;
+  box-sizing: border-box;
+  transition: all 0.3s;
+}
+.card::before,
+.card::after {
+  content: '';
+  position: absolute;
+  background: #fff;
+  transition: all 0.5s;
+}
+.card::before {
+  width: var(--card-edge);
+  height: var(--card-h);
+  top: -4px;
+  left: calc(-1 * var(--card-edge) - 4px);
+  transform-origin: right;
+  transform: skewY(45deg);
+}
+.card::after {
+  height: var(--card-edge);
+  width: var(--card-w);
+  top: calc(-1 * var(--card-edge) - 4px);
+  left: -4px;
+  transform-origin: bottom;
+  transform: skewX(45deg);
+}
+.card:hover { 
+  transform: skewY(0deg); 
+}
+.card:hover::before { 
+  width: 0; 
+  height: calc(var(--card-h) - 8px); 
+  left: 0; 
+  top: 0; 
+}
+
+.card:hover::after  { 
+  width: calc(var(--card-w) - 8px); 
+  height: 0; 
+  left: 0; 
+  top: 0; 
+}
+
+.card__content { 
+  height: 100%;
+  padding: 20px;               /* AVANT: 10px */
+  
+  display: flex;               /* centrage */
+  align-items: center;
+  justify-content: center;
+
+  color: #e9ecff; 
+  text-align: center;
+
+  font-size: 16px;             /* AVANT: taille par défaut (~16, mais là on force) */
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Liens autour des cards */
+.card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-link:hover .card,
+.card-link:focus-visible .card {
+  transform: skewY(0deg);
+  border-color: #fff; /* exemple : effet visuel léger */
+}
+
+.card-link:focus-visible {
+  outline: none;
+}
+
+
+/* =========================
+   MAIN PAGE
+   ========================= */
+
+/* LATEST ITERATION (bloc de fond derrière les doors) */
+.feature {
+  grid-column: 1 / span 12;
+  grid-row: 3;
+
+  /* chevauchement : on remonte le bloc sous les cards */
+  margin-top: 120px;
+}
+
+/* Bloc de fond flou / radial */
+.feature-bg {
+  position: relative;
+  padding: 40px 60px;
+  background: radial-gradient(circle at top left,
+                              rgba(255,255,255,0.12),
+                              rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* Capsule centrale cliquable */
+.feature-bg-inner {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(0,0,0,0.45);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  padding: 24px 32px;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.feature-bg-inner:hover {
+  border-color: rgba(255,255,255,0.7);
+  background: rgba(0,0,0,0.75);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+}
+
+.feature-bg-label {
+  font-size:11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+
+.feature-bg-title {
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.feature-bg-meta {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;         /* espace entre le tag et "2025" */
+}
+
+/* L’année garde l’ancienne logique de méta */
+.feature-bg-year {
+  opacity: 0.9;
+}
+
+.feature-bg-cta {
+  margin-top: 16px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.8);
+  opacity: 0.9;
+}
+
+.feature-media {
+  width: 100%;
+}
+
+/* Élément média (img, iframe, vidéo…) */
+.feature-media-el {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 420px ;
+  object-fit: contain;
+  border: 1px solid #e9ecff;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+}
+
+/* =========================
+   MEDIA TAG (RADIO / IMAGE / WRITING / VIDEO)
+   ========================= */
+
+.tag-wrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px solid rgba(255,255,255,0.7);
+  border-radius: 4px;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.tag-text {
+  display: inline-block;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-weight: 700;
+  font-size:11px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7); 
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.tag-wrapper:hover .tag-text {
+  color: #fff;
+}
+
+.tag-wrapper:hover {
+  border-color: #fff;
+}
+
+
+/* =========================
+   LIGHTBOX / SPOTLIGHT
+   ========================= */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: none;                /* caché par défaut */
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+}
+
+.lightbox.is-open {
+  display: flex;
+}
+
+/* Contenu central : image + caption à droite */
+.lightbox-figure {
+  margin: 0;
+  max-width: 94vw;
+  max-height: 94vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Image dans le spotlight */
+.lightbox-image {
+  max-width: 94vw;
+  max-height: 94vh;
+  object-fit: contain;
+  display: block;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65);
+
+  /* POUR LE ZOOM / PAN */
+  transform-origin: center center;
+  transition: transform 0.08s ease-out;
+}
+
+/* Quand on n’est pas zoomé (scale = 1) -> pas de drag */
+.lightbox-image.is-not-zoomed {
+  cursor: default;
+}
+
+/* Quand on est zoomé mais pas en train de drag */
+.lightbox:not(.is-dragging) .lightbox-image:not(.is-not-zoomed) {
+  cursor: grab;
+}
+
+/* Pendant le drag */
+.lightbox.is-dragging .lightbox-image {
+  cursor: grabbing;
+}
+
+/* Caption à droite, petit texte */
+.lightbox-caption {
+  max-width: 260px;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #e9ecff;
+  opacity: 0.8;
+  text-align: left;
+}
+
+/* Nav gauche / droite */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #f5f5f5;
+  font-size: 32px;
+  cursor: pointer;
+  padding: 0 12px;
+  display: none;
+}
+
+.lightbox-prev {
+  left: 24px;
+}
+
+.lightbox-next {
+  right: 24px;
+}
+
+/* Curseur sur le trigger (l’image dans le slot) */
+[data-lightbox="feature-gallery"] {
+  cursor: pointer;
+}
+
+/* Désactiver le scroll de la page quand le lightbox est ouvert */
+body.has-lightbox-open {
+  overflow: hidden;
+}
+
+/* Zones de clic gauche / droite sur toute la hauteur */
+.lightbox-hit {
+  position: absolute;
+  top: 25vh;
+  height: 50vh;
+  width: 50vw;         /* moitié d'écran */
+  z-index: 3500;       /* au-dessus de l'image, sous le bouton close */
+}
+
+/* Zone gauche : curseur w-resize */
+.lightbox-hit--left {
+  left: 0;
+  cursor: w-resize;
+}
+
+/* Zone droite : curseur e-resize */
+.lightbox-hit--right {
+  right: 0;
+  cursor: e-resize;
+}
+
+
+/* =========================
+   HOME — FOOTER
+   ========================= */
+
+.site-footer {
+  width: 100%;
+  height: var(--header);
+  background: #fff;     
+  border-top: 1px solid #e6e6e6;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 32px;                   /* même padding latéral que le header */
+  box-sizing: border-box;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2000;
+}
+
+/* COORDINATES à gauche */
+.footer-coords {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #000000;
+  white-space: nowrap;
+}
+
+/* ===== NAV GLITCH BUTTONS (FOOTER) ===== */
+
+.btn-nav {
   height: var(--logo-block-h);
+  width: 100%;                /* → nav étirée entièrement */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;    /* on centre les boutons dans la largeur */
+}
+
+.btn-nav .btn-list {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  width: auto;
+  margin: 0;
+  gap: 42px;
+  list-style: none; /* ← supprime les points */
+  padding: 0;
 }
 
 /* Wrapper fixe la taille du bouton */
@@ -238,487 +652,6 @@ a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
 }
 
 /* =========================
-   BANDEAU DROIT (rail)
-   ========================= */
-.rail{
-  position:fixed; top:0; right:0;
-  width:var(--rail); height:100dvh;
-  background:#fff; border-left:1px solid #e6e6e6;
-  display:grid;
-  grid-template-rows:auto 1fr auto; /* header tiles | scroll | footer */
-  padding:12px 10px 14px; 
-  gap:10px;
-}
-.vgrid{
-  overflow:auto; 
-  display:grid; 
-  grid-auto-rows:min-content;
-  gap:var(--gap); 
-  padding-right:2px; 
-  place-items:center;
-}
-
-/* Tuiles (Mixcloud) */
-.tile{
-  width:100%; 
-  max-width:var(--size); 
-  aspect-ratio:1/1;
-  position:relative; 
-  overflow:hidden; 
-  background:transparent; 
-  border:none; 
-  outline:none;
-}
-.media{
-  position:absolute; inset:0; z-index:0;
-  clip-path:inset(50% 50% 50% 50%); opacity:0;
-  transition:clip-path var(--dur) var(--ease), opacity .8s ease .2s;
-}
-.tile:hover .media, .tile:focus-within .media{
-  clip-path:inset(0 0 0 0); opacity:1;
-}
-.media > img{
-  width:100%; height:100%; object-fit:cover; display:block; user-select:none; pointer-events:none;
-}
-
-/* Seed anim */
-.seed{ position:absolute; inset:0; z-index:2; }
-.seed::before{
-  content:""; position:absolute; left:50%; top:50%;
-  width:var(--seed); height:var(--seed); transform:translate(-50%,-50%);
-  background:#000; transition:width var(--dur) var(--ease), height var(--dur) var(--ease), opacity .8s ease .2s; opacity:1;
-}
-.seed::after{
-  content:""; position:absolute; left:50%; top:50%;
-  width:var(--seed); height:var(--seed); transform:translate(-50%,-50%);
-  border:var(--border) solid #000; background:transparent;
-  transition:width var(--dur) var(--ease), height var(--dur) var(--ease); pointer-events:none; z-index:3;
-}
-.tile:hover .seed::before, .tile:focus-within .seed::before,
-.tile:hover .seed::after,  .tile:focus-within .seed::after{ width:100%; height:100%; }
-.tile:hover .seed::before, .tile:focus-within .seed::before{ opacity:0; }
-
-/* Footer rail (Mixcloud centré) */
-.rail-footer{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding-top:8px;
-}
-.rail-link,
-.rail-link:visited{
-  color:#000;
-  text-decoration:underline;
-  text-underline-offset:3px;
-  text-decoration-thickness:2px;
-  text-shadow:none;
-  font-size:.9em;
-}
-.rail-link:hover{ color:#333; }
-
-/* =========================
-   PAGE & CARTES
-   ========================= */
-main.page{
-  padding:12px;
-  max-width:960px;
-  min-height:150vh;
-  padding-top:calc(var(--header) + 24px);
-  margin:0 auto;
-
-  display:grid;
-  grid-template-columns: repeat(12, minmax(0,1fr));
-  column-gap:16px;
-  row-gap:40px;
-  padding-bottom: 160px;
-}
-
-.cards{
-  grid-column: 1 / span 3;
-  display:grid;
-  grid-template-columns: var(--card-w);
-  justify-content:flex-start;
-  align-content:flex-start;
-  margin-top:50px;
-  margin-left: 30px;
-  row-gap: var(--card-gap-v);
-}
-
-.card {
-  width: var(--card-w);
-  height: var(--card-h);
-  background: #000;
-  position: relative;
-  transform: skewY(-10deg);
-  border: 3px solid #fff;
-  box-sizing: border-box;
-  transition: all 0.3s;
-}
-.card::before,
-.card::after {
-  content: '';
-  position: absolute;
-  background: #fff;
-  transition: all 0.5s;
-}
-.card::before {
-  width: var(--card-edge);
-  height: var(--card-h);
-  top: -3px;
-  left: calc(-1 * var(--card-edge) - 3px);
-  transform-origin: right;
-  transform: skewY(45deg);
-}
-.card::after {
-  height: var(--card-edge);
-  width: var(--card-w);
-  top: calc(-1 * var(--card-edge) - 3px);
-  left: -3px;
-  transform-origin: bottom;
-  transform: skewX(45deg);
-}
-.card:hover { 
-  transform: skewY(0deg); 
-}
-.card:hover::before { 
-  width: 0; 
-  height: calc(var(--card-h) - 5px); 
-  left: 0; 
-  top: 0; 
-}
-
-.card:hover::after  { 
-  width: calc(var(--card-w) - 5px); 
-  height: 0; 
-  left: 0; 
-  top: 0; 
-}
-.card__content { 
-  padding: 10px; 
-  color: #e9ecff; 
-  
-}
-
-/* Liens autour des cards */
-.card-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
-.card-link:hover .card,
-.card-link:focus-visible .card {
-  transform: skewY(0deg);
-  border-color: #fff; /* exemple : effet visuel léger */
-}
-
-.card-link:focus-visible {
-  outline: none;
-}
-
-.cards-wrapper {
-  position: fixed;           /* reste visible pendant le scroll global */
-  top: var(--header);        /* juste sous le header */
-  left: 12px;                   /* collé à gauche */
-  width: 220px;              /* largeur de ta colonne de cartes */
-  height: calc(100vh - var(--header));  /* prend tout l’espace vertical dispo */
-  overflow-y: auto;          /* scroll vertical interne */
-  padding-left: 24px;        /* petit décalage visuel */
-  background: transparent;   /* ou une couleur si tu veux marquer la zone */
-  z-index: 100;              /* sous le header mais au-dessus du fond */
-}
-
-
-
-/* =========================
-   MAIN PAGE
-   ========================= */
-
-/* SLOT CONTENU DU MOMENT */
-.feature {
-  grid-column: 1 / span 12;   /* ou 1 / span 12 si tu veux full largeur */
-}
-
-/* Layout interne du slot */
-.feature-inner {
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-}
-
-/* Variante : média à gauche, texte à droite */
-.feature-inner--media-left {
-  flex-direction: row;
-}
-
-/* Variante possible : média à droite, texte à gauche */
-/* (tu l'utiliseras plus tard si tu veux inverser) */
-.feature-inner--media-right {
-  flex-direction: row-reverse;
-}
-
-/* === Layout overlay (texte en bas de l’image) === */
-.feature-inner--overlay-bottom {
-  position: relative;
-  display: block;       /* le container devient un bloc */
-  width: 100%;     /* ajustable selon ton image */
-  max-width: none;
-  margin: 0;       /* centre le slot si tu veux */
-  transform: translateX(110px) translateY(50px);
-}
-
-/* La zone média occupe toute la largeur */
-.feature-inner--overlay-bottom .feature-media {
-  max-width: 100%;
-}
-
-/* Image = largeur 100% */
-.feature-inner--overlay-bottom .feature-media-el {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Texte superposé en bas */
-.feature-text--overlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  padding: 20px;
-  color: #e9ecff;
-
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,0.65) 0%,
-    rgba(0,0,0,0.40) 40%,
-    rgba(0,0,0,0.00) 100%
-  );
-
-  pointer-events: none; /* texte non cliquable — optionnel */
-}
-
-/* Ajustements typographiques */
-.feature-text--overlay .feature-title {
-  margin-bottom: 8px;
-  font-size: 16px;
-}
-
-.feature-text--overlay .feature-body {
-  font-size: 13px;
-  line-height: 1.45;
-}
-
-/* === Texte en dessous de l’image (pas overlay) === */
-.feature-text--below {
-  position: relative;      /* plus d'absolu = plus d’overlay */
-  padding: 20px 0 0;       /* espace entre l’image et le texte */
-  text-align: center;        /* aligné bas-gauche */
-  max-width: 600px;        /* joli bloc de texte */
-  margin-left: 0;     
-  margin: 40px auto 0; 
-}
-
-.feature-text--below .feature-title {
-  margin-bottom: 8px;
-  font-size: 32px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #e9ecff;
-}
-
-.feature-text--below .feature-body {
-  font-size: 13px;
-  line-height: 1.45;
-  color: #e9ecff;
-  opacity: 0.9;
-}
-
-/* Variante possible : empiler media au-dessus du texte */
-.feature-inner--stacked {
-  flex-direction: column;
-}
-
-/* Zone média : prend une largeur max mais reste flexible */
-.feature-media {
-  flex: 0 0 auto;          /* largeur contrôlée par max-width */
-  max-width: 420px;        /* tu peux ajuster */
-}
-
-/* Élément média (img, iframe, vidéo…) */
-.feature-media-el {
-  display: block;
-  width: 100%;
-  height: auto;            /* images : garde les proportions */
-  border: 1px solid #e9ecff;
-  border-radius: 4px;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
-}
-
-/* Zone texte : prend le reste de la largeur */
-.feature-text {
-  flex: 1 1 auto;
-}
-
-
-/* =========================
-   LIGHTBOX / SPOTLIGHT
-   ========================= */
-
-.lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display: none;                /* caché par défaut */
-  align-items: center;
-  justify-content: center;
-  z-index: 4000;
-}
-
-.lightbox.is-open {
-  display: flex;
-}
-
-/* Contenu central : image + caption à droite */
-.lightbox-figure {
-  margin: 0;
-  max-width: 94vw;
-  max-height: 94vh;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 24px;
-}
-
-/* Image dans le spotlight */
-.lightbox-image {
-  max-width: 94vw;
-  max-height: 94vh;
-  object-fit: contain;
-  display: block;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65);
-
-  /* POUR LE ZOOM / PAN */
-  transform-origin: center center;
-  transition: transform 0.08s ease-out;
-}
-
-/* Quand on n’est pas zoomé (scale = 1) -> pas de drag */
-.lightbox-image.is-not-zoomed {
-  cursor: default;
-}
-
-/* Quand on est zoomé mais pas en train de drag */
-.lightbox:not(.is-dragging) .lightbox-image:not(.is-not-zoomed) {
-  cursor: grab;
-}
-
-/* Pendant le drag */
-.lightbox.is-dragging .lightbox-image {
-  cursor: grabbing;
-}
-
-/* Caption à droite, petit texte */
-.lightbox-caption {
-  max-width: 260px;
-  font-size: 11px;
-  line-height: 1.5;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #e9ecff;
-  opacity: 0.8;
-  text-align: left;
-}
-
-/* Nav gauche / droite */
-.lightbox-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: transparent;
-  color: #f5f5f5;
-  font-size: 32px;
-  cursor: pointer;
-  padding: 0 12px;
-  display: none;
-}
-
-.lightbox-prev {
-  left: 24px;
-}
-
-.lightbox-next {
-  right: 24px;
-}
-
-/* Curseur sur le trigger (l’image dans le slot) */
-[data-lightbox="feature-gallery"] {
-  cursor: pointer;
-}
-
-/* Désactiver le scroll de la page quand le lightbox est ouvert */
-body.has-lightbox-open {
-  overflow: hidden;
-}
-
-/* Zones de clic gauche / droite sur toute la hauteur */
-.lightbox-hit {
-  position: absolute;
-  top: 25vh;
-  height: 50vh;
-  width: 50vw;         /* moitié d'écran */
-  z-index: 3500;       /* au-dessus de l'image, sous le bouton close */
-}
-
-/* Zone gauche : curseur w-resize */
-.lightbox-hit--left {
-  left: 0;
-  cursor: w-resize;
-}
-
-/* Zone droite : curseur e-resize */
-.lightbox-hit--right {
-  right: 0;
-  cursor: e-resize;
-}
-
-
-/* =========================
-   HOME — SECTIONS ADDITIONNELLES
-   ========================= */
-
-.home-section {
-  grid-column: 3 / span 9;   /* pleine largeur */
-  margin-top: 24px;
-  margin-bottom: 60px;
-  padding: 20px 0;
-}
-
-.home-section-title {
-  font-size: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #e9ecff;
-  margin-bottom: 12px;
-}
-
-.home-section-body {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #e9ecff;
-  opacity: 0.9;
-  max-width: 900px;
-  text-align: justify;
-  hyphens: auto;
-}
-
-
-
-/* =========================
    PAGE WRITINGS
    ========================= */
 
@@ -732,7 +665,7 @@ body.has-lightbox-open {
 /* Colonne gauche (nav fixe) */
 .writing-nav {
   position: fixed;
-  top: 50px;
+  top: 100px;
   left: 50px;
   width: 220px;
 
@@ -1098,7 +1031,7 @@ body.has-lightbox-open {
   height: 100px;
   background: #ffffff;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 0 24px;
   z-index: 3000;
@@ -1272,6 +1205,103 @@ body.has-lightbox-open {
 }
 
 /* =========================
+   PAGE RADIO
+   ========================= */
+
+.radio-logo-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: var(--rail);
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* optionnel : le logo n'intercepte pas les clics */
+}
+
+.radio-logo {
+  width: 40vw;
+  max-width: 550px;
+  height: auto;
+  display: block;
+}
+
+/* =========================
+   BANDEAU DROIT (rail)
+   ========================= */
+
+.rail{
+  position:fixed; top:0; right:0;
+  width:var(--rail); height:100dvh;
+  background:#fff; border-left:1px solid #e6e6e6;
+  display:grid;
+  grid-template-rows:auto 1fr auto; /* header tiles | scroll | footer */
+  padding:12px 10px 14px; 
+  gap:10px;
+}
+.vgrid{
+  overflow:auto; 
+  display:grid; 
+  grid-auto-rows:min-content;
+  gap:var(--gap); 
+  padding-right:2px; 
+  place-items:center;
+}
+
+/* Tuiles (Mixcloud) */
+.tile{
+  width:100%; 
+  max-width:var(--size); 
+  aspect-ratio:1/1;
+  position:relative; 
+  overflow:hidden; 
+  background:transparent; 
+  border:none; 
+  outline:none;
+}
+.media{
+  position:absolute; inset:0; z-index:0;
+  clip-path:inset(50% 50% 50% 50%); opacity:0;
+  transition:clip-path var(--dur) var(--ease), opacity .8s ease .2s;
+}
+.tile:hover .media, .tile:focus-within .media{
+  clip-path:inset(0 0 0 0); opacity:1;
+}
+.media > img{
+  width:100%; height:100%; object-fit:cover; display:block; user-select:none; pointer-events:none;
+}
+
+/* Seed anim */
+.seed{ position:absolute; inset:0; z-index:2; }
+.seed::before{
+  content:""; position:absolute; left:50%; top:50%;
+  width:var(--seed); height:var(--seed); transform:translate(-50%,-50%);
+  background:#000; transition:width var(--dur) var(--ease), height var(--dur) var(--ease), opacity .8s ease .2s; opacity:1;
+}
+.seed::after{
+  content:""; position:absolute; left:50%; top:50%;
+  width:var(--seed); height:var(--seed); transform:translate(-50%,-50%);
+  border:var(--border) solid #000; background:transparent;
+  transition:width var(--dur) var(--ease), height var(--dur) var(--ease); pointer-events:none; z-index:3;
+}
+.tile:hover .seed::before, .tile:focus-within .seed::before,
+.tile:hover .seed::after,  .tile:focus-within .seed::after{ width:100%; height:100%; }
+.tile:hover .seed::before, .tile:focus-within .seed::before{ opacity:0; }
+
+.rail-link,
+.rail-link:visited{
+  color:#000;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  text-decoration-thickness:2px;
+  text-shadow:none;
+  font-size:.9em;
+}
+.rail-link:hover{ color:#333; }
+
+/* =========================
    SEARCH INPUT (Uiverse)
    ========================= */
 .input {
@@ -1298,25 +1328,6 @@ body.has-lightbox-open {
 /* =========================
    RESPONSIVE
    ========================= */
-@media (max-width: 768px) {
-  .site-header { width:100%; padding:0 24px; grid-template-columns:auto 1fr auto; }
-  .rail { display:none; }
-
-  main.page {
-    grid-template-columns: repeat(6, 1fr);
-    column-gap:12px;
-  }
-  .about-image { grid-column: 1 / span 6; }
-  .about-content { grid-column: 1 / span 6; padding: 80px 16px 60px; }
-
-  .cards{ grid-template-columns: repeat(2, var(--card-w)); }
-}
-@media (max-width: 560px){
-  .cards{ grid-template-columns: repeat(1, var(--card-w)); }
-}
-
-/* === Correction espacement sous le header sur les pages type About === */
-.about-content { padding-top: calc(var(--header) + 60px); }
 
 
 
@@ -1384,59 +1395,6 @@ body.has-lightbox-open {
   margin-bottom: 20px;
 }
 
-.accordion-item {
-  margin-top: 10px;
-}
-
-.accordion-toggle {
-  all: unset;                 /* reset propre */
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  gap: 10px;
-  cursor: pointer;
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #e9ecff;
-}
-
-.accordion-toggle:hover {
-  color: #ffffff;
-}
-
-.accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-
-.accordion-content p {
-  margin: 0;
-  line-height: 1.4; /* resserre ou élargit l’espace global entre lignes */
-}
-
-.accordion-icon {
-  font-size: 12px;
-}
-
-/* Conteneur du contenu déroulant */
-.accordion-panel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.25s ease;
-  font-size: 11px;
-  line-height: 1.6;
-  color: #e9ecff;
-  padding-top: 10px;
-}
-
-/* État ouvert (ajouté en JS) */
-.accordion-panel.is-open {
-  max-height: 500px; /* ajuste si besoin */
-}
-
 /* =========================
    PAGE WHEN
    ========================= */
@@ -1459,4 +1417,3 @@ body.has-lightbox-open {
   object-fit: contain;
   display: block;
 }
-

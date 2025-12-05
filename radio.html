@@ -10,11 +10,34 @@
       background: #000;
       margin: 0;
       min-height: 100vh;
+      position: relative;
     }
+
+
+  .back-arrow {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 36px;
+  font-weight: 300;
+  color: #ffffff;
+  text-decoration: none;
+  z-index: 5000;
+  cursor: pointer;
+  transition: opacity .15s ease;
+}
+
+.back-arrow:hover {
+  opacity: 0.6;
+}
   </style>
+
 </head>
 
 <body class="has.rail">
+  <a href="index.html" class="back-arrow" aria-label="Retour à l’accueil">
+    ←
+  </a>
   <aside class="rail">
     <div class="vgrid">
       <div class="tile" tabindex="0">
@@ -115,17 +138,22 @@
         </a>
       </div>
 
-      <div class="tile" tabindex="0">
-        <a
-          href="#"
-          class="tile-link"
-          onclick="openPlayer('player.html?mix=1_mix'); return false;"
-        >
-          <div class="media"><img src="assets/1_mix.png" alt="1 MIX" /></div>
-          <div class="seed"></div>
-        </a>
-      </div>
+    <div class="tile" tabindex="0">
+      <a
+        href="https://www.mixcloud.com/M_GO/1_mix/"
+        target="_blank"
+        class="tile-link"
+      >
+        <div class="media"><img src="assets/1_mix.png" alt="1 MIX" /></div>
+        <div class="seed"></div>
+      </a>
+    </div>
     </div>
   </aside>
+
+  <div class="radio-logo-container">
+    <img src="assets/MGO_radio_logo.svg" alt="MGO_radio Logo" class="radio-logo">
+  </div>
+
 </body>
 </html>

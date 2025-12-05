@@ -4,481 +4,409 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MGO_radio</title>
-  <link rel="stylesheet" href="assets/site.css">
-
+  <link rel="stylesheet" href="assets/site.css" />
 </head>
 
 <body>
 
   <!-- Header -->
   <header class="site-header">
-    <div class="logo-wrapper" role="button" aria-label="Accueil MGO_radio">
-      <a href="index.html" class="logo-link">
-        <img src="assets/MGO_radio_logo.svg" alt="MGO_radio logo" class="logo">
-      </a>
-    </div>
-
     <div class="header-right">
-
-<nav class="btn-nav" aria-label="Menu questions">
-  <div class="radio-wrapper">
-    <a href="why.html" class="btn" aria-label="WHY">
-      <span aria-hidden>_</span>WHY
-      <span class="btn__glitch" aria-hidden>_W H Y_</span>
-      <span class="number">01</span>
-    </a>
-  </div>
-
-  <div class="radio-wrapper">
-    <a href="what.html" class="btn" aria-label="WHAT">
-      <span aria-hidden>_</span>WHAT
-      <span class="btn__glitch" aria-hidden>_W H A T_</span>
-      <span class="number">02</span>
-    </a>
-  </div>
-
-  <div class="radio-wrapper">
-    <a href="how.html" class="btn" aria-label="HOW">
-      <span aria-hidden>_</span>HOW
-      <span class="btn__glitch" aria-hidden>_H O W_</span>
-      <span class="number">03</span>
-    </a>
-  </div>
-
-  <div class="radio-wrapper">
-    <a href="when.html" class="btn" aria-label="WHEN">
-      <span aria-hidden>_</span>WHEN
-      <span class="btn__glitch" aria-hidden>_W H E N_</span>
-      <span class="number">04</span>
-    </a>
-  </div>
-
-  <div class="radio-wrapper">
-    <a href="who.html" class="btn" aria-label="WHO">
-      <span aria-hidden>_</span>WHO
-      <span class="btn__glitch" aria-hidden>_W H O_</span>
-      <span class="number">05</span>
-    </a>
-  </div>
-</nav>
-
+      <!-- 
       <div class="header-search">
         <input type="search" placeholder="Search" name="text" class="input">
-      </div>
+      </div> 
+      -->
     </div>
-  </header> 
+  </header>
 
   <!-- Contenu principal -->
   <main class="page">
 
-      <!-- SLOT CONTENU DU MOMENT -->
-<section class="feature">
-  <div class="feature-inner feature-inner--overlay-bottom">
+    <!-- LABEL DOORS -->
+    <div class="doors-label">MGO SPACE</div>
 
-    <div class="feature-media">
-      <img 
-        src="assets/water_dakar.png"
-        alt=""
-        class="feature-media-el"
-        data-lightbox="feature-gallery"
-        data-caption=""
-        data-zoom="true"
-      >
+    <!-- LIGNE DES DOORS -->
+    <section class="index-doors">
+      <!-- Axe + traits verticaux -->
+      <div class="doors-axis">
+        <span class="axis-line axis-line-1"></span>
+        <span class="axis-line axis-line-2"></span>
+        <span class="axis-line axis-line-3"></span>
+        <span class="axis-line axis-line-4"></span>
+      </div>
+
+      <a href="radio.html" class="card-link">
+        <div class="card">
+          <div class="card__content">Radio</div>
+        </div>
+      </a>
+      <a href="writings.html" class="card-link">
+        <div class="card">
+          <div class="card__content">Writings</div>
+        </div>
+      </a>
+      <a href="images.html" class="card-link">
+        <div class="card">
+          <div class="card__content">Images</div>
+        </div>
+      </a>
+      <a href="video.html" class="card-link">
+        <div class="card">
+          <div class="card__content">Video</div>
+        </div>
+      </a>
+    </section>
+
+    <!-- SLOT CONTENU DU MOMENT -->
+    <section class="feature">
+      <div class="feature-bg">
+        <div class="feature-bg-inner">
+
+          <!-- IMAGE (ou média) dans la capsule -->
+          <div class="feature-media">
+            <img 
+              src="assets/MGO_water_dakar.png"
+              alt=""
+              class="feature-media-el"
+              data-lightbox="feature-gallery"
+              data-caption=""
+              data-zoom="true"
+            />
+          </div>
+
+          <!-- IMAGES DE LA LIGHTBOX -->
+          <div class="feature-gallery-hidden" aria-hidden="true" style="display:none;">
+            <img src="assets/water_dakar/water1.jpg"  data-lightbox-item data-caption="I left. <br>What did I leave?<br>I'm not coming back for a while" />
+            <img src="assets/water_dakar/water2.png"  data-lightbox-item />
+            <img src="assets/water_dakar/water3.jpg"  data-lightbox-item />
+            <img src="assets/water_dakar/water4.jpg"  data-lightbox-item />
+            <img src="assets/water_dakar/water5.jpg"  data-lightbox-item />
+            <img src="assets/water_dakar/water6.jpg"  data-lightbox-item />
+            <img src="assets/water_dakar/water7.jpg"  data-lightbox-item />
+            <img src="assets/water_dakar/water8.gif"  data-lightbox-item />
+            <img src="assets/water_dakar/water9.jpg"  data-lightbox-item />
+            <img src="assets/water_dakar/water10.png" data-lightbox-item />
+            <img src="assets/water_dakar/water11.gif" data-lightbox-item />
+            <img src="assets/water_dakar/water12.gif" data-lightbox-item />
+          </div>
+
+          <!-- TEXTE / META / CTA -->
+          <div class="feature-bg-label">LATEST ITERATION</div>
+          <div class="feature-bg-title">Dakar – Water</div>
+          <div class="feature-bg-meta">
+            <a href="images.html" class="tag-link">
+              <div class="tag-wrapper">
+                <span class="tag-text">IMAGE</span>
+              </div>
+            </a>
+            <span class="meta-separator">&middot;</span>
+            <span class="feature-bg-year">2025</span>
+          </div>
+          <div class="feature-bg-cta">ENTER THIS TRACE</div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- LIGHTBOX GLOBALE -->
+    <div class="lightbox" data-lightbox-root aria-hidden="true">
+      <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous">‹</button>
+
+      <figure class="lightbox-figure">
+        <img src="" alt="" class="lightbox-image" />
+        <figcaption class="lightbox-caption"></figcaption>
+      </figure>
+
+      <button class="lightbox-nav lightbox-next" type="button" aria-label="Next">›</button>
+
+      <div class="lightbox-hit lightbox-hit--left"></div>
+      <div class="lightbox-hit lightbox-hit--right"></div>
     </div>
 
-<!-- images supplémentaires pour la lightbox, cachées dans la page -->
-<div class="feature-gallery-hidden" aria-hidden="true" style="display:none;">
+  </main>
 
-  <img 
-    src="assets/water_dakar/water1.jpg" 
-    alt=""
-    data-lightbox-item
-    data-caption="I left. <br> What did I leave? <br> I'm not coming back for a while"
-  >
-
-  <img 
-    src="assets/water_dakar/water2.png" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-  <img 
-    src="assets/water_dakar/water3.jpg" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-  <img 
-    src="assets/water_dakar/water4.jpg" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-  <img 
-    src="assets/water_dakar/water5.jpg" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-  <img 
-    src="assets/water_dakar/water6.jpg" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-  <img 
-    src="assets/water_dakar/water7.jpg" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-  <img 
-    src="assets/water_dakar/water8.gif" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-  <img 
-    src="assets/water_dakar/water9.jpg" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-  <img 
-    src="assets/water_dakar/water10.png" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-  <img 
-    src="assets/water_dakar/water11.gif" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-  <img 
-    src="assets/water_dakar/water12.gif" 
-    alt=""
-    data-lightbox-item
-    data-caption=""
-  >
-
-</div>
-
-    <div class="feature-text feature-text--below">
-      <h2 class="feature-title">DAKAR - WATER</h2>
-      <p class="feature-body">
-      </p>
-    </div>
-
-  </div>
-</section>
-
-<!-- Nouvelle section sous le feature -->
-<section class="home-section">
-  <h2 class="home-section-title">What?</h2>
-  <p class="home-section-body">
-    This website is a research and artistic attempt. It is the result of past and present reflections on the technology that surrounds us. It is an attempt to view and use digital technology with resistance and allow invention. No to instrumental tech, yes to tech and human emancipation. 
-  </p>
-</section>
-
-
-  <!-- Tes cards existantes -->
-
-    <div class="cards-wrapper">
-      <section class="cards">
-        <a href="radio.html" class="card-link">
-          <div class="card">
-            <div class="card__content">Radio</div>
-          </div>
-        </a>
-        <a href="writings.html" class="card-link">
-          <div class="card">
-            <div class="card__content">Writings</div>
-          </div>
-        </a>
-        <a href="images.html" class="card-link">
-          <div class="card">
-            <div class="card__content">Images</div>
-          </div>
-        </a>
-        <a href="video.html" class="card-link">
-          <div class="card">
-            <div class="card__content">Video</div>
-          </div>
-        </a>
-      </section>
-    </div>
-
-
-<div class="lightbox" data-lightbox-root aria-hidden="true">
-  <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous">
-    ‹
-  </button>
-
-  <figure class="lightbox-figure">
-    <img src="" alt="" class="lightbox-image">
-    <figcaption class="lightbox-caption"></figcaption>
-  </figure>
-
-  <button class="lightbox-nav lightbox-next" type="button" aria-label="Next">
-    ›
-  </button>
-  <div class="lightbox-hit lightbox-hit--left"></div>
-  <div class="lightbox-hit lightbox-hit--right"></div>
-</div>
-
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-coords" id="footer-coords">NOW -</div>
+    <nav class="btn-nav" aria-label="Menu questions footer">
+      <ul class="btn-list">
+        <li class="radio-wrapper">
+          <a href="why.html" class="btn" aria-label="WHY">
+            <span aria-hidden>_</span>WHY
+            <span class="btn__glitch" aria-hidden>_W H Y_</span>
+            <span class="number">01</span>
+          </a>
+        </li>
+        <li class="radio-wrapper">
+          <a href="what.html" class="btn" aria-label="WHAT">
+            <span aria-hidden>_</span>WHAT
+            <span class="btn__glitch" aria-hidden>_W H A T_</span>
+            <span class="number">02</span>
+          </a>
+        </li>
+        <li class="radio-wrapper">
+          <a href="how.html" class="btn" aria-label="HOW">
+            <span aria-hidden>_</span>HOW
+            <span class="btn__glitch" aria-hidden>_H O W_</span>
+            <span class="number">03</span>
+          </a>
+        </li>
+        <li class="radio-wrapper">
+          <a href="when.html" class="btn" aria-label="WHEN">
+            <span aria-hidden>_</span>WHEN
+            <span class="btn__glitch" aria-hidden>_W H E N_</span>
+            <span class="number">04</span>
+          </a>
+        </li>
+        <li class="radio-wrapper">
+          <a href="who.html" class="btn" aria-label="WHO">
+            <span aria-hidden>_</span>WHO
+            <span class="btn__glitch" aria-hidden>_W H O_</span>
+            <span class="number">05</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </footer>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  /* =========================
+     LIGHTBOX FEATURE
+     ========================= */
   const trigger  = document.querySelector('[data-lightbox="feature-gallery"]');
   const lightbox = document.querySelector('[data-lightbox-root]');
-  if (!trigger || !lightbox) return;
 
-  const img          = lightbox.querySelector('.lightbox-image');
-  const captionEl    = lightbox.querySelector('.lightbox-caption');
-  const prevBtn      = lightbox.querySelector('.lightbox-prev');
-  const nextBtn      = lightbox.querySelector('.lightbox-next');
-  const hitLeft  = lightbox.querySelector('.lightbox-hit--left');
-  const hitRight = lightbox.querySelector('.lightbox-hit--right');
+  if (trigger && lightbox) {
+    const img       = lightbox.querySelector('.lightbox-image');
+    const captionEl = lightbox.querySelector('.lightbox-caption');
+    const prevBtn   = lightbox.querySelector('.lightbox-prev');
+    const nextBtn   = lightbox.querySelector('.lightbox-next');
+    const hitLeft   = lightbox.querySelector('.lightbox-hit--left');
+    const hitRight  = lightbox.querySelector('.lightbox-hit--right');
 
-  // ---- CONSTRUCTION DE LA LISTE D’IMAGES ----
-  const items = [];
+    const items = [];
 
-  // 1) Moodboard (image principale du slot)
-  items.push({
-    src: trigger.getAttribute('src'),
-    caption: trigger.dataset.caption || ''
-  });
-
-  // 2) Autres images cachées dans .feature-gallery-hidden
-  document.querySelectorAll('[data-lightbox-item]').forEach(el => {
+    // 1) Moodboard
     items.push({
-      src: el.getAttribute('src'),
-      caption: el.dataset.caption || ''
+      src: trigger.getAttribute('src'),
+      caption: trigger.dataset.caption || ''
     });
-  });
 
-  let currentIndex = 0;
-
-  // ---- ÉTAT ZOOM / PAN (uniquement pour l’index 0 : moodboard) ----
-  let scale       = 1;
-  const zoomLevel = 2;      // niveau de zoom unique
-  let panX        = 0;
-  let panY        = 0;
-
-  let isDragging   = false;
-  let didDrag      = false;
-  let startMouseX  = 0;
-  let startMouseY  = 0;
-  let startPanX    = 0;
-  let startPanY    = 0;
-  const DRAG_THRESHOLD = 4; // px
-
-  // désactiver le drag natif
-  img.addEventListener('dragstart', (e) => e.preventDefault());
-
-  function applyTransform() {
-    img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-
-    if (scale === 1) {
-      img.classList.add('is-not-zoomed');
-    } else {
-      img.classList.remove('is-not-zoomed');
-    }
-  }
-
-  function resetTransform() {
-    scale = 1;
-    panX  = 0;
-    panY  = 0;
-    applyTransform();
-  }
-
-  function showImage(index) {
-    if (!items.length) return;
-
-    // boucle (0 → n-1)
-    if (index < 0) {
-      index = items.length - 1;
-    } else if (index >= items.length) {
-      index = 0;
-    }
-    currentIndex = index;
-
-    const item = items[currentIndex];
-    img.setAttribute('src', item.src);
-    captionEl.innerHTML = item.caption || '';
-
-    // on reset toujours la transform quand on change d’image
-    resetTransform();
-
-    // zoom / drag UNIQUEMENT pour la première image (moodboard)
-    if (currentIndex !== 0) {
-      img.classList.add('is-not-zoomed');
-    }
-  }
-
-  function openLightbox(startIndex = 0) {
-    showImage(startIndex);
-    lightbox.classList.add('is-open');
-    document.body.classList.add('has-lightbox-open');
-  }
-
-  function closeLightbox() {
-    lightbox.classList.remove('is-open');
-    document.body.classList.remove('has-lightbox-open');
-  }
-
-  // ---- OUVERTURE VIA L’IMAGE PRINCIPALE ----
-  trigger.addEventListener('click', (e) => {
-    e.preventDefault();
-    openLightbox(0);   // moodboard en premier
-  });
-
-  // clic sur le fond (en dehors de la figure) => fermer
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) {
-      closeLightbox();
-    }
-  });
-
-  // ---- NAVIGATION BOUTONS ----
-  if (prevBtn) {
-    prevBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      showImage(currentIndex - 1);
+    // 2) Autres images
+    document.querySelectorAll('[data-lightbox-item]').forEach(el => {
+      items.push({
+        src: el.getAttribute('src'),
+        caption: el.dataset.caption || ''
+      });
     });
-  }
 
-  if (nextBtn) {
-    nextBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      showImage(currentIndex + 1);
+    let currentIndex = 0;
+
+    // Zoom / pan seulement pour l’index 0
+    let scale       = 1;
+    const zoomLevel = 2;
+    let panX        = 0;
+    let panY        = 0;
+
+    let isDragging   = false;
+    let didDrag      = false;
+    let startMouseX  = 0;
+    let startMouseY  = 0;
+    let startPanX    = 0;
+    let startPanY    = 0;
+    const DRAG_THRESHOLD = 4;
+
+    img.addEventListener('dragstart', (e) => e.preventDefault());
+
+    function applyTransform() {
+      img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+
+      if (scale === 1) {
+        img.classList.add('is-not-zoomed');
+      } else {
+        img.classList.remove('is-not-zoomed');
+      }
+    }
+
+    function resetTransform() {
+      scale = 1;
+      panX  = 0;
+      panY  = 0;
+      applyTransform();
+    }
+
+    function showImage(index) {
+      if (!items.length) return;
+
+      if (index < 0) {
+        index = items.length - 1;
+      } else if (index >= items.length) {
+        index = 0;
+      }
+      currentIndex = index;
+
+      const item = items[currentIndex];
+      img.setAttribute('src', item.src);
+      captionEl.innerHTML = item.caption || '';
+
+      resetTransform();
+
+      if (currentIndex !== 0) {
+        img.classList.add('is-not-zoomed');
+      }
+    }
+
+    function openLightbox(startIndex = 0) {
+      showImage(startIndex);
+      lightbox.classList.add('is-open');
+      document.body.classList.add('has-lightbox-open');
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      document.body.classList.remove('has-lightbox-open');
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      openLightbox(0);
     });
-  }
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showImage(currentIndex - 1);
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showImage(currentIndex + 1);
+      });
+    }
 
     if (hitLeft) {
-    hitLeft.addEventListener('click', (e) => {
-      e.stopPropagation();           // évite de fermer la lightbox
-      showImage(currentIndex - 1);   // image précédente
-    });
-  }
+      hitLeft.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showImage(currentIndex - 1);
+      });
+    }
 
-  if (hitRight) {
-    hitRight.addEventListener('click', (e) => {
+    if (hitRight) {
+      hitRight.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showImage(currentIndex + 1);
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+
+      if (e.key === 'Escape') {
+        closeLightbox();
+      } else if (e.key === 'ArrowRight') {
+        showImage(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft') {
+        showImage(currentIndex - 1);
+      }
+    });
+
+    img.addEventListener('click', (e) => {
       e.stopPropagation();
-      showImage(currentIndex + 1);   // image suivante
+
+      if (didDrag) {
+        didDrag = false;
+        return;
+      }
+
+      if (currentIndex !== 0) return;
+
+      if (scale === 1) {
+        scale = zoomLevel;
+      } else {
+        resetTransform();
+        return;
+      }
+
+      applyTransform();
     });
+
+    img.addEventListener('mousedown', (e) => {
+      if (currentIndex !== 0) return;
+      if (scale === 1) return;
+
+      isDragging  = true;
+      didDrag     = false;
+      lightbox.classList.add('is-dragging');
+
+      startMouseX = e.clientX;
+      startMouseY = e.clientY;
+      startPanX   = panX;
+      startPanY   = panY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      const dx = e.clientX - startMouseX;
+      const dy = e.clientY - startMouseY;
+
+      if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
+        didDrag = true;
+      }
+
+      panX = startPanX + dx;
+      panY = startPanY + dy;
+
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      lightbox.classList.remove('is-dragging');
+    });
+
+    lightbox.addEventListener('wheel', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (currentIndex !== 0) return;
+      if (scale === 1) return;
+
+      e.preventDefault();
+
+      panX -= e.deltaX;
+      panY -= e.deltaY;
+
+      applyTransform();
+    }, { passive: false });
   }
 
-  // ---- NAVIGATION CLAVIER ----
-  document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('is-open')) return;
-
-    if (e.key === 'Escape') {
-      closeLightbox();
-    } else if (e.key === 'ArrowRight') {
-      showImage(currentIndex + 1);
-    } else if (e.key === 'ArrowLeft') {
-      showImage(currentIndex - 1);
-    }
-  });
-
-  // ---- CLICK POUR TOGGLER ZOOM (seulement moodboard) ----
-  img.addEventListener('click', (e) => {
-    e.stopPropagation();
-
-    // si on vient de drag, on ignore ce clic
-    if (didDrag) {
-      didDrag = false;
-      return;
-    }
-
-    // zoom ONLY sur la première image
-    if (currentIndex !== 0) return;
-
-    if (scale === 1) {
-      scale = zoomLevel;   // zoom in
-    } else {
-      resetTransform();    // retour à 1
-      return;
-    }
-
-    applyTransform();
-  });
-
-  // ---- DRAG / PAN À LA SOURIS (uniquement quand zoomé et sur moodboard) ----
-  img.addEventListener('mousedown', (e) => {
-    if (currentIndex !== 0) return; // pas de drag sur les autres images
-    if (scale === 1) return;        // pas de drag si pas zoomé
-
-    isDragging  = true;
-    didDrag     = false;
-    lightbox.classList.add('is-dragging');
-
-    startMouseX = e.clientX;
-    startMouseY = e.clientY;
-    startPanX   = panX;
-    startPanY   = panY;
-  });
-
-  window.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-
-    const dx = e.clientX - startMouseX;
-    const dy = e.clientY - startMouseY;
-
-    if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-      didDrag = true;
-    }
-
-    panX = startPanX + dx;
-    panY = startPanY + dy;
-
-    applyTransform();
-  });
-
-  window.addEventListener('mouseup', () => {
-    if (!isDragging) return;
-    isDragging = false;
-    lightbox.classList.remove('is-dragging');
-  });
-
-  // ---- PAN AVEC LA MOLETTE / TRACKPAD (seulement si zoomé et moodboard) ----
-  lightbox.addEventListener('wheel', (e) => {
-    if (!lightbox.classList.contains('is-open')) return;
-    if (currentIndex !== 0) return;
-    if (scale === 1) return;
-
-    e.preventDefault(); // ne pas scroller la page
-
-    panX -= e.deltaX;
-    panY -= e.deltaY;
-
-    applyTransform();
-  }, { passive: false });
+  /* =========================
+     FOOTER COORDS (DATE)
+     ========================= */
+  const coordsEl = document.getElementById("footer-coords");
+  if (coordsEl) {
+    const today = new Date();
+    const options = {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    };
+    const formatted = today.toLocaleDateString("en-US", options);
+    coordsEl.textContent = `NOW — Dakar — ${formatted}`;
+  }
 });
 
-  function openPlayer(url) {
-    window.open(
-      url,
-      "mgo_player",
-      "width=500,height=500,menubar=no,toolbar=no,location=no,status=no"
-    );
-  }
 </script>
-
 
 </body>
 </html>
