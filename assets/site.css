@@ -1,6 +1,21 @@
 /* =========================
    VARIABLES (root)
    ========================= */
+
+@font-face {
+  font-family: "Knewave";
+  src: url("fonts/knewave.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Knewave Outline";
+  src: url("fonts/knewave-outline.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root{
   --rail: 200px;
   --header: 70px;
@@ -449,13 +464,16 @@ body.has-lightbox-open {
   overflow: hidden;
 }
 
-/* Zones de clic gauche / droite sur toute la hauteur */
+/* Zones de clic gauche / droite sur une bande centrale, avec un espace neutre au milieu */
 .lightbox-hit {
   position: absolute;
   top: 25vh;
   height: 50vh;
-  width: 50vw;         /* moitié d'écran */
-  z-index: 3500;       /* au-dessus de l'image, sous le bouton close */
+
+  /* au lieu de 50vw */
+  width: 35vw;          /* zone cliquable plus étroite */
+
+  z-index: 3500;        /* au-dessus de l'image, sous le bouton close */
 }
 
 /* Zone gauche : curseur w-resize */
@@ -1205,27 +1223,393 @@ body.has-lightbox-open {
 }
 
 /* =========================
-   PAGE RADIO
+   RADIO PAGE — BASE
    ========================= */
 
-.radio-logo-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: var(--rail);
-  bottom: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none; /* optionnel : le logo n'intercepte pas les clics */
+body.radio-page {
+  background: #ffffff;
+  color: #000000;
 }
 
-.radio-logo {
-  width: 40vw;
-  max-width: 550px;
-  height: auto;
+/* Décale le contenu sous le header fixe
+   (header initial ≈ 50vh) */
+body.radio-page main {
+  padding-top: 50vh;
+}
+
+/* =========================
+   RADIO HEADER — PROGRESSIVE SHRINK
+   ========================= */
+
+.radio-header {
+  background: #000000;
+  color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  /* hauteur initiale = 50% de la fenêtre (ajustée par JS) */
+  height: 50vh;
+  overflow: hidden; /* le logo ne déborde jamais */
+}
+
+/* Conteneur interne : prend 100% de la hauteur du header */
+.radio-header-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;  /* player + chat à droite */
+  height: 100%;
+  padding: 24px 32px;
+}
+
+/* LOGO : centré, et prend 100% de la hauteur du header */
+.header-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;                      /* = hauteur du header */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-logo-img {
+  height: 100%;                      /* suit la hauteur du header */
+  width: auto;
   display: block;
+}
+
+/* =========================
+   PLAYER (HEADER)
+   ========================= */
+
+/* Box PLAYER, masquée par défaut */
+.header-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 10px;
+  min-width: 140px;
+  height: 40px;
+
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  opacity: 0;              /* caché tant que header non compact */
+  pointer-events: none;    /* non cliquable tant que caché */
+  transition: opacity 0.25s ease;
+
+  /* → prend maintenant toute la place ancien player + gap + chat */
+  margin-right: 0;
+  min-width: 460px;        /* 320 + 20 + 120 */
+  width: 460px;            /* largeur fixe pour éviter les sauts */
+  padding-left: 12px;
+}
+
+/* Quand un audio a été lancé : contenu aligné à gauche */
+.header-player.has-audio {
+  justify-content: flex-start;
+}
+
+/* Affichage quand le header est compact */
+.radio-header.header-compact .header-player {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* On cache l'UI native de l'audio */
+#radio-header-player {
+  display: none;
+}
+
+/* Symbole PLAY/PAUSE (gros) à gauche */
+.header-player-icon {
+  font-size: 26px;         /* augmente si tu veux encore plus gros */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;             /* réserve un bloc fixe pour l’icône */
+  flex-shrink: 0;
+  margin-right: 12px;      /* espace entre l’icône et le texte */
+  cursor: pointer;
+}
+
+/* Texte NOW PLAYING (au centre, prend l'espace) */
+.header-player-title {
+  font-size: 11px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  margin-right: 8px;
+}
+
+/* Timer aligné à droite de la box */
+.header-player-time {
+  font-size: 11px;
+  line-height: 1.3;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.player-skip-btn {
+  border: none;
+  background: transparent;
+  color: #ffffff;
+
+  font-size: 18px;     /* un peu plus fin que 20, plus élégant pour ⟲ ⟳ */
+  line-height: 1;
+  padding: 0 2px;      /* boutons plus proches */
+  margin: 0 2px;       /* ← RAPPROCHEMENT ici */
+
+  cursor: pointer;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.25s ease, transform 0.15s ease;
+}
+
+/* visibles seulement quand header compact + audio chargé */
+.radio-header.header-compact .header-player.has-audio .player-skip-btn {
+  opacity: 1;              /* bien blanc, pas gris */
+  pointer-events: auto;
+}
+
+.player-skip-btn:hover {
+  transform: scale(1.1);   /* léger hover, sans changer l’opacité */
+}
+
+.player-skip-btn:active {
+  transform: scale(0.9);
+}
+
+/* =========================
+   RADIO - MAIN CONTENT
+   ========================= */
+
+.main-content {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.main-feature-box {
+  width: 100%;
+  height: 360px;
+  border: 1px solid #000000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.main-feature-box {
+  position: relative;
+  overflow: hidden; /* évite tout débordement */
+}
+
+.main-feature-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* remplit tout le cadre sans distorsion */
+  object-position: center 40%;
+  display: block;
+}
+
+.main-feature-text {
+  position: absolute;
+  top: 32px;           /* léger décalage vers le bas → padding haut */
+  left: 32px;          /* padding à gauche pour ne pas coller la bordure */
+  max-width: 45%;      /* largeur limitée → belles lignes courtes */
+
+  margin: 0;
+
+  font-size: 42px;     /* assez gros, tu peux passer à 20/24 selon ton œil */
+  font-weight: 400;    /* normal pour commencer */
+  line-height: 1.6;    /* espacement de lignes "plutôt haut" */
+  color: #000000;      /* noir comme demandé */
+  text-transform: none;/* pour désactiver l’uppercase de la box si héritée */
+  font-family: "Knewave", sans-serif;
+  color: #000;
+  text-shadow:
+    0 -1px 0 rgba(255,255,255,0.6),
+    0  1px 0 rgba(0,0,0,0.25);
+}
+
+
+/* =========================
+   RADIO - ARCHIVE SECTION
+   ========================= */
+
+.archive-section {
+  max-width: 1000px;
+  margin: 60px auto 80px;
+  padding: 0 20px;
+}
+
+.archive-header {
+  position: relative;
+  margin-bottom: 32px;
+  height: 40px;
+}
+
+.archive-header-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 1px;
+  background: #000000;
+}
+
+.archive-filters {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.filter-pill {
+  padding: 4px 8px;
+  border: 1px solid #000000;
+  background: #ffffff;
+}
+
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Chaque item reste un carré strict */
+.audio-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 1px solid #000000;
+  overflow: hidden;
+  background: #000000;
+}
+
+/* Le lien occupe tout le carré */
+.audio-item-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Image plein cadre */
+.audio-thumb {
+  position: absolute;
+  inset: 0;                  /* top:0 right:0 bottom:0 left:0 */
+}
+
+.audio-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Bandeau titre — état normal */
+.audio-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+
+  padding: 6px 8px;           /* même padding tout le temps */
+  font-size: 11px;
+  text-transform: uppercase;
+  line-height: 1.2;
+  box-sizing: border-box;
+
+  /* Hauteur initiale (bandeau fin) */
+  height: 16%;                /* ajuste à 12–18% selon ton goût */
+  min-height: 28px;           /* sécurité */
+  
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;    /* texte toujours en haut du bandeau */
+  justify-content: flex-start;
+
+  /* On n'anime QUE la hauteur → transition propre */
+  transition: height 0.6s ease-out;
+}
+
+/* État hover : le bandeau s'étend */
+.audio-item:hover .audio-title {
+  height: 40%;                /* taille finale du bandeau */
+}
+
+/* Icône play au centre */
+.audio-item::after {
+  content: "▶";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+  color: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.audio-item:hover::after {
+  opacity: 0.7;
+}
+
+.filter-pill {
+  padding: 4px 8px;
+  border: 1px solid #000000;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.filter-pill.is-active {
+  background: #000000;
+  color: #ffffff;
+}
+
+.audio-item.is-hidden {
+  display: none;
+}
+
+.audio-type {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+
+  font-size: 10px;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.audio-item:hover .audio-type {
+  opacity: 1;
 }
 
 /* =========================
@@ -1331,34 +1715,189 @@ body.has-lightbox-open {
 
 
 
-
 /* =========================
-   PAGE WHO
+   PAGE ABOUT — LAYOUT
    ========================= */
 
-.who-section {
-  grid-column: 1 / span 12;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  align-items: start;
-  margin-top: 50px;
-  /* supprime le gap pour coller le texte à l’image */
+.about-page {
+  padding-top: var(--header);
 }
 
-/* Conteneur des images superposées */
-.who-image-stack {
-  grid-column: 1 / span 5;
-  grid-row: 1;
+.about-layout {
   position: relative;
-  margin-left: -100px; /* pour recoller à gauche */
-  margin-top: 40px;
+  max-width: 1300px;
+  margin: 40px auto 0 auto;
+
+  padding: 0 40px;
+  padding-right: 360px;
+  display: block;
+}
+
+/* Colonne gauche : bloc texte large, stable */
+.about-text-box {
+  background: #080808;
+  border: 1px solid #444;
+
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--header) - 80px); /* remplit bien la hauteur */
+}
+
+/* Conteneur interne pour les panneaux */
+.about-text-inner {
+  position: relative;
+  flex: 1 1 auto;
+}
+
+/* Panneaux superposés */
+.about-panel {
+  position: absolute;
+  inset: 0;
+  padding: 24px;
+
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.about-panel.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.about-panel h1 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  margin: 0 0 20px 0;
+}
+
+.about-panel p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+/* =========================
+   ABOUT — NAV GLITCH VERTICAL
+   ========================= */
+
+/* Sidebar fixe à droite, sous le header, avec marge en bas */
+.about-sidebar {
+  position: fixed;
+  top: calc(var(--header) + 24px);             /* un peu sous le header */
+  right: 40px;                                 /* même padding que le layout */
+  width: 260px;
+  max-width: 260px;
+  height: calc(100vh - var(--header) - 24px - 40px); /* espace en bas */
+  display: flex;
+}
+
+/* On réutilise btn-nav, mais pleine hauteur */
+.about-sidebar .btn-nav {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.about-sidebar .btn-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;  /* ← important */
+  gap: 48px;                    /* tu ajustes ici maintenant */
+  width: 100%;
+  height: auto;                 /* ← pour que le contenu décide de la hauteur */
+}
+
+/* Chaque wrapper : largeur pleine, hauteur fixe */
+.about-sidebar .radio-wrapper {
+  position: relative;
+  width: 100%;
+  height: 80px;
+}
+
+/* Bouton glitch adapté à la hauteur verticale */
+.about-sidebar .btn-nav .btn {
+  --font-size: 11px;
+  line-height: 80px;
+}
+
+/* Bouton actif : variation visuelle */
+.about-sidebar .radio-wrapper.is-active .btn {
+  --primary: #fff;
+  --shadow-primary: #000;
+  --color: #000;
+}
+
+/* =========================
+   ABOUT — RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+  .about-page {
+    padding-top: var(--header);
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .about-layout {
+    padding: 0;
+    margin: 20px auto 60px;
+    min-height: auto;
+  }
+
+  /* Sidebar redevient normale, sous le texte */
+  .about-sidebar {
+    position: static;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    margin-top: 24px;
+  }
+
+  .about-sidebar .btn-nav {
+    height: auto;
+  }
+
+  .about-sidebar .btn-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 18px;
+  }
+
+  .about-sidebar .radio-wrapper {
+    width: 48%;
+    height: 70px;
+  }
+
+  .about-sidebar .btn-nav .btn {
+    line-height: 70px;
+  }
+
+  .about-text-inner {
+    padding: 16px;
+  }
+}
+
+.who-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.who-image-stack {
+  flex: 0 0 40%;
+  position: relative;
   aspect-ratio: 3 / 4;
   overflow: hidden;
   cursor: pointer;
-  width: 80%;
 }
 
-/* Chaque image de la stack */
 .who-image-stack .who-image {
   position: absolute;
   inset: 0;
@@ -1370,50 +1909,86 @@ body.has-lightbox-open {
   transition: opacity 0.35s ease;
 }
 
-/* Image actuellement visible */
 .who-image-stack .who-image.is-active {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Texte collé à l’image */
 .who-text {
-  grid-column: 6 / span 6; /* commence dès la colonne 6 */
-  grid-row: 1;
-  color: #e9ecff;
-  line-height: 1.6;
-  font-size: 1rem;
-  margin-top: 40px;
-  margin-left: -100px;
-}
-
-.who-text h1 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 400; /* gras */
-  font-size: 2rem;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
+  flex: 1;
 }
 
 /* =========================
-   PAGE WHEN
+   WHY — CLICKABLE IMAGE
    ========================= */
-.when-section {
-  grid-column: 1 / span 12;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 80vh; /* prend toute la hauteur de la fenêtre */
-  padding: 0;
-  margin: 0;
-  background-color: #000; /* fond noir */
-  overflow: hidden;
-  margin-top: 50px;
+
+.why-image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.when-gif {
-  width: auto;
-  height: 50vh;
-  object-fit: contain;
+/* =========================
+   WHO — ACCORDION
+   ========================= */
+
+.accordion-item {
+  border: none;
+  background: transparent;
+}
+
+.accordion-toggle {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 6px 0;
+  margin: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: #ffffff;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accordion-icon {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+/* Panels cachés par défaut */
+.accordion-panel {
+  display: none;
+}
+
+/* Affichés uniquement si .is-open est ajoutée par le JS */
+.accordion-panel.is-open {
+  display: block;
+  margin-top: 8px;
+}
+
+.accordion-panel p {
+  margin: 0 0 10px 0;
+  font-size: 0.85rem;
+}
+
+.accordion-item + .accordion-item {
+  margin-top: 16px;
+}
+
+.what-image-wrapper {
+  width: 100%;
+  height: 100%;      /* prend toute la hauteur de la box */
+  display: flex;     /* évite les déformations */
+}
+
+.what-image {
+  width: 100%;
+  height: 100%;      /* remplissage vertical + horizontal */
+  object-fit: cover; /* découpe pour remplir sans distorsion */
   display: block;
 }
+

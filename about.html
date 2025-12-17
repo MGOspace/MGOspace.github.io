@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ABOUT — MGO_radio</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+
+<body>
+
+  <!-- Header global du site (déjà stylé par .site-header dans ton CSS) -->
+  <header class="site-header">
+  </header>
+
+  <!-- Contenu principal spécifique à ABOUT -->
+  <main class="about-page">
+    <section class="about-layout">
+
+      <!-- ZONE TEXTE À GAUCHE -->
+      <div class="about-text-box">
+        <div class="about-text-inner">
+
+          <!-- PANEL "ABOUT" (texte d’intro par défaut) -->
+          <div class="about-panel is-active" data-about-panel="about">
+            <h1>MGO space</h1>
+            <p>
+              This is a website. <br>
+              This is an archive. <br>
+              This is a multimedia space. <br>
+              This is an experiment. <br>
+              This is living. <br>
+              This is art. <br>
+              This is a tool. <br>
+              This is a home. <br>
+              This is a playground. <br>
+              This is an individuating being. <br>
+              This is a structure. <br>
+              This is an architecture. <br>
+              This is
+            </p>
+          </div>
+
+          <!-- PANEL "WHY" -->
+          <div class="about-panel" data-about-panel="why">
+            <a href="https://waitbutwhy.com/" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="why-image-link">
+               
+              <div class="what-image-wrapper">
+                <img src="assets/IMG_4356.JPG" alt="WHY image" class="what-image">
+              </div>
+
+            </a>
+          </div>
+
+          <!-- PANEL "WHAT" -->
+          <div class="about-panel" data-about-panel="what">
+            <div class="what-image-wrapper">
+              <img src="assets/IMG_4162.JPG" alt="WHAT image" class="what-image">
+            </div>
+          </div>
+
+          <!-- PANEL "HOW" -->
+          <div class="about-panel" data-about-panel="how">
+            <h1>HOW</h1>
+            <p>
+              Coming soon...
+            </p>
+          </div>
+
+          <!-- PANEL "WHEN" -->
+          <div class="about-panel" data-about-panel="when">
+            <h1>WHEN</h1>
+            <p>
+              What time is it? 
+            </p>
+          </div>
+
+          <!-- PANEL "WHO" : bio / research / current research + IMAGE STACK -->
+          <div class="about-panel" data-about-panel="who">
+            <div class="who-section">
+              <!-- Stack d'images à gauche -->
+              <div class="who-image-stack" data-who-gallery>
+                <img src="assets/pp03.png"   alt="Portrait 1" class="who-image is-active">
+                <img src="assets/ppdot2.png" alt="Portrait 2" class="who-image">
+                <img src="assets/ppdot.png"  alt="Portrait 3" class="who-image">
+              </div>
+
+              <!-- Texte + accordion à droite -->
+              <div class="who-text">
+                <h1>MGO</h1>
+
+                <div class="accordion-item">
+                  <button class="accordion-toggle" type="button">
+                    <span>Academic background</span>
+                    <span class="accordion-icon">+</span>
+                  </button>
+
+                  <div class="accordion-panel">
+                    <p>
+                      Political science <br>
+                      Philosophy <br>
+                      International relations <br>
+                      Theory of organisations
+                    </p>
+
+                    <p>
+                      Philosophy of science and logic
+                    </p>
+
+                    <p>
+                      Media Theory <br>
+                      Media Philosophy <br>
+                      Philosophy of technology
+                    </p>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <button class="accordion-toggle" type="button">
+                    <span>Research interests</span>
+                    <span class="accordion-icon">+</span>
+                  </button>
+
+                  <div class="accordion-panel">
+                    <p>
+                      Post-phenomenology<br>
+                      Media Ecology<br>
+                      Algorithmic Media Theory<br>
+                      Affective and Sensory Media Theory<br>
+                      Ecological and Environmental Media Theory<br>
+                      Decolonial Media Theory<br>
+                      German Media Theory<br>
+                      Ontology of Technology<br>
+                      Postmodern Media Theory<br>
+                      Elemental Media<br>
+                      Psychedelic media<br>
+                      Rhythmanalysis
+                    </p>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <button class="accordion-toggle" type="button">
+                    <span>Current research</span>
+                    <span class="accordion-icon">+</span>
+                  </button>
+
+                  <div class="accordion-panel">
+                    <p>
+                      Rhythm & individuation
+                    </p>
+                  </div>
+                </div>
+              </div> <!-- /who-text -->
+            </div> <!-- /who-section -->
+          </div> <!-- /about-panel WHO -->
+
+        </div>
+      </div>
+
+      <!-- BANDEAU NAV VERTICAL À DROITE (GLITCH BUTTONS) -->
+      <aside class="about-sidebar">
+        <nav class="btn-nav about-nav" aria-label="About navigation">
+          <ul class="btn-list">
+            <li class="radio-wrapper">
+              <a href="#about"
+                 class="btn about-nav-btn is-active"
+                 data-about-target="about">
+                <span aria-hidden>_</span>ABOUT
+                <span class="btn__glitch" aria-hidden>_A B O U T_</span>
+                <span class="number">01</span>
+              </a>
+            </li>
+
+            <li class="radio-wrapper">
+              <a href="#why"
+                 class="btn about-nav-btn"
+                 data-about-target="why">
+                <span aria-hidden>_</span>WHY
+                <span class="btn__glitch" aria-hidden>_W H Y_</span>
+                <span class="number">02</span>
+              </a>
+            </li>
+
+            <li class="radio-wrapper">
+              <a href="#what"
+                 class="btn about-nav-btn"
+                 data-about-target="what">
+                <span aria-hidden>_</span>WHAT
+                <span class="btn__glitch" aria-hidden>_W H A T_</span>
+                <span class="number">03</span>
+              </a>
+            </li>
+
+            <li class="radio-wrapper">
+              <a href="#how"
+                 class="btn about-nav-btn"
+                 data-about-target="how">
+                <span aria-hidden>_</span>HOW
+                <span class="btn__glitch" aria-hidden>_H O W_</span>
+                <span class="number">04</span>
+              </a>
+            </li>
+
+            <li class="radio-wrapper">
+              <a href="#who"
+                 class="btn about-nav-btn"
+                 data-about-target="who">
+                <span aria-hidden>_</span>WHO
+                <span class="btn__glitch" aria-hidden>_W H O_</span>
+                <span class="number">05</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      /* ========== NAV ABOUT (boutons glitch à droite → panneaux texte) ========== */
+      const navButtons = document.querySelectorAll('.about-nav-btn');
+      const radioWrappers = document.querySelectorAll('.about-sidebar .radio-wrapper');
+      const panels = document.querySelectorAll('[data-about-panel]');
+
+      if (navButtons.length && panels.length) {
+        navButtons.forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const target = btn.getAttribute('data-about-target');
+
+            // Active state sur les boutons + wrappers
+            navButtons.forEach(b => b.classList.remove('is-active'));
+            radioWrappers.forEach(w => w.classList.remove('is-active'));
+
+            btn.classList.add('is-active');
+            const wrapper = btn.closest('.radio-wrapper');
+            if (wrapper) wrapper.classList.add('is-active');
+
+            // Affiche uniquement le panneau correspondant
+            panels.forEach(panel => {
+              if (panel.getAttribute('data-about-panel') === target) {
+                panel.classList.add('is-active');
+              } else {
+                panel.classList.remove('is-active');
+              }
+            });
+          });
+        });
+      }
+
+      /* ========== WHO — IMAGE STACK ========== */
+      const stack = document.querySelector('[data-who-gallery]');
+      if (stack) {
+        let images = Array.from(stack.querySelectorAll('.who-image'));
+        if (images.length > 1) {
+          // Mélange l'ordre des images
+          for (let i = images.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [images[i], images[j]] = [images[j], images[i]];
+          }
+
+          // Vide le conteneur et réinsère dans le nouvel ordre
+          stack.innerHTML = '';
+          images.forEach(img => stack.appendChild(img));
+
+          // Première image active
+          images.forEach(img => img.classList.remove('is-active'));
+          images[0].classList.add('is-active');
+
+          // Clic pour faire défiler
+          let index = 0;
+          stack.addEventListener('click', function () {
+            images[index].classList.remove('is-active');
+            index = (index + 1) % images.length;
+            images[index].classList.add('is-active');
+          });
+        }
+      }
+
+      /* ========== ACCORDION (WHO panel) ========== */
+      document.querySelectorAll('.accordion-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const panel = btn.nextElementSibling;
+          const icon = btn.querySelector('.accordion-icon');
+          const isOpen = panel.classList.contains('is-open');
+
+          if (isOpen) {
+            panel.classList.remove('is-open');
+            icon.textContent = '+';
+          } else {
+            panel.classList.add('is-open');
+            icon.textContent = '–';
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
