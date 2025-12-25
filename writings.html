@@ -126,10 +126,10 @@
                   <div class="book__spine"></div>
                   <div class="book__front">
                     <span class="book__title writing-card-title">
-                      Titre University — PDF 1
+                      
                     </span>
                     <span class="book__author writing-card-meta">
-                      Auteur — Année
+                      
                     </span>
                   </div>
                 </div>
@@ -146,10 +146,10 @@
                   <div class="book__spine"></div>
                   <div class="book__front">
                     <span class="book__title writing-card-title">
-                      Titre University — PDF 2
+                      
                     </span>
                     <span class="book__author writing-card-meta">
-                      Auteur — Année
+                      
                     </span>
                   </div>
                 </div>
@@ -166,10 +166,10 @@
                   <div class="book__spine"></div>
                   <div class="book__front">
                     <span class="book__title writing-card-title">
-                      Titre University — PDF 3
+                      
                     </span>
                     <span class="book__author writing-card-meta">
-                      Auteur — Année
+                      
                     </span>
                   </div>
                 </div>
@@ -189,10 +189,10 @@
                   <div class="book__spine"></div>
                   <div class="book__front">
                     <span class="book__title writing-card-title">
-                      Other — PDF 1
+                      
                     </span>
                     <span class="book__author writing-card-meta">
-                      Auteur — Année
+                      
                     </span>
                   </div>
                 </div>
@@ -209,10 +209,10 @@
                   <div class="book__spine"></div>
                   <div class="book__front">
                     <span class="book__title writing-card-title">
-                      Other — PDF 2
+                      
                     </span>
                     <span class="book__author writing-card-meta">
-                      Auteur — Année
+                      
                     </span>
                   </div>
                 </div>
@@ -229,10 +229,10 @@
                   <div class="book__spine"></div>
                   <div class="book__front">
                     <span class="book__title writing-card-title">
-                      Other — PDF 3
+                      
                     </span>
                     <span class="book__author writing-card-meta">
-                      Auteur — Année
+                      
                     </span>
                   </div>
                 </div>
@@ -259,273 +259,252 @@
     </div>
   </main>
 
-  <script>
-    /* =========================
-       MAPPING ARE.NA
-       ========================= */
+<script>
+/* =========================
+   MAPPING ARE.NA
+   ========================= */
 
-    // Quel sous-dossier pointe vers quel channel Are.na
-    const ARENA_CHANNELS = {
-      "readings-current": "mgo_reading_curr", // slug exact
-      "readings-library": "mgo_reading_lib"   // slug exact
-    };
+// Quel sous-dossier pointe vers quel channel Are.na
+const ARENA_CHANNELS = {
+  "readings-current": "mgo_reading_curr", // slug exact
+  "readings-library": "mgo_reading_lib"   // slug exact
+};
 
-    const ARENA_API_BASE = "https://api.are.na/v2/channels/";
-    const DEBUG_ARENA    = false; // passe à true si tu veux voir tous les logs
+const ARENA_API_BASE = "https://api.are.na/v2/channels/";
+const DEBUG_ARENA    = false;
 
-    document.addEventListener("DOMContentLoaded", () => {
+// JSON tags/meta (local)
+let ITEMS_DATA = {};
 
-      /* =========================
-         NAV : toggle branches + changement de liste
-         ========================= */
+document.addEventListener("DOMContentLoaded", async () => {
 
-      document.addEventListener("click", (e) => {
-        // 1) Ouvrir / fermer les branches (Writings / Readings)
-        const branchBtn = e.target.closest(".js-toggle-branch");
-        if (branchBtn) {
-          const branch = document.getElementById(branchBtn.dataset.target);
-          if (!branch) return;
-          const item = branchBtn.closest(".tree-item");
-          if (item) item.classList.toggle("is-open");
-        }
+  /* =========================
+     0) Load items.json (pour tags des books)
+     ========================= */
+  try {
+    const r = await fetch("assets/data/items.json", { cache: "no-store" });
+    if (r.ok) ITEMS_DATA = await r.json();
+  } catch {
+    ITEMS_DATA = {};
+  }
 
-        // 2) Clic sur un sous-item (University, Other, Current, Library)
-        const listBtn = e.target.closest(".js-show-list");
-        if (listBtn) {
-          const targetKey = listBtn.dataset.list;   // ex. "readings-current"
-          const newTitle  = listBtn.dataset.title || "";
+  /* =========================
+     NAV : toggle branches + changement de liste
+     ========================= */
+  document.addEventListener("click", (e) => {
+    // 1) Ouvrir / fermer les branches (Writings / Readings)
+    const branchBtn = e.target.closest(".js-toggle-branch");
+    if (branchBtn) {
+      const branch = document.getElementById(branchBtn.dataset.target);
+      if (!branch) return;
+      const item = branchBtn.closest(".tree-item");
+      if (item) item.classList.toggle("is-open");
+    }
 
-          // Met à jour le titre
-          const titleEl = document.querySelector(".writing-title");
-          if (titleEl) titleEl.textContent = newTitle;
+    // 2) Clic sur un sous-item (University, Other, Current, Library)
+    const listBtn = e.target.closest(".js-show-list");
+    if (listBtn) {
+      const targetKey = listBtn.dataset.list;
+      const newTitle  = listBtn.dataset.title || "";
 
-          // Masque toutes les listes, puis affiche la bonne
-          const lists = document.querySelectorAll(".writing-list");
-          lists.forEach((ul) => ul.classList.remove("is-active"));
+      const titleEl = document.querySelector(".writing-title");
+      if (titleEl) titleEl.textContent = newTitle;
 
-          const activeList = document.querySelector(
-            '.writing-list[data-list-id="' + targetKey + '"]'
-          );
-          if (activeList) {
-            activeList.classList.add("is-active");
+      const lists = document.querySelectorAll(".writing-list");
+      lists.forEach((ul) => ul.classList.remove("is-active"));
 
-            // Si ce sous-dossier correspond à un channel Are.na,
-            // on charge dynamiquement les cards (une seule fois)
-            const slug = ARENA_CHANNELS[targetKey];
-            if (slug && !activeList.dataset.loaded) {
-              loadArenaChannelIntoList(slug, activeList);
-            }
-          }
-        }
-      });
+      const activeList = document.querySelector('.writing-list[data-list-id="' + targetKey + '"]');
+      if (activeList) {
+        activeList.classList.add("is-active");
 
-      /* =========================
-         Tous les liens .writing-link → nouvel onglet
-         (utile surtout pour Writings manuel)
-         ========================= */
-      document.querySelectorAll(".writing-link").forEach((link) => {
-        if (!link.target) {
-          link.target = "_blank";
-          link.rel    = "noopener noreferrer";
-        }
-      });
-
-      /* =========================
-         FONCTION : charger un channel Are.na dans une <ul>
-         ========================= */
-
-      async function loadArenaChannelIntoList(slug, listEl) {
-        if (!slug || !listEl) return;
-
-        let page        = 1;
-        const per       = 40;   // nombre de blocks par page
-        let hasMore     = true;
-        const seenHrefs = new Set();
-        let loadedCount = 0;
-
-        if (DEBUG_ARENA) {
-          console.log("Appel API Are.na pour le channel:", slug);
-        }
-
-        try {
-          while (hasMore) {
-            const url = ARENA_API_BASE + encodeURIComponent(slug) +
-                        "?page=" + page +
-                        "&per=" + per +
-                        "&direction=desc" +
-                        "&cacheBust=" + Date.now();  // anti-cache
-
-            if (DEBUG_ARENA) {
-              console.log("→ fetch:", url);
-            }
-
-            const res = await fetch(url, { cache: "no-store" });
-            if (!res.ok) {
-              console.error("Erreur Are.na", res.status, url);
-              break;
-            }
-
-            const data     = await res.json();
-            const contents = data.contents || [];
-
-            contents.forEach((block) => {
-              const li = createArenaCardFromBlock(block, seenHrefs);
-              if (li) {
-                listEl.appendChild(li);
-                loadedCount++;
-              }
-            });
-
-            hasMore = contents.length === per;
-            page++;
-          }
-
-          // Marque la liste comme déjà chargée pour éviter de re-fetch
-          listEl.dataset.loaded = "1";
-
-          // Aucun block exploitable → message fallback
-          if (loadedCount === 0) {
-            const li  = document.createElement("li");
-            li.innerHTML = `
-              <div class="bookwrapper">
-                <div class="bookwrapper__anchor"></div>
-                <div class="book">
-                  <div class="book__back"></div>
-                  <div class="book__spine"></div>
-                  <div class="book__front">
-                    <span class="book__title writing-card-title">Channel unavailable</span>
-                    <span class="book__author writing-card-meta">No readable blocks found in “${slug}”.</span>
-                  </div>
-                </div>
-              </div>
-            `;
-            listEl.appendChild(li);
-          }
-
-        } catch (err) {
-          console.error("Erreur en chargeant Are.na:", err);
-          const li  = document.createElement("li");
-          li.innerHTML = `
-            <div class="bookwrapper">
-              <div class="bookwrapper__anchor"></div>
-              <div class="book">
-                <div class="book__back"></div>
-                <div class="book__spine"></div>
-                <div class="book__front">
-                  <span class="book__title writing-card-title">Channel error</span>
-                  <span class="book__author writing-card-meta">Unable to load channel “${slug}”.</span>
-                </div>
-              </div>
-            </div>
-          `;
-          listEl.appendChild(li);
+        const slug = ARENA_CHANNELS[targetKey];
+        if (slug && !activeList.dataset.loaded) {
+          loadArenaChannelIntoList(slug, activeList);
         }
       }
+    }
+  });
 
-      /* =========================
-         FONCTION : transformer un block Are.na en book
-         ========================= */
+  /* =========================
+     Tous les liens .writing-link → nouvel onglet
+     ========================= */
+  document.querySelectorAll(".writing-link").forEach((link) => {
+    if (!link.target) {
+      link.target = "_blank";
+      link.rel    = "noopener noreferrer";
+    }
+  });
 
-      function createArenaCardFromBlock(block, seenHrefs) {
-        if (DEBUG_ARENA) {
-          console.log(
-            "[ARENA BLOCK]",
-            "class:", block.class,
-            "title:", block.title,
-            "content_type:", block.attachment?.content_type
-          );
+  /* =========================
+     FONCTION : charger un channel Are.na dans une <ul>
+     ========================= */
+  async function loadArenaChannelIntoList(slug, listEl) {
+    if (!slug || !listEl) return;
+
+    let page = 1;
+    const per = 40;
+    let hasMore = true;
+    const seenHrefs = new Set();
+    let loadedCount = 0;
+
+    if (DEBUG_ARENA) console.log("Are.na channel:", slug);
+
+    try {
+      while (hasMore) {
+        const url =
+          ARENA_API_BASE + encodeURIComponent(slug) +
+          "?page=" + page +
+          "&per=" + per +
+          "&direction=desc" +
+          "&cacheBust=" + Date.now();
+
+        if (DEBUG_ARENA) console.log("→ fetch:", url);
+
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) {
+          console.error("Erreur Are.na", res.status, url);
+          break;
         }
 
-        const title = block.title || "(untitled)";
-        let meta    = "";
+        const data = await res.json();
+        const contents = data.contents || [];
 
-        // Meta : petit label de type
-        if (block.class === "Image") {
-          meta = "Image";
-        }
-        else if (block.class === "Attachment") {
-          const type = block.attachment?.content_type || "";
-          if (type.includes("pdf")) {
-            meta = "PDF";
-          } else if (type.startsWith("application/")) {
-            meta = type.replace("application/", "").toUpperCase();
-          } else {
-            meta = "File";
+        contents.forEach((block) => {
+          const li = createArenaCardFromBlock(block, seenHrefs);
+          if (li) {
+            listEl.appendChild(li);
+            loadedCount++;
           }
-        }
-        else if (block.class === "Link") {
-          meta = "Link";
-        } else {
-          meta = "";
-        }
+        });
 
-        let href = null;
+        hasMore = contents.length === per;
+        page++;
+      }
 
-        // 1) Image → grande image
-        if (block.class === "Image" &&
-            block.image &&
-            block.image.display &&
-            block.image.display.url
-          ) {
-            href = block.image.display.url;
-          }
+      listEl.dataset.loaded = "1";
 
-          // 2) Attachment (PDF, etc.)
-          else if (
-            block.class === "Attachment" &&
-            block.attachment &&
-            block.attachment.url
-          ) {
-            href = block.attachment.url;
-          }
-
-          // 3) Link → URL externe
-          else if (
-            block.class === "Link" &&
-            block.source &&
-            block.source.url
-          ) {
-            href = block.source.url;
-          }
-
-          // 4) Text ou autres → ignorés pour l’instant
-          else {
-            return null;
-          }
-
-          // Pas de doublons si même href déjà vu
-          if (href && seenHrefs.has(href)) {
-            return null;
-          }
-          if (href) {
-            seenHrefs.add(href);
-          }
-
-          const li = document.createElement("li");
-          li.innerHTML = `
-            <a class="writing-link" href="${href}" target="_blank" rel="noopener noreferrer">
-              <div class="bookwrapper">
-                <div class="bookwrapper__anchor"></div>
-                <div class="book">
-                  <div class="book__back"></div>
-                  <div class="book__spine"></div>
-                  <div class="book__front">
-                    <span class="book__title writing-card-title">${title}</span>
-                    ${
-                      meta
-                        ? `<span class="book__author writing-card-meta">${meta}</span>`
-                        : ``
-                    }
-                  </div>
-                </div>
+      if (loadedCount === 0) {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <div class="bookwrapper">
+            <div class="bookwrapper__anchor"></div>
+            <div class="book">
+              <div class="book__back"></div>
+              <div class="book__spine"></div>
+              <div class="book__front">
+                <span class="book__title writing-card-title">Channel unavailable</span>
+                <span class="book__author writing-card-meta">No readable blocks found in “${escapeHtml(slug)}”.</span>
               </div>
-            </a>
-          `;
-          return li;
-        }
+            </div>
+          </div>
+        `;
+        listEl.appendChild(li);
+      }
 
-      });
-    </script>
+    } catch (err) {
+      console.error("Erreur en chargeant Are.na:", err);
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <div class="bookwrapper">
+          <div class="bookwrapper__anchor"></div>
+          <div class="book">
+            <div class="book__back"></div>
+            <div class="book__spine"></div>
+            <div class="book__front">
+              <span class="book__title writing-card-title">Channel error</span>
+              <span class="book__author writing-card-meta">Unable to load channel “${escapeHtml(slug)}”.</span>
+            </div>
+          </div>
+        </div>
+      `;
+      listEl.appendChild(li);
+    }
+  }
+
+  /* =========================
+     FONCTION : transformer un block Are.na en book
+     + Tags depuis items.json (même rendu que partout)
+     ========================= */
+  function createArenaCardFromBlock(block, seenHrefs) {
+    if (DEBUG_ARENA) {
+      console.log("[ARENA BLOCK]", "id:", block.id, "class:", block.class, "title:", block.title);
+    }
+
+    const title = block.title || "(untitled)";
+    let meta = "";
+
+    if (block.class === "Image") meta = "Image";
+    else if (block.class === "Attachment") {
+      const type = block.attachment?.content_type || "";
+      if (type.includes("pdf")) meta = "PDF";
+      else if (type.startsWith("application/")) meta = type.replace("application/", "").toUpperCase();
+      else meta = "File";
+    }
+    else if (block.class === "Link") meta = "Link";
+
+    let href = null;
+    if (block.class === "Image" && block.image?.display?.url) href = block.image.display.url;
+    else if (block.class === "Attachment" && block.attachment?.url) href = block.attachment.url;
+    else if (block.class === "Link" && block.source?.url) href = block.source.url;
+    else return null;
+
+    if (href && seenHrefs.has(href)) return null;
+    if (href) seenHrefs.add(href);
+
+    // ===== Tags depuis items.json (match arena_block_id == block.id) =====
+    const blockIdNum = Number(block.id);
+    const jsonEntry = Object.values(ITEMS_DATA).find(v => Number(v?.arena_block_id) === blockIdNum);
+    const tagsArr = Array.isArray(jsonEntry?.tags) ? jsonEntry.tags : [];
+
+    const tagsHtml = tagsArr.length
+      ? `
+        <div class="tags book__tags book__tags--black">
+          ${tagsArr.map(t => {
+            const T = String(t).trim().toUpperCase();
+            return `
+              <a href="tag-index.html?tag=${encodeURIComponent(String(t).trim().toLowerCase())}" class="tag-link">
+                <div class="tag-wrapper">
+                  <span class="tag-text">${escapeHtml(T)}</span>
+                </div>
+              </a>
+            `;
+          }).join("")}
+        </div>
+      `
+      : "";
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <a class="writing-link" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">
+        <div class="bookwrapper">
+          <div class="bookwrapper__anchor"></div>
+          <div class="book">
+            <div class="book__back"></div>
+            <div class="book__spine"></div>
+            <div class="book__front">
+              <span class="book__title writing-card-title">${escapeHtml(title)}</span>
+              ${meta ? `<span class="book__author writing-card-meta">${escapeHtml(meta)}</span>` : ``}
+              ${tagsHtml}
+            </div>
+          </div>
+        </div>
+      </a>
+    `;
+    return li;
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, (s) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "\"": "&quot;",
+      "'": "&#39;"
+    }[s]));
+  }
+
+});
+</script>
 
   </body>
 </html>

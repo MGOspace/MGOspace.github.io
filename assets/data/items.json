@@ -1,10 +1,46 @@
-[
-  {
-    "id": "1_mix",
+{
+  "1_mix": {
     "tags": ["mix", "sus"]
   },
-  {
-    "id": "img_02",
-    "tags": ["Dakar", "Night"]
-  }
-]
+  
+"dakar_mix": {
+  "type": "audio",
+  "subtype": "mix",
+  "title": "DAKAR_MIX",
+  "url": "https://www.mixcloud.com/M_GO/dakar_mix/",
+  "thumb": "assets/dakar_mix.jpg",
+  "tags": ["dakar"],
+  "note": "TRACKLIST\n\nd4rio – Bells In My Head\nJouska – Pierced.\nLITTLE SCAR 스물 셋 – I WANT YOU\nNamasenda ft. Oklou – Star ☆\nRubba – Way Star\nknekelhuis – Can't Go Back\nbilly woods – Dislocated\nIn-Dex – Give Me A Sign\nShallipopi – Laho II\nOlamide – PAWON\nMowdee – Yoka\nMala – Militant Don\nIsaac Chambers – Back to my roots\nAnthony B – Music Free My Soul\nThe Co-Operators – Judgement Tree\nTendai – Twin Flame\nAsake & H.E.R. – Lonely At The Top\nBurna Boy – Omo\nJul – Parfum quartier\nToumani Diabaté – Elyne Road\negoseed – keeps\nNelly Furtado – All Good Things (Come To An End)"
+},
+
+"table_water_dakar": {
+  "type": "image",
+  "subtype": "moodboard",
+  "title": "DAKAR_WATER",
+  "src": "assets/MGO_water_dakar.png",
+  "tags": ["dakar"],
+  "note": "",
+  "gallery": [
+    "assets/water_dakar/water1.jpg",
+    "assets/water_dakar/water2.png",
+    "assets/water_dakar/water3.jpg",
+    "assets/water_dakar/water5.jpg",
+    "assets/water_dakar/water11.gif",
+    "assets/water_dakar/water6.jpg",
+    "assets/water_dakar/water7.jpg",
+    "assets/water_dakar/water8.gif",
+    "assets/water_dakar/water9.jpg",
+    "assets/water_dakar/water10.png",
+    "assets/water_dakar/water12.gif",
+    "assets/water_dakar/water4.jpg"
+  ]
+},
+
+"Water-and-Dreams": {
+  "type": "book",
+  "source": "arena",
+  "arena_block_id": 42022631,
+  "tags": ["dakar"],
+  "note": ""
+}
+}

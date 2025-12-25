@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tag</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+
+<body class="tag-index-body">
+
+  <main class="tag-index-page">
+    <header class="tag-index-header">
+      <h1 class="tag-index-title" id="tagTitle">TAG</h1>
+    </header>
+
+    <section class="tag-index-items" id="tagItems"></section>
+  </main>
+
+  <div class="lightbox" data-lightbox-root aria-hidden="true">
+    <figure class="lightbox-figure">
+      <img src="" alt="" class="lightbox-image" />
+      <figcaption class="lightbox-caption"></figcaption>
+    </figure>
+  </div>
+
+<script>
+(() => {
+  document.addEventListener("DOMContentLoaded", () => {
+    initTagIndex();
+    initSingleImageLightbox(); // moodboard uniquement (pas de slider)
+  });
+
+  async function initTagIndex() {
+    const params = new URLSearchParams(window.location.search);
+    const tag = (params.get("tag") || "").trim().toLowerCase();
+
+    const titleEl = document.getElementById("tagTitle");
+    const container = document.getElementById("tagItems");
+    if (!titleEl || !container) return;
+
+    const setEmpty = (msg) => {
+      container.innerHTML = `<p class="tag-index-empty">${escapeHtml(msg)}</p>`;
+    };
+
+    if (!tag) {
+      titleEl.textContent = "TAG";
+      document.title = "Tag";
+      setEmpty("Aucun tag fourni.");
+      return;
+    }
+
+    titleEl.innerHTML = `<span class="tag-prefix">_</span>${escapeHtml(tag.toUpperCase())}`;
+    document.title = `Tag — _${tag.toUpperCase()}`;
+
+    // 1) items.json (notes + meta + books)
+    let itemsData = {};
+    try {
+      const r = await fetch("assets/data/items.json", { cache: "no-store" });
+      if (r.ok) itemsData = await r.json();
+    } catch {
+      itemsData = {};
+    }
+
+    // 2) Scan des pages
+    const PAGES = ["index.html", "radio.html", "writings.html", "image.html", "video.html"];
+    const htmlList = await Promise.all(
+      PAGES.map(async (url) => {
+        try {
+          const r = await fetch(url, { cache: "no-store" });
+          if (!r.ok) return "";
+          return await r.text();
+        } catch {
+          return "";
+        }
+      })
+    );
+
+    const parser = new DOMParser();
+    const frag = document.createDocumentFragment();
+    const seenIds = new Set();
+    let found = 0;
+
+    // A) Items HTML (data-id + data-tags)
+    htmlList.forEach((html) => {
+      if (!html) return;
+
+      const doc = parser.parseFromString(html, "text/html");
+      const nodes = doc.querySelectorAll("[data-id][data-tags]");
+
+      nodes.forEach((node) => {
+        const id = (node.dataset.id || "").trim();
+        if (!id) return;
+
+        const tags = (node.dataset.tags || "")
+          .split(",")
+          .map((t) => t.trim().toLowerCase())
+          .filter(Boolean);
+
+        if (!tags.includes(tag)) return;
+        if (seenIds.has(id)) return;
+        seenIds.add(id);
+
+        const note = itemsData?.[id]?.note ? String(itemsData[id].note) : "";
+
+        const article = document.createElement("article");
+        article.className = "tag-index-item";
+        article.dataset.id = id;
+
+        const left = document.createElement("div");
+        left.className = "tag-index-item-left";
+
+        const right = document.createElement("div");
+        right.className = "tag-index-item-right";
+        if (note) right.innerHTML = `<p>${escapeHtml(note)}</p>`;
+
+        const clone = node.cloneNode(true);
+
+        // éviter boucle de navigation "tag -> tag-index"
+        clone.querySelectorAll(".tag-link").forEach((a) => {
+          a.removeAttribute("href");
+          a.style.pointerEvents = "none";
+          a.style.cursor = "default";
+        });
+
+        left.appendChild(clone);
+        article.append(left, right);
+        frag.appendChild(article);
+        found++;
+      });
+    });
+
+    // B) Books Are.na via JSON
+    const ARENA_API_BLOCK = "https://api.are.na/v2/blocks/";
+    const arenaBookEntries = Object.entries(itemsData)
+      .map(([id, v]) => ({ id, v }))
+      .filter(({ v }) => v && v.type === "book" && v.source === "arena" && v.arena_block_id);
+
+    for (const { id, v } of arenaBookEntries) {
+      const jsonTags = Array.isArray(v.tags) ? v.tags.map((t) => String(t).toLowerCase()) : [];
+      if (!jsonTags.includes(tag)) continue;
+      if (seenIds.has(id)) continue;
+      seenIds.add(id);
+
+      let block = null;
+      try {
+        const r = await fetch(ARENA_API_BLOCK + encodeURIComponent(v.arena_block_id), { cache: "no-store" });
+        if (r.ok) block = await r.json();
+      } catch {
+        block = null;
+      }
+      if (!block) continue;
+
+      const li = createArenaCardFromBlock(block, new Set());
+      if (!li) continue;
+
+      const note = v.note ? String(v.note) : "";
+
+      const article = document.createElement("article");
+      article.className = "tag-index-item";
+      article.dataset.id = id;
+
+      const left = document.createElement("div");
+      left.className = "tag-index-item-left";
+
+      const right = document.createElement("div");
+      right.className = "tag-index-item-right";
+      if (note) right.innerHTML = `<p>${escapeHtml(note)}</p>`;
+
+      left.appendChild(li);
+      article.append(left, right);
+      frag.appendChild(article);
+      found++;
+    }
+
+    if (!found) {
+      setEmpty(`Aucun item trouvé pour “${tag}”.`);
+      return;
+    }
+
+    container.textContent = "";
+    container.appendChild(frag);
+  }
+
+  function initSingleImageLightbox() {
+    const lightbox = document.querySelector('[data-lightbox-root]');
+    if (!lightbox) return;
+
+    const img = lightbox.querySelector(".lightbox-image");
+    const captionEl = lightbox.querySelector(".lightbox-caption");
+    if (!img) return;
+
+    const TABLE_ID = "table_water_dakar"; // ton id moodboard
+
+    // Zoom/pan (uniquement image unique)
+    let scale = 1;
+    const zoomLevel = 2;
+    let panX = 0, panY = 0;
+
+    let isDragging = false;
+    let didDrag = false;
+    let startMouseX = 0, startMouseY = 0;
+    let startPanX = 0, startPanY = 0;
+    const DRAG_THRESHOLD = 4;
+
+    img.addEventListener("dragstart", (e) => e.preventDefault());
+
+    function applyTransform() {
+      img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+      if (scale === 1) img.classList.add("is-not-zoomed");
+      else img.classList.remove("is-not-zoomed");
+    }
+
+    function resetTransform() {
+      scale = 1; panX = 0; panY = 0;
+      applyTransform();
+    }
+
+    function openLightbox(src, caption) {
+      img.src = src || "";
+      if (captionEl) captionEl.innerHTML = caption || "";
+      resetTransform();
+
+      lightbox.classList.add("is-open");
+      document.body.classList.add("has-lightbox-open");
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("is-open");
+      document.body.classList.remove("has-lightbox-open");
+    }
+
+    // Fermer si clic sur le fond
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Escape seulement
+    document.addEventListener("keydown", (e) => {
+      if (!lightbox.classList.contains("is-open")) return;
+      if (e.key === "Escape") closeLightbox();
+    });
+
+    // Zoom toggle au clic sur l'image (pas de condition d'index)
+    img.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (didDrag) { didDrag = false; return; }
+
+      if (scale === 1) scale = zoomLevel;
+      else { resetTransform(); return; }
+
+      applyTransform();
+    });
+
+    img.addEventListener("mousedown", (e) => {
+      if (scale === 1) return;
+
+      isDragging = true;
+      didDrag = false;
+      lightbox.classList.add("is-dragging");
+
+      startMouseX = e.clientX;
+      startMouseY = e.clientY;
+      startPanX = panX;
+      startPanY = panY;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+
+      const dx = e.clientX - startMouseX;
+      const dy = e.clientY - startMouseY;
+
+      if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
+        didDrag = true;
+      }
+
+      panX = startPanX + dx;
+      panY = startPanY + dy;
+      applyTransform();
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      lightbox.classList.remove("is-dragging");
+    });
+
+    lightbox.addEventListener("wheel", (e) => {
+      if (!lightbox.classList.contains("is-open")) return;
+      if (scale === 1) return;
+
+      e.preventDefault();
+      panX -= e.deltaX;
+      panY -= e.deltaY;
+      applyTransform();
+    }, { passive: false });
+
+    // Clic sur l’item moodboard (dans tag-index) -> ouvre lightbox image unique
+    document.addEventListener("click", async (e) => {
+      const node = e.target.closest(`[data-id="${TABLE_ID}"]`);
+      if (!node) return;
+
+      const a = e.target.closest("a");
+      if (a) e.preventDefault();
+
+      try {
+        const r = await fetch("assets/data/items.json", { cache: "no-store" });
+        if (!r.ok) return;
+
+        const data = await r.json();
+        const table = data?.[TABLE_ID];
+        if (!table) return;
+
+        const src = table.src || "";
+        const caption = table.note ? escapeHtml(String(table.note)) : "";
+        if (!src) return;
+
+        openLightbox(src, caption);
+      } catch {
+        // silence
+      }
+    });
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, (s) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+    }[s]));
+  }
+
+  // Copie de ton rendu writings (retourne un <li>)
+  function createArenaCardFromBlock(block, seenHrefs) {
+    const title = block.title || "(untitled)";
+    let meta = "";
+
+    if (block.class === "Image") meta = "Image";
+    else if (block.class === "Attachment") {
+      const type = block.attachment?.content_type || "";
+      if (type.includes("pdf")) meta = "PDF";
+      else if (type.startsWith("application/")) meta = type.replace("application/", "").toUpperCase();
+      else meta = "File";
+    } else if (block.class === "Link") meta = "Link";
+
+    let href = null;
+    if (block.class === "Image" && block.image?.display?.url) href = block.image.display.url;
+    else if (block.class === "Attachment" && block.attachment?.url) href = block.attachment.url;
+    else if (block.class === "Link" && block.source?.url) href = block.source.url;
+    else return null;
+
+    if (href && seenHrefs.has(href)) return null;
+    if (href) seenHrefs.add(href);
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <a class="writing-link" href="${href}" target="_blank" rel="noopener noreferrer">
+        <div class="bookwrapper">
+          <div class="bookwrapper__anchor"></div>
+          <div class="book">
+            <div class="book__back"></div>
+            <div class="book__spine"></div>
+            <div class="book__front">
+              <span class="book__title writing-card-title">${escapeHtml(title)}</span>
+              ${meta ? `<span class="book__author writing-card-meta">${escapeHtml(meta)}</span>` : ``}
+            </div>
+          </div>
+        </div>
+      </a>
+    `;
+    return li;
+  }
+})();
+</script>
+
+</body>
+</html>
