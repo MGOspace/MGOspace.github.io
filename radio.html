@@ -12,34 +12,15 @@
       min-height: 100vh;
       position: relative;
     }
-
-
-  .back-arrow {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  font-size: 36px;
-  font-weight: 300;
-  color: #ffffff;
-  text-decoration: none;
-  z-index: 5000;
-  cursor: pointer;
-  transition: opacity .15s ease;
-}
-
-.back-arrow:hover {
-  opacity: 0.6;
-}
   </style>
 
 </head>
 
 <body class="radio-page">
-  <a href="index.html" class="back-arrow" aria-label="Retour à l’accueil">
-    ←
-  </a>
 
   <header class="radio-header">
+    <a href="index.html" class="back-arrow" aria-label="Retour à l’accueil">←</a>
+
     <div class="radio-header-inner">
 
       <!-- LOGO CENTRÉ -->
@@ -327,229 +308,303 @@
   <div class="radio-logo-container">
     <img src="assets/MGO_radio_logo.svg" alt="MGO_radio Logo" class="radio-logo">
   </div>
+
+  <!-- MOBILE PLAYER BAR (hidden by default) -->
+<div class="mobile-player" id="mobile-player" aria-hidden="true">
+  <div class="mobile-player-inner" id="mobile-player-ui">
+  </div>
+</div>
+
 <script>
-  (function () {
-    /* =========================
-       HEADER SHRINK
-       ========================= */
-    var header = document.querySelector('.radio-header');
-    if (header) {
-      var maxHeight = window.innerHeight * 0.5; // 50% de la fenêtre
-      var minHeight = 80;                       // hauteur minimale du header
+(function () {
+  /* =========================
+     HELPERS
+     ========================= */
+  function isMobile() {
+    return window.matchMedia && window.matchMedia('(max-width: 700px)').matches;
+  }
+  function clamp(n, min, max) {
+    return Math.max(min, Math.min(max, n));
+  }
+  function formatTime(sec) {
+    if (isNaN(sec)) return '00:00';
+    var m = Math.floor(sec / 60);
+    var s = Math.floor(sec % 60);
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  }
 
-      header.style.height = maxHeight + 'px';
+  /* =========================
+     ELEMENTS
+     ========================= */
+  var header          = document.querySelector('.radio-header');
+  var headerInner     = document.querySelector('.radio-header-inner');
 
-      window.addEventListener('scroll', function () {
-        var scrollY = window.scrollY;
+  var headerPlayerBox = document.getElementById('header-player');          // le player unique
+  var headerAudio     = document.getElementById('radio-header-player');    // audio unique
 
-        var newHeight = maxHeight - scrollY;
-        if (newHeight < minHeight) newHeight = minHeight;
-        if (newHeight > maxHeight) newHeight = maxHeight;
+  var mobileBar       = document.getElementById('mobile-player');          // wrapper bandeau
+  var mobileBarInner  = document.getElementById('mobile-player-ui');       // inner (dans ton HTML)
 
-        header.style.height = newHeight + 'px';
+  var localLinks      = document.querySelectorAll('.audio-item-link--local');
 
-        if (newHeight <= minHeight + 1) {
-          header.classList.add('header-compact');
-        } else {
-          header.classList.remove('header-compact');
-        }
-      });
+  if (!header || !headerInner || !headerPlayerBox || !headerAudio) return;
 
-      window.addEventListener('resize', function () {
-        maxHeight = window.innerHeight * 0.5;
-        header.style.height = maxHeight + 'px';
-      });
+  /* =========================
+     PLAYER UI: ensure structure
+     ========================= */
+  function ensurePlayerStructure() {
+    var iconEl  = headerPlayerBox.querySelector('.header-player-icon');
+    var titleEl = headerPlayerBox.querySelector('.header-player-title');
+    var backBtn = headerPlayerBox.querySelector('.player-skip-btn--back');
+    var fwdBtn  = headerPlayerBox.querySelector('.player-skip-btn--forward');
+    var timeEl  = headerPlayerBox.querySelector('.header-player-time');
+
+    // si on est dans l'état "PLAYER" (innerHTML simple), on reconstruit quand un src existe
+    if (iconEl && titleEl && backBtn && fwdBtn && timeEl) return;
+
+    headerPlayerBox.innerHTML =
+      '<span class="header-player-icon"></span>' +
+      '<span class="header-player-title"></span>' +
+      '<button class="player-skip-btn player-skip-btn--back" type="button">⟲</button>' +
+      '<button class="player-skip-btn player-skip-btn--forward" type="button">⟳</button>' +
+      '<span class="header-player-time"></span>';
+  }
+
+  function setMobileBarVisible(visible) {
+    if (!mobileBar) return;
+    if (visible) {
+      mobileBar.classList.add('is-visible');
+      mobileBar.style.display = 'block';
+      mobileBar.setAttribute('aria-hidden', 'false');
+    } else {
+      mobileBar.classList.remove('is-visible');
+      mobileBar.style.display = 'none';
+      mobileBar.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  /* =========================
+     MOVE PLAYER (no cloning)
+     ========================= */
+  function placePlayerForViewport() {
+    // Desktop: le player reste dans le header (à droite)
+    if (!isMobile()) {
+      // si le player a été déplacé en mobile, on le remet dans le header
+      if (headerPlayerBox.parentNode !== headerInner) {
+        headerInner.appendChild(headerPlayerBox);
+      }
+      // bandeau mobile caché sur desktop
+      setMobileBarVisible(false);
+      return;
     }
 
-    /* =========================
-       FILTRES ARCHIVE
-       ========================= */
+    // Mobile: player dans le bandeau (s'il existe)
+    if (mobileBarInner && headerPlayerBox.parentNode !== mobileBarInner) {
+      mobileBarInner.appendChild(headerPlayerBox);
+    }
+  }
+
+  /* =========================
+     HEADER SHRINK (DESKTOP ONLY)
+     ========================= */
+  (function initHeaderShrink() {
+    var maxHeight = window.innerHeight * 0.5;
+    var minHeight = 80;
+
+    function applyHeight(h) {
+      header.style.height = h + 'px';
+      if (h <= minHeight + 1) header.classList.add('header-compact');
+      else header.classList.remove('header-compact');
+    }
+
+    function refresh() {
+      maxHeight = window.innerHeight * 0.5;
+
+      if (isMobile()) {
+        // mobile: ne touche pas la hauteur, le CSS gère
+        header.classList.remove('header-compact');
+        header.style.height = '';
+        return;
+      }
+
+      // desktop init
+      applyHeight(maxHeight);
+    }
+
+    function onScroll() {
+      if (isMobile()) return;
+      var newHeight = clamp(maxHeight - window.scrollY, minHeight, maxHeight);
+      applyHeight(newHeight);
+    }
+
+    refresh();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () {
+      refresh();
+      placePlayerForViewport();
+      // si un audio est déjà chargé et qu'on repasse mobile -> on garde le bandeau visible
+      updatePlayerLabel();
+    });
+  })();
+
+  /* =========================
+     FILTERS
+     ========================= */
+  (function initFilters() {
     var filters = document.querySelectorAll('.archive-filters .filter-pill');
     var items   = document.querySelectorAll('.archive-grid .audio-item');
+    if (!filters.length || !items.length) return;
 
-    if (filters.length && items.length) {
-      filters.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          var filter = pill.getAttribute('data-filter');
+    filters.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        var filter = pill.getAttribute('data-filter');
 
-          filters.forEach(function (p) {
-            p.classList.remove('is-active');
-          });
-          pill.classList.add('is-active');
+        filters.forEach(function (p) { p.classList.remove('is-active'); });
+        pill.classList.add('is-active');
 
-          items.forEach(function (item) {
-            var type = item.getAttribute('data-type');
-
-            if (filter === 'all' || type === filter) {
-              item.classList.remove('is-hidden');
-            } else {
-              item.classList.add('is-hidden');
-            }
-          });
+        items.forEach(function (item) {
+          var type = item.getAttribute('data-type');
+          if (filter === 'all' || type === filter) item.classList.remove('is-hidden');
+          else item.classList.add('is-hidden');
         });
       });
-    }
-
-    /* =========================
-       PLAYER LOCAL DANS LE HEADER (BOX "PLAYER")
-       ========================= */
-    var headerPlayerBox = document.getElementById('header-player');
-    var headerAudio     = document.getElementById('radio-header-player');
-    var localLinks      = document.querySelectorAll('.audio-item-link--local');
-
-    if (!headerPlayerBox || !headerAudio) return;
-
-    // Format mm:ss
-    function formatTime(sec) {
-      if (isNaN(sec)) return '00:00';
-      var m = Math.floor(sec / 60);
-      var s = Math.floor(sec % 60);
-      return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-    }
-
-    // Met à jour le contenu visuel du player
-    function updatePlayerLabel() {
-      var src   = headerAudio.getAttribute('data-current-src');
-      var title = headerAudio.getAttribute('data-current-title') || '';
-
-      // CAS 1 — Aucun son sélectionné : on ne montre que "PLAYER"
-      if (!src) {
-        headerPlayerBox.classList.remove('has-audio');
-        headerPlayerBox.innerHTML =
-          '<span class="header-player-title">PLAYER</span>';
-        return;
-      }
-
-      // CAS 2 — Un audio est chargé : on montre tout le player
-      headerPlayerBox.classList.add('has-audio');
-
-      // On récupère (ou crée) la structure interne une fois
-      var iconEl  = headerPlayerBox.querySelector('.header-player-icon');
-      var titleEl = headerPlayerBox.querySelector('.header-player-title');
-      var backBtn = headerPlayerBox.querySelector('.player-skip-btn--back');
-      var fwdBtn  = headerPlayerBox.querySelector('.player-skip-btn--forward');
-      var timeEl  = headerPlayerBox.querySelector('.header-player-time');
-
-      if (!iconEl || !titleEl || !backBtn || !fwdBtn || !timeEl) {
-        headerPlayerBox.innerHTML =
-          '<span class="header-player-icon"></span>' +
-          '<span class="header-player-title"></span>' +
-          '<button class="player-skip-btn player-skip-btn--back" type="button">⟲</button>' +
-          '<button class="player-skip-btn player-skip-btn--forward" type="button">⟳</button>' +
-          '<span class="header-player-time"></span>';
-
-        iconEl  = headerPlayerBox.querySelector('.header-player-icon');
-        titleEl = headerPlayerBox.querySelector('.header-player-title');
-        backBtn = headerPlayerBox.querySelector('.player-skip-btn--back');
-        fwdBtn  = headerPlayerBox.querySelector('.player-skip-btn--forward');
-        timeEl  = headerPlayerBox.querySelector('.header-player-time');
-      }
-
-      var symbol  = headerAudio.paused ? '▶' : '⏸';
-      var current = formatTime(headerAudio.currentTime);
-      var total   = formatTime(headerAudio.duration || 0);
-
-      var baseTitle = title
-        ? 'NOW PLAYING: ' + title.toUpperCase()
-        : 'NOW PLAYING';
-
-      iconEl.textContent  = symbol;
-      titleEl.textContent = baseTitle;
-      timeEl.textContent  = current + ' / ' + total;
-    }
-
-    /* ---- Clic sur une tile locale (fragment .m4a) ---- */
-    localLinks.forEach(function (link) {
-      link.addEventListener('click', function (e) {
-        e.preventDefault();
-
-        var src = link.getAttribute('data-audio-src');
-        if (!src) return;
-
-        var titleEl = link.querySelector('.audio-title');
-        var title   = titleEl ? titleEl.textContent.trim() : '';
-
-        // On met à jour les métadonnées du player
-        headerAudio.setAttribute('data-current-src', src);
-        headerAudio.setAttribute('data-current-title', title);
-
-        // On charge la source si nécessaire
-        if (headerAudio.src !== src) {
-          headerAudio.src = src;
-        }
-
-        // On lance la lecture (sélection = play)
-        headerAudio.play();
-      });
     });
-
-    /* ---- Clic sur l’icône PLAY/PAUSE uniquement → play/pause ---- */
-    headerPlayerBox.addEventListener('click', function (e) {
-      var target = e.target;
-
-      // 1) Si clic sur un bouton skip → on ne gère PAS play/pause ici
-      if (
-        target.classList.contains('player-skip-btn--back') ||
-        target.classList.contains('player-skip-btn--forward')
-      ) {
-        return;
-      }
-
-      // 2) On ne toggle que si le clic vient de l’icône
-      if (!target.closest('.header-player-icon')) {
-        return;
-      }
-
-      // 3) Si aucun son encore sélectionné -> ne rien faire
-      if (!headerAudio.getAttribute('data-current-src')) return;
-
-      if (headerAudio.paused) {
-        headerAudio.play();
-      } else {
-        headerAudio.pause();
-      }
-    });
-
-    /* =========================================================
-       BOUTONS SKIP –10s / +10s POUR LE PLAYER HEADER
-       ========================================================= */
-    document.addEventListener("click", function (e) {
-      var target = e.target;
-
-      var isBack    = target.classList.contains("player-skip-btn--back");
-      var isForward = target.classList.contains("player-skip-btn--forward");
-
-      if (!isBack && !isForward) return;
-
-      // on ne remonte pas le clic jusqu'à la box (évite play/pause)
-      e.stopPropagation();
-
-      // Si aucun audio sélectionné -> on ignore
-      if (!headerAudio.getAttribute("data-current-src")) return;
-
-      if (isBack) {
-        var t = headerAudio.currentTime - 10;
-        if (t < 0) t = 0;
-        headerAudio.currentTime = t;
-      }
-
-      if (isForward) {
-        var dur = headerAudio.duration || 0;
-        var t2  = headerAudio.currentTime + 10;
-        if (dur && t2 > dur) t2 = dur;
-        headerAudio.currentTime = t2;
-      }
-    });
-
-    // On connecte les événements audio au rafraîchissement du player
-    headerAudio.addEventListener('play',           updatePlayerLabel);
-    headerAudio.addEventListener('pause',          updatePlayerLabel);
-    headerAudio.addEventListener('timeupdate',     updatePlayerLabel);
-    headerAudio.addEventListener('loadedmetadata', updatePlayerLabel);
-
-    // État initial : rien de chargé → seulement "PLAYER"
-    updatePlayerLabel();
   })();
+
+  /* =========================
+     PLAYER LABEL UPDATE
+     ========================= */
+  function updatePlayerLabel() {
+    var src   = headerAudio.getAttribute('data-current-src');
+    var title = headerAudio.getAttribute('data-current-title') || '';
+
+    // 0) placer le player au bon endroit selon viewport
+    placePlayerForViewport();
+
+    // 1) Rien n’a été lancé
+    if (!src) {
+      headerPlayerBox.classList.remove('has-audio');
+      headerPlayerBox.innerHTML = '<span class="header-player-title">PLAYER</span>';
+
+      // mobile: bandeau caché tant que rien n’a été lancé
+      if (isMobile()) setMobileBarVisible(false);
+      return;
+    }
+
+    // 2) Un audio a été lancé : on garde l’UI complète
+    headerPlayerBox.classList.add('has-audio');
+    ensurePlayerStructure();
+
+    var iconEl  = headerPlayerBox.querySelector('.header-player-icon');
+    var titleEl = headerPlayerBox.querySelector('.header-player-title');
+    var timeEl  = headerPlayerBox.querySelector('.header-player-time');
+
+    var symbol  = headerAudio.paused ? '▶' : '⏸';
+    var current = formatTime(headerAudio.currentTime);
+    var total   = formatTime(headerAudio.duration || 0);
+
+    var baseTitle = title ? ('NOW PLAYING: ' + title.toUpperCase()) : 'NOW PLAYING';
+
+    iconEl.textContent  = symbol;
+    titleEl.textContent = baseTitle;
+    timeEl.textContent  = current + ' / ' + total;
+
+    // mobile: bandeau visible dès qu’un local a été lancé (même en pause)
+    if (isMobile()) setMobileBarVisible(true);
+  }
+
+  /* =========================
+     LOCAL ITEMS: CLICK TO PLAY/TOGGLE
+     ========================= */
+  localLinks.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      var src = link.getAttribute('data-audio-src');
+      if (!src) return;
+
+      var currentSrc = headerAudio.getAttribute('data-current-src');
+
+      // Toggle si même source
+      if (currentSrc && currentSrc === src) {
+        if (headerAudio.paused) headerAudio.play();
+        else headerAudio.pause();
+        return;
+      }
+
+      // Nouveau son
+      var titleEl = link.closest('.audio-item') && link.closest('.audio-item').querySelector('.audio-title-text');
+      var title   = titleEl ? titleEl.textContent.trim() : '';
+
+      headerAudio.setAttribute('data-current-src', src);
+      headerAudio.setAttribute('data-current-title', title);
+
+      if (headerAudio.src !== src) headerAudio.src = src;
+
+      headerAudio.play();
+    });
+  });
+
+  /* =========================
+     CLICK: ICON PLAY/PAUSE ONLY
+     (works desktop + mobile because same DOM node)
+     ========================= */
+  headerPlayerBox.addEventListener('click', function (e) {
+    var target = e.target;
+
+    // ignore skip
+    if (
+      target.classList.contains('player-skip-btn--back') ||
+      target.classList.contains('player-skip-btn--forward')
+    ) return;
+
+    // only icon
+    if (!target.closest('.header-player-icon')) return;
+
+    if (!headerAudio.getAttribute('data-current-src')) return;
+
+    if (headerAudio.paused) headerAudio.play();
+    else headerAudio.pause();
+  });
+
+  /* =========================
+     SKIP BUTTONS (delegated)
+     ========================= */
+  document.addEventListener('click', function (e) {
+    var target = e.target;
+
+    var isBack    = target.classList.contains('player-skip-btn--back');
+    var isForward = target.classList.contains('player-skip-btn--forward');
+    if (!isBack && !isForward) return;
+
+    e.stopPropagation();
+
+    if (!headerAudio.getAttribute('data-current-src')) return;
+
+    if (isBack) {
+      headerAudio.currentTime = Math.max(0, headerAudio.currentTime - 10);
+    } else {
+      var dur = headerAudio.duration || 0;
+      var t2  = headerAudio.currentTime + 10;
+      headerAudio.currentTime = (dur && t2 > dur) ? dur : t2;
+    }
+  });
+
+  /* =========================
+     AUDIO EVENTS
+     ========================= */
+  headerAudio.addEventListener('play',           updatePlayerLabel);
+  headerAudio.addEventListener('pause',          updatePlayerLabel);
+  headerAudio.addEventListener('timeupdate',     updatePlayerLabel);
+  headerAudio.addEventListener('loadedmetadata', updatePlayerLabel);
+
+  /* =========================
+     INIT
+     ========================= */
+  updatePlayerLabel();
+  placePlayerForViewport();
+
+})();
 </script>
 </body>
 </html>
