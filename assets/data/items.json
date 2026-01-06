@@ -2,7 +2,7 @@
   "1_mix": {
     "tags": ["mix", "sus"]
   },
-  
+
 "dakar_mix": {
   "type": "audio",
   "subtype": "mix",
@@ -42,5 +42,12 @@
   "arena_block_id": 42022631,
   "tags": ["dakar"],
   "note": ""
+},
+
+"jammin_fragment": {
+  "type": "audio",
+  "subtype": "fragment",
+  "title": "Jammin",
+  "tags": ["dakar"]
 }
 }
