@@ -683,32 +683,69 @@ body.has-lightbox-open {
 }
 
 /* =========================
-   RESPONSIVE — MOBILE
+   RESPONSIVE — MOBILE (INDEX)
    ========================= */
 
-/* MOBILE (<= 700px) */
-@media (max-width: 700px) {
+@media (max-width: 700px){
 
   /* ---- Variables ---- */
   :root{
-    --header: 18px;
+    --header: 28px;     /* hauteur du bandeau */
     --card-w: 120px;
     --card-h: 160px;
     --card-edge: 8px;
   }
 
-  /* ---- Header ---- */
-  .site-header{
+  /* =========================
+     INDEX — MOBILE HEADER (uniquement sur index)
+     ========================= */
+  body.index-page .site-header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
     height: var(--header);
-    padding: 0 16px;
+    padding: 0 12px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e6e6e6;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 3000;
   }
 
-  /* ---- Main grid ---- */
+  body.index-page .header-logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  body.index-page .header-logo img{
+    height: 14px;
+    width: auto;
+    display: block;
+  }
+
+  /* =========================
+     MAIN GRID
+     ========================= */
+
+  /* Base mobile (toutes pages) */
   main.page{
     max-width: 100%;
-    padding: calc(var(--header) + 8px) 16px 42px;
+    padding: 16px 16px 42px; /* pas d’offset header par défaut */
     row-gap: 28px;
     column-gap: 12px;
+  }
+
+  /* Offset uniquement quand le header existe (index) */
+  body.index-page main.page{
+    padding-top: calc(var(--header) + 32px);
   }
 
   /* ---- Doors label ---- */
@@ -732,11 +769,9 @@ body.has-lightbox-open {
     justify-items: center;
     margin-top: 40px;
 
-    /* important: l'axe en overlay ne doit pas occuper une cellule */
-    position: relative;
+    position: relative; /* overlay axis */
   }
 
-  /* Axe en overlay (ne prend pas une case de grille) */
   .doors-axis{
     position: absolute;
     inset: 0;
@@ -744,18 +779,13 @@ body.has-lightbox-open {
     z-index: 0;
   }
 
-  /* Les cartes au-dessus de l’axe */
   .card-link{
     position: relative;
     z-index: 1;
   }
 
-  /* Option: masque les lignes sur mobile si ça gêne */
-  .axis-line{
-    display: none;
-  }
+  .axis-line{ display: none; }
 
-  /* Texte des cards */
   .card__content{
     font-size: 13px;
     letter-spacing: 0.14em;
@@ -765,21 +795,17 @@ body.has-lightbox-open {
   /* ---- Feature ---- */
   .feature{
     grid-column: 1 / -1;
-    margin-top: 120px;
+    margin-top: 64px;
   }
 
-  .feature-bg{
-    padding: 18px;
-  }
+  .feature-bg{ padding: 18px; }
 
   .feature-bg-inner{
     padding: 16px;
     gap: 12px;
   }
 
-  .feature-media-el{
-    max-height: 320px;
-  }
+  .feature-media-el{ max-height: 320px; }
 
   /* ---- Lightbox ---- */
   .lightbox-figure{
@@ -805,6 +831,7 @@ body.has-lightbox-open {
   .site-footer{
     height: 56px;
     padding: 0 14px;
+
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -825,9 +852,7 @@ body.has-lightbox-open {
     justify-content: flex-end;
   }
 
-  .btn-nav .btn-list{
-    gap: 0;
-  }
+  .btn-nav .btn-list{ gap: 0; }
 
   .btn-nav .radio-wrapper{
     width: 64px;
@@ -851,11 +876,13 @@ body.has-lightbox-open {
   /* FOOTER NAV — mobile : pas de grossissement au hover */
   .btn-nav .radio-wrapper:hover .btn,
   .btn-nav .radio-wrapper:focus-within .btn{
-    --font-size: 8px; /* même valeur que .btn-nav .btn en mobile */
+    --font-size: 8px;
   }
 }
 
-/* SMALL MOBILE (<= 420px) */
+/* =========================
+   SMALL MOBILE (<= 420px)
+   ========================= */
 @media (max-width: 420px){
 
   :root{
@@ -870,7 +897,6 @@ body.has-lightbox-open {
     margin-top: 32px;
   }
 }
-
 
 
 /* =========================
@@ -2417,7 +2443,7 @@ body.radio-page main {
   :root{ --about-nav-h: 56px; }
 
   /* Header global inutile sur mobile */
-  .site-header{ display:none !important; }
+  .site-header{ display:none; }
 
   /* Page */
   .about-page{
