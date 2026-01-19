@@ -325,6 +325,7 @@ main.page{
 
 .feature-media {
   width: 100%;
+  position: relative;
 }
 
 /* Élément média (img, iframe, vidéo…) */
@@ -738,14 +739,14 @@ body.has-lightbox-open {
   /* Base mobile (toutes pages) */
   main.page{
     max-width: 100%;
-    padding: 16px 16px 42px; /* pas d’offset header par défaut */
+    padding: 16px 16px 96px; /* pas d’offset header par défaut */
     row-gap: 28px;
     column-gap: 12px;
   }
 
   /* Offset uniquement quand le header existe (index) */
   body.index-page main.page{
-    padding-top: calc(var(--header) + 32px);
+    padding-top: calc(var(--header) + 72px);
   }
 
   /* ---- Doors label ---- */
@@ -805,6 +806,15 @@ body.has-lightbox-open {
     gap: 12px;
   }
 
+  .feature-bg-inner.is-spotlight-open .feature-media::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    border: 1px solid rgba(255,255,255,0.18); /* exactement comme feature-bg */
+    pointer-events: none;
+  } 
+
   .feature-media-el{ max-height: 320px; }
 
   /* ---- Lightbox ---- */
@@ -830,7 +840,7 @@ body.has-lightbox-open {
   /* ---- Footer (ligne compacte) ---- */
   .site-footer{
     height: 56px;
-    padding: 0 14px;
+    padding: 0 24px;
 
     flex-direction: row;
     align-items: center;
@@ -903,6 +913,34 @@ body.has-lightbox-open {
    PAGE WRITINGS
    ========================= */
 
+/* Writings — back logo (independent, non-destructive) */
+.writing-back{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  top: -42px;
+  margin-bottom: 12px;
+
+  height: 40px;
+  margin-bottom: 0px;
+
+  opacity: 0.85;
+  transition: opacity .15s ease;
+  text-decoration: none;
+}
+
+.writing-back:hover{
+  opacity: 0.6;
+}
+
+.writing-back__logo{
+  height: 14px;
+  width: auto;
+  display: block;
+}
+
 /* Conteneur global de la page */
 .writing-shell {
   max-width: 1200px;
@@ -913,7 +951,7 @@ body.has-lightbox-open {
 /* Colonne gauche (nav fixe) */
 .writing-nav {
   position: fixed;
-  top: 100px;
+  top: 80px;
   left: 50px;
   width: 220px;
 
@@ -1377,7 +1415,7 @@ body.has-lightbox-open {
   }
 }
 
-/* === GALLERY PAGE === */
+/* === IMAGE PAGE === */
 
 .image-body {
   background: #fbfbfb;        /* blanc très léger */
@@ -1426,6 +1464,23 @@ body.has-lightbox-open {
 /* -----------------------------
    HEADER SUPER FIN POUR GALLERY
    ----------------------------- */
+
+/* Image header — back logo (independent) */
+.image-header .image-back{
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  height: 100%;          /* prend la hauteur 32px */
+  text-decoration: none;
+  transition: opacity .15s ease;
+}
+
+.image-header .image-back__logo{
+  height: 14px;          /* adapté à un header 32px (discret) */
+  width: auto;
+  display: block;
+}
 
 .image-header {
   position: fixed;
@@ -1535,28 +1590,41 @@ body.radio-page main {
   display: block;
 }
 
-/* Back arrow (base) */
-.back-arrow{
+/* NAV LOGO: hidden by default (only when header is shrinked) */
+.radio-header .header-logo-link--nav{
   position: absolute;
   left: 20px;
-  top: 20px;
-
-  font-size: 36px;
-  font-weight: 300;
-  color: #ffffff;
-  text-decoration: none;
+  top: 50%;
+  transform: translateY(-50%);
 
   z-index: 1200;
   cursor: pointer;
-  transition: opacity .15s ease;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease;
 }
 
-.back-arrow:hover{ opacity: 0.6; }
+/* visible only when shrinked */
+.radio-header.header-compact .header-logo-link--nav{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.radio-header .header-logo-link--nav:hover{
+  opacity: 0.6;
+}
+
+/* image sizing (smaller) */
+.radio-header .header-nav-logo{
+  height: 18px;   /* plus petit */
+  width: auto;
+  display: block;
+}
 
 /* =========================
    PLAYER (HEADER)
@@ -2315,13 +2383,13 @@ body.radio-page main {
    ========================= */
 
 .about-page {
-  padding-top: var(--header);
+  padding-top: calc(var(--header) - 14px);
 }
 
 .about-layout {
   position: relative;
   max-width: 1300px;
-  margin: 40px auto 0 auto;
+  margin: 12px auto 0 auto;
 
   padding: 0 40px;
   padding-right: 360px;
@@ -2335,7 +2403,7 @@ body.radio-page main {
 
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - var(--header) - 80px); /* remplit bien la hauteur */
+  min-height: calc(100vh - var(--header) - 80px);
 }
 
 /* Conteneur interne pour les panneaux */
@@ -2354,6 +2422,9 @@ body.radio-page main {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
+
+  /* CURSOR: par défaut pas cliquable */
+  cursor: default;
 }
 
 .about-panel.is-active {
@@ -2376,6 +2447,20 @@ body.radio-page main {
   color: #ffffff;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 400;
+}
+
+/* CURSOR: default par défaut dans les panels */
+.about-panel{
+  cursor: default;
+}
+
+/* CURSOR: pointer uniquement sur les vrais interactifs */
+.why-image-link{
+  cursor: pointer;
+}
+
+.accordion-toggle{
+  cursor: pointer;
 }
 
 /* =========================
@@ -2644,6 +2729,10 @@ body.radio-page main {
   position: relative;
   aspect-ratio: 3 / 4;
   overflow: hidden;
+  cursor: default;
+}
+
+.about-panel.is-active[data-about-panel="who"] .who-image-stack{
   cursor: pointer;
 }
 

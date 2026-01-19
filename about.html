@@ -7,11 +7,13 @@
   <link rel="stylesheet" href="assets/site.css">
 </head>
 
-<body>
+<body class="about-page">
 
-  <!-- Header global du site (déjà stylé par .site-header dans ton CSS) -->
-  <header class="site-header">
-  </header>
+    <header class="site-header">
+      <a href="index.html" class="header-logo">
+        <img src="assets/mgo-space_logonakedblack.png" alt="MGO Space">
+      </a>
+    </header>
 
   <!-- Contenu principal spécifique à ABOUT -->
   <main class="about-page">
@@ -21,7 +23,7 @@
       <div class="about-text-box">
         <div class="about-text-inner">
 
-          <!-- PANEL "ABOUT" (texte d’intro par défaut) -->
+          <!-- PANEL "ABOUT" -->
           <div class="about-panel is-active" data-about-panel="about">
             <h1>MGO space</h1>
             <p>
@@ -254,6 +256,7 @@
 
       /* ========== WHO — IMAGE STACK ========== */
       const stack = document.querySelector('[data-who-gallery]');
+      const stack = whoPanel ? whoPanel.querySelector('[data-who-gallery]') : null;
       if (stack) {
         let images = Array.from(stack.querySelectorAll('.who-image'));
         if (images.length > 1) {
