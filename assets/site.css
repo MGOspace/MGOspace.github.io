@@ -288,6 +288,25 @@ main.page{
   box-shadow: 0 18px 40px rgba(0,0,0,0.6);
 }
 
+/* =========================
+   FEATURE — MULTI SPOTLIGHT STACK
+   ========================= */
+
+.feature-spotlights{
+  position: relative;
+}
+
+/* un seul spotlight affiché à la fois */
+.feature-item{
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feature-item.is-active{
+  display: flex;
+}
+
 .feature-bg-label {
   font-size:11px;
   letter-spacing: 0.18em;
@@ -338,6 +357,67 @@ main.page{
   border: 1px solid #e9ecff;
   border-radius: 4px;
   box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+}
+
+/* =========================
+   FEATURE NAV — STRUCTURAL ARROWS
+   ========================= */
+
+/* flèches nues, typographiques */
+.feature-nav{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+
+  background: none;
+  border: none;
+  padding: 0;
+
+  font-size: 64px;
+  font-weight: 300;
+  line-height: 1;
+
+  color: rgba(255,255,255,0.75);
+  cursor: pointer;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.18s ease;
+}
+
+/*
+  Position exacte : milieu de la gouttière
+  Gouttière = espace entre le bord "utile" de feature-bg (après padding)
+  et le bord de feature-bg-inner (960px centré).
+*/
+.feature-nav--prev{
+  left: calc(60px + (100% - 120px - 960px) / 4);
+}
+
+.feature-nav--next{
+  right: calc(60px + (100% - 120px - 960px) / 4);
+}
+
+/* apparition au hover du background */
+.feature-bg:hover .feature-nav{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* focus clavier */
+.feature-nav:focus-visible{
+  outline: none;
+  opacity: 1;
+  color: #fff;
+}
+
+/* Mix : image en "cover" (plein cadre, quitte à crop) */
+.feature-item[data-feature="mix"] .feature-media-el{
+  height: 420px;        /* même ordre que ton max-height */
+  max-height: none;
+  object-fit: cover;
 }
 
 /* =========================
@@ -799,7 +879,10 @@ body.has-lightbox-open {
     margin-top: 64px;
   }
 
-  .feature-bg{ padding: 18px; }
+  .feature-bg{ 
+    padding: 18px;
+    position: relative; 
+  }
 
   .feature-bg-inner{
     padding: 16px;
@@ -1459,6 +1542,14 @@ body.has-lightbox-open {
 
 .image-item:hover img {
   opacity: 0.9;        /* léger feedback au survol */
+}
+
+.image-item video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none; /* le hover reste sur le <a> */
 }
 
 /* -----------------------------

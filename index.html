@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MGO-space</title>
   <link rel="stylesheet" href="assets/site.css" />
+  <title>MGO-space — Multimedia Archival Online Space</title>
+  <meta name="description" content="MGO space is a personal archive of sounds, writings, images and videos." />
+  <link rel="icon" type="image/png" href="/assets/mgo-space_logonakedwhite.png">
 </head>
 
 <body class="index-page">
@@ -57,53 +60,98 @@
     <!-- SLOT CONTENU DU MOMENT -->
     <section class="feature">
       <div class="feature-bg">
-        <div class="feature-bg-inner">
 
-          <!-- IMAGE (ou média) dans la capsule -->
-          <div class="feature-media">
-            <img 
-              src="assets/MGO_water_dakar.png"
-              alt=""
-              class="feature-media-el"
-              data-id="table_water_dakar"
-              data-tags="dakar"
-              data-lightbox="feature-gallery"
-              data-caption=""
-              data-zoom="true"
-            />
-          </div>
+        <button class="feature-nav feature-nav--prev" type="button" aria-label="Previous spotlight">
+          ‹
+        </button>
 
-          <!-- IMAGES DE LA LIGHTBOX -->
-          <div class="feature-gallery-hidden" aria-hidden="true" style="display:none;">
-            <img src="assets/water_dakar/water1.jpg"  data-lightbox-item data-caption="I left. <br>What did I leave?<br>I'm not coming back for a while" />
-            <img src="assets/water_dakar/water2.png"  data-lightbox-item />
-            <img src="assets/water_dakar/water3.jpg"  data-lightbox-item />
-            <img src="assets/water_dakar/water4.jpg"  data-lightbox-item />
-            <img src="assets/water_dakar/water5.jpg"  data-lightbox-item />
-            <img src="assets/water_dakar/water6.jpg"  data-lightbox-item />
-            <img src="assets/water_dakar/water7.jpg"  data-lightbox-item />
-            <img src="assets/water_dakar/water8.gif"  data-lightbox-item />
-            <img src="assets/water_dakar/water9.jpg"  data-lightbox-item />
-            <img src="assets/water_dakar/water10.png" data-lightbox-item />
-            <img src="assets/water_dakar/water11.gif" data-lightbox-item />
-            <img src="assets/water_dakar/water12.gif" data-lightbox-item />
-          </div>
+        <button class="feature-nav feature-nav--next" type="button" aria-label="Next spotlight">
+          ›
+        </button>
 
-          <!-- TEXTE / META / CTA -->
-          <div class="feature-bg-label">IMAGES</div>
-          <div class="feature-bg-title">Water</div>
-          <div class="feature-bg-meta">
-            <a href="tag-index.html?tag=dakar" class="tag-link">
-              <div class="tag-wrapper">
-                <span class="tag-text">DAKAR</span>
+          <div class="feature-bg-inner">
+
+            <div class="feature-spotlights">
+
+              <!-- ============ SPOTLIGHT #1 (CURRENT) — DAKAR_MIX ============ -->
+              <div class="feature-item is-active" data-feature="mix" data-link="https://www.mixcloud.com/M_GO/dakar_mix/">
+
+                <div class="feature-media">
+                  <img
+                    src="assets/dkr_mix2.png"
+                    alt=""
+                    class="feature-media-el"
+                  />
+                </div>
+
+                <div class="feature-bg-label">RADIO</div>
+                <div class="feature-bg-title">DAKAR_MIX</div>
+
+                <div class="feature-bg-meta">
+                  <a href="tag-index.html?tag=dakar" class="tag-link">
+                    <div class="tag-wrapper">
+                      <span class="tag-text">DAKAR</span>
+                    </div>
+                  </a>
+                  <span class="meta-separator">&middot;</span>
+                  <span class="feature-bg-year">DEC 2025</span>
+                </div>
+
+                <div class="feature-bg-cta">CLICK TO ENTER</div>
               </div>
-            </a>
-            <span class="meta-separator">&middot;</span>
-            <span class="feature-bg-year">2025</span>
-          </div>
-          <div class="feature-bg-cta">CLICK TO VIEW</div>
 
-        </div>
+
+              <!-- ============ SPOTLIGHT #2 (PREVIOUS) — Water IMAGES ============ -->
+              <div class="feature-item" data-feature="images">
+
+                <!-- IMAGE (ou média) dans la capsule -->
+                <div class="feature-media">
+                  <img 
+                    src="assets/MGO_water_dakar.png"
+                    alt=""
+                    class="feature-media-el"
+                    data-id="table_water_dakar"
+                    data-tags="dakar"
+                    data-lightbox="feature-gallery"
+                    data-caption=""
+                    data-zoom="true"
+                  />
+                </div>
+
+                <!-- IMAGES DE LA LIGHTBOX -->
+                <div class="feature-gallery-hidden" aria-hidden="true" style="display:none;">
+                  <img src="assets/water_dakar/water1.jpg"  data-lightbox-item data-caption="I left. <br>What did I leave?<br>I'm not coming back for a while" />
+                  <img src="assets/water_dakar/water2.png"  data-lightbox-item />
+                  <img src="assets/water_dakar/water3.jpg"  data-lightbox-item />
+                  <img src="assets/water_dakar/water4.jpg"  data-lightbox-item />
+                  <img src="assets/water_dakar/water5.jpg"  data-lightbox-item />
+                  <img src="assets/water_dakar/water6.jpg"  data-lightbox-item />
+                  <img src="assets/water_dakar/water7.jpg"  data-lightbox-item />
+                  <img src="assets/water_dakar/water8.gif"  data-lightbox-item />
+                  <img src="assets/water_dakar/water9.jpg"  data-lightbox-item />
+                  <img src="assets/water_dakar/water10.png" data-lightbox-item />
+                  <img src="assets/water_dakar/water11.gif" data-lightbox-item />
+                  <img src="assets/water_dakar/water12.gif" data-lightbox-item />
+                </div>
+
+                <!-- TEXTE / META / CTA -->
+                <div class="feature-bg-label">IMAGES</div>
+                <div class="feature-bg-title">Water</div>
+                <div class="feature-bg-meta">
+                  <a href="tag-index.html?tag=dakar" class="tag-link">
+                    <div class="tag-wrapper">
+                      <span class="tag-text">DAKAR</span>
+                    </div>
+                  </a>
+                  <span class="meta-separator">&middot;</span>
+                  <span class="feature-bg-year">NOV 2025</span>
+                </div>
+                <div class="feature-bg-cta">CLICK TO VIEW</div>
+
+              </div>
+
+            </div>
+          </div>
       </div>
     </section>
 
@@ -144,6 +192,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
   /* =========================
      LIGHTBOX FEATURE
      ========================= */
@@ -160,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const items = [];
 
-    // 1) Moodboard
+    // 1) Moodboard (trigger)
     items.push({
       src: trigger.getAttribute('src'),
       caption: trigger.dataset.caption || ''
@@ -212,11 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function showImage(index) {
       if (!items.length) return;
 
-      if (index < 0) {
-        index = items.length - 1;
-      } else if (index >= items.length) {
-        index = 0;
-      }
+      if (index < 0) index = items.length - 1;
+      if (index >= items.length) index = 0;
+
       currentIndex = index;
 
       const item = items[currentIndex];
@@ -246,10 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
       openLightbox(0);
     });
 
+    // fermer si clic sur le fond uniquement
     lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) {
-        closeLightbox();
-      }
+      if (e.target === lightbox) closeLightbox();
     });
 
     if (prevBtn) {
@@ -292,6 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // clic image => zoom (index 0 seulement)
     img.addEventListener('click', (e) => {
       e.stopPropagation();
 
@@ -312,6 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
       applyTransform();
     });
 
+    // drag seulement si zoomé et index 0
     img.addEventListener('mousedown', (e) => {
       if (currentIndex !== 0) return;
       if (scale === 1) return;
@@ -348,19 +396,82 @@ document.addEventListener('DOMContentLoaded', () => {
       lightbox.classList.remove('is-dragging');
     });
 
+    // pan au trackpad seulement si zoomé et index 0
     lightbox.addEventListener('wheel', (e) => {
       if (!lightbox.classList.contains('is-open')) return;
       if (currentIndex !== 0) return;
       if (scale === 1) return;
 
       e.preventDefault();
-
       panX -= e.deltaX;
       panY -= e.deltaY;
-
       applyTransform();
     }, { passive: false });
   }
+
+
+  /* =========================
+     FEATURE SPOTLIGHT NAV + CLICK (MIXCLOUD)
+     ========================= */
+  const featureBgInner = document.querySelector('.feature-bg-inner');
+  const featureItems   = Array.from(document.querySelectorAll('.feature-item'));
+  const prevSpotBtn    = document.querySelector('.feature-nav--prev');
+  const nextSpotBtn    = document.querySelector('.feature-nav--next');
+
+  function getActiveFeatureIndex(){
+    return featureItems.findIndex(el => el.classList.contains('is-active'));
+  }
+
+  function setActiveFeature(index){
+    if (!featureItems.length) return;
+
+    if (index < 0) index = featureItems.length - 1;
+    if (index >= featureItems.length) index = 0;
+
+    featureItems.forEach(el => el.classList.remove('is-active'));
+    featureItems[index].classList.add('is-active');
+  }
+
+  if (prevSpotBtn) {
+    prevSpotBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setActiveFeature(getActiveFeatureIndex() - 1);
+    });
+  }
+
+  if (nextSpotBtn) {
+    nextSpotBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setActiveFeature(getActiveFeatureIndex() + 1);
+    });
+  }
+
+  if (featureBgInner) {
+    featureBgInner.addEventListener('click', (e) => {
+      // ne pas hijack un clic sur un lien (tag) ou sur les flèches
+      if (e.target.closest('a, button')) return;
+
+      const active = document.querySelector('.feature-item.is-active');
+      if (!active) return;
+
+      const type = active.dataset.feature;
+
+      if (type === 'mix') {
+        const url = active.dataset.link;
+        if (url) window.open(url, '_blank', 'noopener');
+        return;
+      }
+
+      if (type === 'images') {
+        const t = active.querySelector('[data-lightbox="feature-gallery"]');
+        if (t) t.click();
+        return;
+      }
+    });
+  }
+
 
   /* =========================
      FOOTER COORDS (DATE)
@@ -368,16 +479,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const coordsEl = document.getElementById("footer-coords");
   if (coordsEl) {
     const today = new Date();
-    const options = {
-      month: "short",
-      day: "numeric",
-      year: "numeric"
-    };
+    const options = { month: "short", day: "numeric", year: "numeric" };
     const formatted = today.toLocaleDateString("en-US", options);
     coordsEl.textContent = `NOW — Taipei — ${formatted}`;
   }
-});
 
+});
 </script>
 
 </body>
