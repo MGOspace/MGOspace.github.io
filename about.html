@@ -255,10 +255,11 @@
       }
 
       /* ========== WHO — IMAGE STACK ========== */
-      const stack = document.querySelector('[data-who-gallery]');
+      const whoPanel = document.querySelector('.about-panel[data-about-panel="who"]');
       const stack = whoPanel ? whoPanel.querySelector('[data-who-gallery]') : null;
+
       if (stack) {
-        let images = Array.from(stack.querySelectorAll('.who-image'));
+        const images = Array.from(stack.querySelectorAll('.who-image'));
         if (images.length > 1) {
           // Mélange l'ordre des images
           for (let i = images.length - 1; i > 0; i--) {
