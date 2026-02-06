@@ -2531,6 +2531,23 @@ body.radio-page main {
   font-weight: 400;
 }
 
+/* ABOUT panel: 2 colonnes */
+.about-panel[data-about-panel="about"] .about-two-cols{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.about-panel[data-about-panel="about"] .about-two-cols .about-col{
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #ffffff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+}
+
 /* CURSOR: default par défaut dans les panels */
 .about-panel{
   cursor: default;
@@ -2648,6 +2665,11 @@ body.radio-page main {
     padding: 18px !important;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .about-panel[data-about-panel="about"] .about-two-cols{
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
   }
 
   /* =========================
