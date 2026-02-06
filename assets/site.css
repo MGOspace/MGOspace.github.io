@@ -258,15 +258,17 @@ main.page{
 }
 
 /* Capsule centrale cliquable */
-.feature-bg-inner {
+.feature-bg-inner{
   position: relative;
-  max-width: 960px;
-  margin: 0 auto;
+
+  width: 100%;
+  max-width: none;     /* important */
+  margin: 0;           /* plus de centrage par margin auto */
 
   border: 1px solid rgba(255,255,255,0.35);
   background: rgba(0,0,0,0.45);
 
-  display: flex;
+  display: flex;       /* on revient en flex normal */
   flex-direction: column;
   gap: 16px;
 
@@ -342,18 +344,21 @@ main.page{
   opacity: 0.9;
 }
 
-.feature-media {
-  width: 100%;
+.feature-media{
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
-/* Élément média (img, iframe, vidéo…) */
-.feature-media-el {
+/* L'image NE doit plus remplir 100% */
+.feature-media-el{
   display: block;
-  width: 100%;
+  width: auto;              /* clé */
   height: auto;
-  max-height: 420px ;
+  max-width: 100%;          /* reste dans la capsule */
+  max-height: 420px;
   object-fit: contain;
+
   border: 1px solid #e9ecff;
   border-radius: 4px;
   box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
@@ -387,18 +392,8 @@ main.page{
   transition: opacity 0.18s ease;
 }
 
-/*
-  Position exacte : milieu de la gouttière
-  Gouttière = espace entre le bord "utile" de feature-bg (après padding)
-  et le bord de feature-bg-inner (960px centré).
-*/
-.feature-nav--prev{
-  left: calc(60px + (100% - 120px - 960px) / 4);
-}
-
-.feature-nav--next{
-  right: calc(60px + (100% - 120px - 960px) / 4);
-}
+.feature-nav--prev{ left: 24px; }
+.feature-nav--next{ right: 24px; }
 
 /* apparition au hover du background */
 .feature-bg:hover .feature-nav{
@@ -413,11 +408,11 @@ main.page{
   color: #fff;
 }
 
-/* Mix : image en "cover" (plein cadre, quitte à crop) */
+/* Mix — garder le comportement "image réelle" pour que la capsule s'adapte */
 .feature-item[data-feature="mix"] .feature-media-el{
-  height: 420px;        /* même ordre que ton max-height */
-  max-height: none;
-  object-fit: cover;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
 }
 
 /* =========================
@@ -1556,19 +1551,19 @@ body.has-lightbox-open {
    HEADER SUPER FIN POUR GALLERY
    ----------------------------- */
 
-/* Image header — back logo (independent) */
+/* Image header */
 .image-header .image-back{
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
 
-  height: 100%;          /* prend la hauteur 32px */
+  height: 100%;
   text-decoration: none;
   transition: opacity .15s ease;
 }
 
 .image-header .image-back__logo{
-  height: 14px;          /* adapté à un header 32px (discret) */
+  height: 14px;
   width: auto;
   display: block;
 }
@@ -1578,7 +1573,7 @@ body.has-lightbox-open {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 32px;               /* ultra fin */
+  height: 32px;
   background: #ffffff;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -1601,19 +1596,17 @@ body.has-lightbox-open {
   text-shadow: none;
 }
 
-/* Hover minimal : légère baisse d'opacité */
 .image-header a:hover {
   opacity: 0.5;
 }
 
-/* Désactiver le hover pour l'onglet actif */
 .image-header .active {
-  opacity: 1 !important;     /* reste normal */
-  pointer-events: none;      /* pas cliquable */
+  opacity: 1 !important;
+  pointer-events: none;
 }
 
 .image-header .active:hover {
-  opacity: 1 !important;     /* pas de fade */
+  opacity: 1 !important;
 }
 
 .image-header .ih-left  { justify-self: start; }
@@ -1629,8 +1622,6 @@ body.radio-page {
   color: #000000;
 }
 
-/* Décale le contenu sous le header fixe
-   (header initial ≈ 50vh) */
 body.radio-page main {
   padding-top: 50vh;
 }
@@ -1650,7 +1641,7 @@ body.radio-page main {
 
   /* hauteur initiale = 50% de la fenêtre (ajustée par JS) */
   height: 50vh;
-  overflow: hidden; /* le logo ne déborde jamais */
+  overflow: hidden;
 }
 
 /* Conteneur interne : prend 100% de la hauteur du header */
@@ -1658,7 +1649,7 @@ body.radio-page main {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-end;  /* player + chat à droite */
+  justify-content: flex-end;
   height: 100%;
   padding: 24px 32px;
 }
@@ -1676,7 +1667,7 @@ body.radio-page main {
 }
 
 .header-logo-img {
-  height: 100%;                      /* suit la hauteur du header */
+  height: 100%;
   width: auto;
   display: block;
 }
@@ -1771,7 +1762,7 @@ body.radio-page main {
   display: none;
 }
 
-/* Symbole PLAY/PAUSE (gros) à gauche */
+/* Symbole PLAY/PAUSE à gauche */
 .header-player-icon {
   font-size: 26px;         /* augmente si tu veux encore plus gros */
   display: inline-flex;

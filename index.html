@@ -73,8 +73,60 @@
 
             <div class="feature-spotlights">
 
+              <!-- ============ SPOTLIGHT — EARTH (MOODBOARD) ============ -->
+              <div class="feature-item is-active" data-feature="images">
+
+                <!-- IMAGE PRINCIPALE (moodboard) -->
+                <div class="feature-media">
+                  <img 
+                    src="assets/gallery/EARTH.png"
+                    alt=""
+                    class="feature-media-el"
+                    data-id="table_earth"
+                    data-tags="dakar"
+                    data-lightbox="feature-gallery-earth"
+                    data-caption=""
+                    data-zoom="true"
+                  />
+                </div>
+
+                <!-- IMAGES DE LA LIGHTBOX -->
+                <div class="feature-gallery-hidden" aria-hidden="true" style="display:none;">
+                  <img src="assets/gallery/earth1.jpg"  data-lightbox-item />
+                  <img src="assets/gallery/earth2.jpg"  data-lightbox-item />
+                  <img src="assets/gallery/earth3.jpg"  data-lightbox-item />
+                  <img src="assets/gallery/earth4.gif"  data-lightbox-item />
+                  <img src="assets/gallery/earth5.png"  data-lightbox-item />
+                  <img src="assets/gallery/earth6.jpg"  data-lightbox-item />
+                  <img src="assets/gallery/earth7.jpg"  data-lightbox-item />
+                  <img src="assets/gallery/earth8.jpg"  data-lightbox-item />
+                  <img src="assets/gallery/earth9.png"  data-lightbox-item />
+                  <img src="assets/gallery/earth10.gif" data-lightbox-item />
+                  <img src="assets/gallery/earth11.jpg" data-lightbox-item />
+                  <img src="assets/gallery/earth12.jpg" data-lightbox-item />
+                  <img src="assets/gallery/earth13.gif" data-lightbox-item />
+                </div>
+
+                <!-- TEXTE / META / CTA -->
+                <div class="feature-bg-label">IMAGES</div>
+                <div class="feature-bg-title">EARTH</div>
+
+                <div class="feature-bg-meta">
+                  <a href="tag-index.html?tag=dakar" class="tag-link">
+                    <div class="tag-wrapper">
+                      <span class="tag-text">TAIPEI</span>
+                    </div>
+                  </a>
+                  <span class="meta-separator">&middot;</span>
+                  <span class="feature-bg-year">JAN 2026</span>
+                </div>
+
+                <div class="feature-bg-cta">CLICK TO VIEW</div>
+
+              </div>
+
               <!-- ============ SPOTLIGHT #1 (CURRENT) — DAKAR_MIX ============ -->
-              <div class="feature-item is-active" data-feature="mix" data-link="https://www.mixcloud.com/M_GO/dakar_mix/">
+              <div class="feature-item" data-feature="mix" data-link="https://www.mixcloud.com/M_GO/dakar_mix/">
 
                 <div class="feature-media">
                   <img
@@ -85,7 +137,7 @@
                 </div>
 
                 <div class="feature-bg-label">RADIO</div>
-                <div class="feature-bg-title">DAKAR_MIX</div>
+                <div class="feature-bg-title">5_MIX</div>
 
                 <div class="feature-bg-meta">
                   <a href="tag-index.html?tag=dakar" class="tag-link">
@@ -112,7 +164,7 @@
                     class="feature-media-el"
                     data-id="table_water_dakar"
                     data-tags="dakar"
-                    data-lightbox="feature-gallery"
+                    data-lightbox="feature-gallery-water"
                     data-caption=""
                     data-zoom="true"
                   />
@@ -193,221 +245,187 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* =========================
-     LIGHTBOX FEATURE
-     ========================= */
-  const trigger  = document.querySelector('[data-lightbox="feature-gallery"]');
-  const lightbox = document.querySelector('[data-lightbox-root]');
+/* =========================
+   LIGHTBOX FEATURE (scopé par spotlight)
+   ========================= */
+const lightbox = document.querySelector('[data-lightbox-root]');
 
-  if (trigger && lightbox) {
-    const img       = lightbox.querySelector('.lightbox-image');
-    const captionEl = lightbox.querySelector('.lightbox-caption');
-    const prevBtn   = lightbox.querySelector('.lightbox-prev');
-    const nextBtn   = lightbox.querySelector('.lightbox-next');
-    const hitLeft   = lightbox.querySelector('.lightbox-hit--left');
-    const hitRight  = lightbox.querySelector('.lightbox-hit--right');
+if (lightbox) {
+  const img       = lightbox.querySelector('.lightbox-image');
+  const captionEl = lightbox.querySelector('.lightbox-caption');
+  const prevBtn   = lightbox.querySelector('.lightbox-prev');
+  const nextBtn   = lightbox.querySelector('.lightbox-next');
+  const hitLeft   = lightbox.querySelector('.lightbox-hit--left');
+  const hitRight  = lightbox.querySelector('.lightbox-hit--right');
 
-    const items = [];
+  let items = [];
+  let currentIndex = 0;
 
-    // 1) Moodboard (trigger)
-    items.push({
+  // Zoom / pan seulement pour l’index 0
+  let scale       = 1;
+  const zoomLevel = 2;
+  let panX        = 0;
+  let panY        = 0;
+
+  let isDragging   = false;
+  let didDrag      = false;
+  let startMouseX  = 0;
+  let startMouseY  = 0;
+  let startPanX    = 0;
+  let startPanY    = 0;
+  const DRAG_THRESHOLD = 4;
+
+  img.addEventListener('dragstart', (e) => e.preventDefault());
+
+  function applyTransform() {
+    img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+    if (scale === 1) img.classList.add('is-not-zoomed');
+    else img.classList.remove('is-not-zoomed');
+  }
+
+  function resetTransform() {
+    scale = 1; panX = 0; panY = 0;
+    applyTransform();
+  }
+
+  function showImage(index) {
+    if (!items.length) return;
+
+    if (index < 0) index = items.length - 1;
+    if (index >= items.length) index = 0;
+
+    currentIndex = index;
+
+    const item = items[currentIndex];
+    img.setAttribute('src', item.src);
+    captionEl.innerHTML = item.caption || '';
+
+    resetTransform();
+
+    if (currentIndex !== 0) img.classList.add('is-not-zoomed');
+  }
+
+  function openLightbox(startIndex = 0) {
+    showImage(startIndex);
+    lightbox.classList.add('is-open');
+    document.body.classList.add('has-lightbox-open');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.body.classList.remove('has-lightbox-open');
+  }
+
+  // IMPORTANT : multi triggers + scope par feature-item
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-lightbox]');
+    if (!trigger) return;
+
+    const group = trigger.getAttribute('data-lightbox'); // ex: feature-gallery-earth
+    if (!group) return;
+
+    e.preventDefault();
+
+    const scope = trigger.closest('.feature-item') || document;
+
+    // 1) moodboard (trigger)
+    items = [{
       src: trigger.getAttribute('src'),
       caption: trigger.dataset.caption || ''
-    });
+    }];
 
-    // 2) Autres images
-    document.querySelectorAll('[data-lightbox-item]').forEach(el => {
-      items.push({
-        src: el.getAttribute('src'),
-        caption: el.dataset.caption || ''
-      });
-    });
-
-    let currentIndex = 0;
-
-    // Zoom / pan seulement pour l’index 0
-    let scale       = 1;
-    const zoomLevel = 2;
-    let panX        = 0;
-    let panY        = 0;
-
-    let isDragging   = false;
-    let didDrag      = false;
-    let startMouseX  = 0;
-    let startMouseY  = 0;
-    let startPanX    = 0;
-    let startPanY    = 0;
-    const DRAG_THRESHOLD = 4;
-
-    img.addEventListener('dragstart', (e) => e.preventDefault());
-
-    function applyTransform() {
-      img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-
-      if (scale === 1) {
-        img.classList.add('is-not-zoomed');
-      } else {
-        img.classList.remove('is-not-zoomed');
-      }
-    }
-
-    function resetTransform() {
-      scale = 1;
-      panX  = 0;
-      panY  = 0;
-      applyTransform();
-    }
-
-    function showImage(index) {
-      if (!items.length) return;
-
-      if (index < 0) index = items.length - 1;
-      if (index >= items.length) index = 0;
-
-      currentIndex = index;
-
-      const item = items[currentIndex];
-      img.setAttribute('src', item.src);
-      captionEl.innerHTML = item.caption || '';
-
-      resetTransform();
-
-      if (currentIndex !== 0) {
-        img.classList.add('is-not-zoomed');
-      }
-    }
-
-    function openLightbox(startIndex = 0) {
-      showImage(startIndex);
-      lightbox.classList.add('is-open');
-      document.body.classList.add('has-lightbox-open');
-    }
-
-    function closeLightbox() {
-      lightbox.classList.remove('is-open');
-      document.body.classList.remove('has-lightbox-open');
-    }
-
-    trigger.addEventListener('click', (e) => {
-      e.preventDefault();
-      openLightbox(0);
-    });
-
-    // fermer si clic sur le fond uniquement
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
-
-    if (prevBtn) {
-      prevBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showImage(currentIndex - 1);
+    // 2) autres images : uniquement celles du scope, et uniquement si le trigger appartient au même groupe
+    const sameGroupTriggers = scope.querySelectorAll(`[data-lightbox="${group}"]`);
+    if (sameGroupTriggers.length) {
+      scope.querySelectorAll('.feature-gallery-hidden [data-lightbox-item]').forEach(el => {
+        items.push({
+          src: el.getAttribute('src'),
+          caption: el.dataset.caption || ''
+        });
       });
     }
 
-    if (nextBtn) {
-      nextBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showImage(currentIndex + 1);
-      });
-    }
+    openLightbox(0);
+  });
 
-    if (hitLeft) {
-      hitLeft.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showImage(currentIndex - 1);
-      });
-    }
+  // fermer si clic sur le fond uniquement
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
 
-    if (hitRight) {
-      hitRight.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showImage(currentIndex + 1);
-      });
-    }
+  if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex + 1); });
+  if (hitLeft) hitLeft.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex - 1); });
+  if (hitRight) hitRight.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex + 1); });
 
-    document.addEventListener('keydown', (e) => {
-      if (!lightbox.classList.contains('is-open')) return;
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
 
-      if (e.key === 'Escape') {
-        closeLightbox();
-      } else if (e.key === 'ArrowRight') {
-        showImage(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft') {
-        showImage(currentIndex - 1);
-      }
-    });
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+    else if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+  });
 
-    // clic image => zoom (index 0 seulement)
-    img.addEventListener('click', (e) => {
-      e.stopPropagation();
+  // clic image => zoom (index 0 seulement)
+  img.addEventListener('click', (e) => {
+    e.stopPropagation();
 
-      if (didDrag) {
-        didDrag = false;
-        return;
-      }
+    if (didDrag) { didDrag = false; return; }
+    if (currentIndex !== 0) return;
 
-      if (currentIndex !== 0) return;
+    if (scale === 1) scale = zoomLevel;
+    else { resetTransform(); return; }
 
-      if (scale === 1) {
-        scale = zoomLevel;
-      } else {
-        resetTransform();
-        return;
-      }
+    applyTransform();
+  });
 
-      applyTransform();
-    });
+  // drag seulement si zoomé et index 0
+  img.addEventListener('mousedown', (e) => {
+    if (currentIndex !== 0) return;
+    if (scale === 1) return;
 
-    // drag seulement si zoomé et index 0
-    img.addEventListener('mousedown', (e) => {
-      if (currentIndex !== 0) return;
-      if (scale === 1) return;
+    isDragging = true;
+    didDrag = false;
+    lightbox.classList.add('is-dragging');
 
-      isDragging  = true;
-      didDrag     = false;
-      lightbox.classList.add('is-dragging');
+    startMouseX = e.clientX;
+    startMouseY = e.clientY;
+    startPanX = panX;
+    startPanY = panY;
+  });
 
-      startMouseX = e.clientX;
-      startMouseY = e.clientY;
-      startPanX   = panX;
-      startPanY   = panY;
-    });
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
 
-    window.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
+    const dx = e.clientX - startMouseX;
+    const dy = e.clientY - startMouseY;
 
-      const dx = e.clientX - startMouseX;
-      const dy = e.clientY - startMouseY;
+    if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) didDrag = true;
 
-      if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-        didDrag = true;
-      }
+    panX = startPanX + dx;
+    panY = startPanY + dy;
 
-      panX = startPanX + dx;
-      panY = startPanY + dy;
+    applyTransform();
+  });
 
-      applyTransform();
-    });
+  window.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    lightbox.classList.remove('is-dragging');
+  });
 
-    window.addEventListener('mouseup', () => {
-      if (!isDragging) return;
-      isDragging = false;
-      lightbox.classList.remove('is-dragging');
-    });
+  // pan au trackpad seulement si zoomé et index 0
+  lightbox.addEventListener('wheel', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (currentIndex !== 0) return;
+    if (scale === 1) return;
 
-    // pan au trackpad seulement si zoomé et index 0
-    lightbox.addEventListener('wheel', (e) => {
-      if (!lightbox.classList.contains('is-open')) return;
-      if (currentIndex !== 0) return;
-      if (scale === 1) return;
-
-      e.preventDefault();
-      panX -= e.deltaX;
-      panY -= e.deltaY;
-      applyTransform();
-    }, { passive: false });
-  }
+    e.preventDefault();
+    panX -= e.deltaX;
+    panY -= e.deltaY;
+    applyTransform();
+  }, { passive: false });
+}
 
 
   /* =========================
@@ -465,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (type === 'images') {
-        const t = active.querySelector('[data-lightbox="feature-gallery"]');
+        const t = active.querySelector('[data-lightbox]');
         if (t) t.click();
         return;
       }
