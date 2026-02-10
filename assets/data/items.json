@@ -49,5 +49,12 @@
   "subtype": "fragment",
   "title": "Jammin",
   "tags": ["dakar"]
+},
+
+"table_earth_taipei": {
+  "type": "image",
+  "subtype": "moodboard",
+  "title": "EARTH",
+  "tags": ["taipei"]
 }
 }
