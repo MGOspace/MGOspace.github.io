@@ -18,7 +18,7 @@
 
 :root{
   --rail: 200px;
-  --header: 70px;
+  --header: 48px;
   --size: 180px;
   --seed: 22px;
   --gap: 12px;
@@ -28,12 +28,12 @@
   --bg: #0b0b12;
 
   /* Cards */
-  --card-w: 200px;
-  --card-h: 266px;
-  --card-edge: 14px;
+  --card-w: 100px;
+  --card-h: 130px;
+  --card-edge: 4px;
 
   /* Footer */
-  --logo-block-h: 60px;
+  --logo-block-h: 50px;
 }
 
 *{ box-sizing:border-box; margin:0; }
@@ -43,7 +43,7 @@ html {
 }
 
   body{
-    min-height: 100vh;
+    height: 100vh;
     background:var(--bg);
     color:#e9ecff;
     font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
@@ -88,7 +88,7 @@ a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
   align-items: center;
   justify-content: center;
 
-  padding-left: 24px;
+  padding: 0 24px;
 }
 
 /* Logo */
@@ -99,7 +99,7 @@ a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
 }
 
 .site-header .header-logo img {
-  height: 32px;
+  height: 16px;
   width: auto;
   display: block;
   margin: 0;
@@ -110,44 +110,69 @@ a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
    ========================= */
 
 main.page{
-  max-width:960px;
+  max-width:820px;
   margin:0 auto;
   flex: 1 0 auto;
 
   display:grid;
   grid-template-columns: repeat(12, minmax(0,1fr));
   column-gap:16px;
-  row-gap:40px;
+  row-gap:22px;
 
-  /* espace sous le header + marge bas pour le footer */
-  padding:120px 12px 160px;
+  padding-top: calc(var(--header) + 22px);
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 48px;
 }
 
 /* LABEL AU-DESSUS DES DOORS */
 .doors-label {
-  grid-column: 3 / span 8;
-  grid-row: 2;
+  grid-column: 1 / -1;
+  grid-row: 1;
 
   text-align: center;
-  font-size: 46px;
+  font-size: 28px;
+  line-height: 1.05;
   letter-spacing: 0.02em;
   color: #ffffff;
   font-family: "Arial Black", Arial, sans-serif;
-  margin-top: -20px;
+  margin-top: 0px;
 }
 
-/* LIGNE DES DOORS (cards) */
+/* LIGNE DES DOORS (section + overlay axis) */
 .index-doors {
-  grid-column: 3 / span 8;
+  grid-column: 1 / -1;
   grid-row: 2;
 
+  position: relative;
+  z-index: 2;
+
+  /* IMPORTANT: ne pas centrer ici */
+  display: block;
+
+  /* ton offset vertical reste ici */
+  margin-top: 28px;
+}
+
+.index-doors-row {
   display: flex;
   justify-content: center;
-  gap: 96px;
-  margin-top: 160px;
+  align-items: center;
+  gap: 90px;
 
-  position: relative;
-  z-index: 2; /* devant le feature */
+  /* sécurité anti “décalage” */
+  width: fit-content;
+  margin: 0 auto;
+
+  /* si tu veux micro-ajuster le centrage visuel (optionnel) */
+  /* transform: translateX(-2px); */
+}
+
+.doors-axis {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .card {
@@ -156,7 +181,7 @@ main.page{
   background: #000;
   position: relative;
   transform: skewY(-10deg);
-  border: 4px solid #fff;
+  border: 2px solid #fff;
   box-sizing: border-box;
   transition: all 0.3s;
 }
@@ -170,16 +195,16 @@ main.page{
 .card::before {
   width: var(--card-edge);
   height: var(--card-h);
-  top: -4px;
-  left: calc(-1 * var(--card-edge) - 4px);
+  top: -2px;
+  left: calc(-1 * var(--card-edge) - 2px);
   transform-origin: right;
   transform: skewY(45deg);
 }
 .card::after {
   height: var(--card-edge);
   width: var(--card-w);
-  top: calc(-1 * var(--card-edge) - 4px);
-  left: -4px;
+  top: calc(-1 * var(--card-edge) - 2px);
+  left: -2px;
   transform-origin: bottom;
   transform: skewX(45deg);
 }
@@ -188,13 +213,13 @@ main.page{
 }
 .card:hover::before { 
   width: 0; 
-  height: calc(var(--card-h) - 8px); 
+  height: calc(var(--card-h) - 4px); 
   left: 0; 
   top: 0; 
 }
 
 .card:hover::after  { 
-  width: calc(var(--card-w) - 8px); 
+  width: calc(var(--card-w) - 4px); 
   height: 0; 
   left: 0; 
   top: 0; 
@@ -202,22 +227,25 @@ main.page{
 
 .card__content { 
   height: 100%;
-  padding: 20px;               /* AVANT: 10px */
+  padding: 10px;
   
-  display: flex;               /* centrage */
+  display: flex;
   align-items: center;
   justify-content: center;
 
   color: #e9ecff; 
   text-align: center;
 
-  font-size: 16px;             /* AVANT: taille par défaut (~16, mais là on force) */
-  letter-spacing: 0.18em;
+  font-size: 11px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 /* Liens autour des cards */
 .card-link {
+  position: relative;
+  z-index: 1;
+
   display: block;
   text-decoration: none;
   color: inherit;
@@ -238,42 +266,38 @@ main.page{
    MAIN PAGE
    ========================= */
 
-/* LATEST ITERATION (bloc de fond derrière les doors) */
-.feature {
+/* Bloc global (derrière les doors) */
+.feature{
   grid-column: 1 / span 12;
   grid-row: 3;
-
-  /* chevauchement : on remonte le bloc sous les cards */
-  margin-top: 120px;
+  margin-top: 16px;
 }
 
-/* Bloc de fond flou / radial */
-.feature-bg {
+/* Fond flou / radial + flèches (position:relative) */
+.feature-bg{
   position: relative;
-  padding: 40px 60px;
+  padding: 18px 27px;
   background: radial-gradient(circle at top left,
-                              rgba(255,255,255,0.12),
-                              rgba(255,255,255,0.02));
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0.02)
+  );
   border: 1px solid rgba(255,255,255,0.18);
 }
 
-/* Capsule centrale cliquable */
+/* Capsule cliquable */
 .feature-bg-inner{
-  position: relative;
-
   width: 100%;
-  max-width: none;     /* important */
-  margin: 0;           /* plus de centrage par margin auto */
+  max-width: 320px;
+  margin: 0 auto;
 
   border: 1px solid rgba(255,255,255,0.35);
   background: rgba(0,0,0,0.45);
 
-  display: flex;       /* on revient en flex normal */
+  display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 
-  padding: 24px 32px;
-  box-sizing: border-box;
+  padding: 16px 20px;
   cursor: pointer;
 
   transition:
@@ -283,85 +307,88 @@ main.page{
     box-shadow 0.2s ease;
 }
 
-.feature-bg-inner:hover {
+.feature-bg-inner:hover{
   border-color: rgba(255,255,255,0.7);
   background: rgba(0,0,0,0.75);
   transform: translateY(-3px);
   box-shadow: 0 18px 40px rgba(0,0,0,0.6);
 }
 
-/* =========================
-   FEATURE — MULTI SPOTLIGHT STACK
-   ========================= */
+/* Stack de spotlights */
+.feature-spotlights{ position: relative; }
 
-.feature-spotlights{
-  position: relative;
-}
-
-/* un seul spotlight affiché à la fois */
 .feature-item{
   display: none;
   flex-direction: column;
   gap: 16px;
 }
+.feature-item.is-active{ display: flex; }
 
-.feature-item.is-active{
-  display: flex;
-}
-
-.feature-bg-label {
-  font-size:11px;
+/* Typo */
+.feature-bg-label{
+  font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.7);
 }
 
-.feature-bg-title {
-  font-size: 22px;
+.feature-bg-title{
+  font-size: 16px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-.feature-bg-meta {
-  font-size: 13px;
-  color: rgba(255,255,255,0.7);
-  display: inline-flex;
+/* Ligne meta (TAG + DATE à gauche, CTA à droite) */
+.feature-meta-row{
+  display: flex;
   align-items: center;
-  gap: 8px;         /* espace entre le tag et "2025" */
+  width: 100%;
 }
 
-/* L’année garde l’ancienne logique de méta */
-.feature-bg-year {
-  opacity: 0.9;
+.feature-bg-meta{
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.feature-bg-cta {
-  margin-top: 16px;
+.feature-bg-year{ opacity: 0.9; }
+
+.feature-bg-cta{
+  margin-left: auto;   /* pousse à droite */
+  margin-top: 0;       /* pas de retour ligne via marge */
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.8);
   opacity: 0.9;
+  white-space: nowrap;
 }
 
+/* Média */
 .feature-media{
+  width: 100%;
+  aspect-ratio: 5 / 4;
   position: relative;
-  display: flex;
-  justify-content: center;
-}
-
-/* L'image NE doit plus remplir 100% */
-.feature-media-el{
-  display: block;
-  width: auto;              /* clé */
-  height: auto;
-  max-width: 100%;          /* reste dans la capsule */
-  max-height: 420px;
-  object-fit: contain;
+  overflow: hidden;
 
   border: 1px solid #e9ecff;
   border-radius: 4px;
   box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+}
+
+/* Image = remplit exactement le cadre */
+.feature-media-el{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Mix = plein cadre */
+.feature-item[data-feature="mix"] .feature-media-el{
+  object-fit: cover;
 }
 
 /* =========================

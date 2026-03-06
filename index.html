@@ -35,26 +35,32 @@
         <span class="axis-line axis-line-4"></span>
       </div>
 
-      <a href="radio.html" class="card-link">
-        <div class="card">
-          <div class="card__content">Radio</div>
-        </div>
-      </a>
-      <a href="writings.html" class="card-link">
-        <div class="card">
-          <div class="card__content">Writings</div>
-        </div>
-      </a>
-      <a href="image.html" class="card-link">
-        <div class="card">
-          <div class="card__content">Images</div>
-        </div>
-      </a>
-      <a href="video.html" class="card-link">
-        <div class="card">
-          <div class="card__content">Video</div>
-        </div>
-      </a>
+      <!-- Wrapper centré (et qu’on peut décaler légèrement) -->
+      <div class="index-doors-row">
+        <a href="radio.html" class="card-link">
+          <div class="card">
+            <div class="card__content">Radio</div>
+          </div>
+        </a>
+
+        <a href="writings.html" class="card-link">
+          <div class="card">
+            <div class="card__content">Writings</div>
+          </div>
+        </a>
+
+        <a href="image.html" class="card-link">
+          <div class="card">
+            <div class="card__content">Images</div>
+          </div>
+        </a>
+
+        <a href="video.html" class="card-link">
+          <div class="card">
+            <div class="card__content">Video</div>
+          </div>
+        </a>
+      </div>
     </section>
 
     <!-- SLOT CONTENU DU MOMENT -->
@@ -73,10 +79,39 @@
 
             <div class="feature-spotlights">
 
-              <!-- ============ SPOTLIGHT — EARTH (MOODBOARD) ============ -->
-              <div class="feature-item is-active" data-feature="images">
+              <!-- ============ SPOTLIGHT — TP MORNING MIX ============ -->
+              <div class="feature-item is-active" data-feature="mix" data-link="https://www.mixcloud.com/M_GO/1102-tp-morning-20260211-033530/">
 
-                <!-- IMAGE PRINCIPALE (moodboard) -->
+                <div class="feature-media">
+                  <img
+                    src="assets/TP_morning.jpeg"
+                    alt=""
+                    class="feature-media-el"
+                  />
+                </div>
+
+                <div class="feature-bg-label">RADIO</div>
+                <div class="feature-bg-title">TP_MORNING</div>
+
+                <div class="feature-meta-row">
+                  <div class="feature-bg-meta">
+                    <a href="tag-index.html?tag=taipei" class="tag-link">
+                      <div class="tag-wrapper">
+                        <span class="tag-text">TAIPEI</span>
+                      </div>
+                    </a>
+                    <span class="meta-separator">&middot;</span>
+                    <span class="feature-bg-year">FEB 2026</span>
+                  </div>
+
+                  <div class="feature-bg-cta">CLICK TO ENTER</div>
+                </div>
+
+              </div>
+
+              <!-- ============ SPOTLIGHT — EARTH (MOODBOARD) ============ -->
+              <div class="feature-item" data-feature="images">
+
                 <div class="feature-media">
                   <img 
                     src="assets/gallery/EARTH.png"
@@ -90,7 +125,6 @@
                   />
                 </div>
 
-                <!-- IMAGES DE LA LIGHTBOX -->
                 <div class="feature-gallery-hidden" aria-hidden="true" style="display:none;">
                   <img src="assets/gallery/earth1.jpg"  data-lightbox-item />
                   <img src="assets/gallery/earth2.jpg"  data-lightbox-item />
@@ -107,22 +141,22 @@
                   <img src="assets/gallery/earth13.gif" data-lightbox-item />
                 </div>
 
-                <!-- TEXTE / META / CTA -->
                 <div class="feature-bg-label">IMAGES</div>
                 <div class="feature-bg-title">EARTH</div>
 
-                <div class="feature-bg-meta">
-                  <a href="tag-index.html?tag=taipei" class="tag-link">
-                    <div class="tag-wrapper">
-                      <span class="tag-text">TAIPEI</span>
-                    </div>
-                  </a>
-                  <span class="meta-separator">&middot;</span>
-                  <span class="feature-bg-year">JAN 2026</span>
+                <div class="feature-meta-row">
+                  <div class="feature-bg-meta">
+                    <a href="tag-index.html?tag=taipei" class="tag-link">
+                      <div class="tag-wrapper">
+                        <span class="tag-text">TAIPEI</span>
+                      </div>
+                    </a>
+                    <span class="meta-separator">&middot;</span>
+                    <span class="feature-bg-year">JAN 2026</span>
+                  </div>
+
+                  <div class="feature-bg-cta">CLICK TO ENTER</div>
                 </div>
-
-                <div class="feature-bg-cta">CLICK TO VIEW</div>
-
               </div>
 
               <!-- ============ SPOTLIGHT #1 (CURRENT) — DAKAR_MIX ============ -->
@@ -139,24 +173,25 @@
                 <div class="feature-bg-label">RADIO</div>
                 <div class="feature-bg-title">5_MIX</div>
 
-                <div class="feature-bg-meta">
-                  <a href="tag-index.html?tag=dakar" class="tag-link">
-                    <div class="tag-wrapper">
-                      <span class="tag-text">DAKAR</span>
-                    </div>
-                  </a>
-                  <span class="meta-separator">&middot;</span>
-                  <span class="feature-bg-year">DEC 2025</span>
+                <!-- ✅ Harmonisé : meta + CTA sur la même ligne -->
+                <div class="feature-meta-row">
+                  <div class="feature-bg-meta">
+                    <a href="tag-index.html?tag=dakar" class="tag-link">
+                      <div class="tag-wrapper">
+                        <span class="tag-text">DAKAR</span>
+                      </div>
+                    </a>
+                    <span class="meta-separator">&middot;</span>
+                    <span class="feature-bg-year">DEC 2025</span>
+                  </div>
+
+                  <div class="feature-bg-cta">CLICK TO ENTER</div>
                 </div>
-
-                <div class="feature-bg-cta">CLICK TO ENTER</div>
               </div>
-
 
               <!-- ============ SPOTLIGHT #2 (PREVIOUS) — Water IMAGES ============ -->
               <div class="feature-item" data-feature="images">
 
-                <!-- IMAGE (ou média) dans la capsule -->
                 <div class="feature-media">
                   <img 
                     src="assets/MGO_water_dakar.png"
@@ -170,7 +205,6 @@
                   />
                 </div>
 
-                <!-- IMAGES DE LA LIGHTBOX -->
                 <div class="feature-gallery-hidden" aria-hidden="true" style="display:none;">
                   <img src="assets/water_dakar/water1.jpg"  data-lightbox-item data-caption="I left. <br>What did I leave?<br>I'm not coming back for a while" />
                   <img src="assets/water_dakar/water2.png"  data-lightbox-item />
@@ -186,20 +220,23 @@
                   <img src="assets/water_dakar/water12.gif" data-lightbox-item />
                 </div>
 
-                <!-- TEXTE / META / CTA -->
                 <div class="feature-bg-label">IMAGES</div>
-                <div class="feature-bg-title">Water</div>
-                <div class="feature-bg-meta">
-                  <a href="tag-index.html?tag=dakar" class="tag-link">
-                    <div class="tag-wrapper">
-                      <span class="tag-text">DAKAR</span>
-                    </div>
-                  </a>
-                  <span class="meta-separator">&middot;</span>
-                  <span class="feature-bg-year">NOV 2025</span>
-                </div>
-                <div class="feature-bg-cta">CLICK TO VIEW</div>
+                <div class="feature-bg-title">WATER</div>
 
+                <!-- ✅ Harmonisé : meta + CTA sur la même ligne -->
+                <div class="feature-meta-row">
+                  <div class="feature-bg-meta">
+                    <a href="tag-index.html?tag=dakar" class="tag-link">
+                      <div class="tag-wrapper">
+                        <span class="tag-text">DAKAR</span>
+                      </div>
+                    </a>
+                    <span class="meta-separator">&middot;</span>
+                    <span class="feature-bg-year">NOV 2025</span>
+                  </div>
+
+                  <div class="feature-bg-cta">CLICK TO ENTER</div>
+                </div>
               </div>
 
             </div>
