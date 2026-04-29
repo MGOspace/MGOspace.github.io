@@ -3,60 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Video — MGO_radio</title>
+  <title>Video — MGO space</title>
+  <link rel="stylesheet" href="assets/tokens.css">
   <link rel="stylesheet" href="assets/site.css">
-  <style>
-    body {
-      background: #000;
-      margin: 0;
-      min-height: 100vh;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .video-landing-image {
-      max-width: 90vw;
-      max-height: 90vh;
-      object-fit: contain;
-    }
-
-    .video-back{
-      position: fixed;
-      top: 24px;
-      left: 24px;
-
-      z-index: 2000;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      cursor: pointer;
-      transition: opacity .15s ease;
-    }
-
-    .video-back:hover{
-      opacity: 0.6;
-    }
-
-    .video-back__logo{
-      height: 14px;    /* discret, cohérent avec writings/image */
-      width: auto;
-      display: block;
-    }
-  </style>
 </head>
 
-<body>
-  <a href="index.html" class="video-back" aria-label="Back to index">
-    <img
-      src="assets/mgo-space_logonakedwhite.png"
-      alt="MGO Space"
-      class="video-back__logo"
-    >
-  </a>
+<body class="video-page">
+  <header class="site-header">
+    <a href="index.html" class="header-logo" aria-label="Back to index">
+      <img src="assets/mgo-space_logonakedwhite.png" alt="MGO Space">
+    </a>
+  </header>
   <img
     src="assets/bababy_sportgpikaconstruction.gif"
     alt=""

@@ -1,0 +1,342 @@
+/* ===================================================================
+   TOKENS.CSS — MGO space
+   =================================================================== */
+
+@font-face {
+  font-family: 'Departure Mono';
+  src: url('fonts/DepartureMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Redaction';
+  src: url('fonts/Redaction_10-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Schengen';
+  src: url('fonts/ABCSchengenC-Thin-Trial.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Schengen';
+  src: url('fonts/ABCSchengenC-Light-Trial.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Schengen';
+  src: url('fonts/ABCSchengenC-Book-Trial.woff') format('woff');
+  font-weight: 350;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Schengen';
+  src: url('fonts/ABCSchengenC-Regular-Trial.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenZone';
+  src: url('fonts/ABCSchengenZone-Thin-Trial.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenZone';
+  src: url('fonts/ABCSchengenZone-Light-Trial.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenCore';
+  src: url('fonts/ABCSchengenCore-Light-Trial.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenA';
+  src: url('fonts/ABCSchengenA-Light-Trial.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenCMono';
+  src: url('fonts/ABCSchengenCMono-Regular-Trial.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenC';
+  src: url('fonts/ABCSchengenC-Regular-Trial.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenLine';
+  src: url('fonts/ABCSchengenLine-Light-Trial.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenAMono';
+  src: url('fonts/ABCSchengenAMono-Book-Trial.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenAMono';
+  src: url('fonts/ABCSchengenAMono-Medium-Trial.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenB';
+  src: url('fonts/ABCSchengenB-Book-Trial.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+
+  /* =================================================================
+     FONTS
+     ================================================================= */
+
+   --font-display:        'Schengen', Arial, sans-serif;
+   --font-display-weight: 400;
+   --font-display-c: 'SchengenC', Arial, sans-serif;
+   --font-line:         'SchengenLine', Arial, sans-serif;
+   --font-b: 'SchengenB', Arial, sans-serif;
+
+   --font-body:           'Schengen', Arial, sans-serif;
+   --font-body-weight:    300;
+
+   --font-book:           'Redaction', "Times New Roman", serif;
+   --font-mono:           'Departure Mono', ui-monospace, monospace;
+   --font-amono: 'SchengenAMono', 'Departure Mono', monospace;
+
+   --font-zone:  'SchengenZone', 'Didot', Georgia, serif;
+   --font-core:  'SchengenCore', 'Helvetica Neue', Arial, sans-serif;
+   --font-nav:   'SchengenA', 'Helvetica Neue', Arial, sans-serif;
+   --font-cmono: 'SchengenCMono', 'Departure Mono', monospace;
+
+  /* =================================================================
+     COLORS
+     ================================================================= */
+
+  --c-bg:      #000;        /* dark background (main) */
+  --c-bg-alt:  #fff;        /* light background (image page, radio body) */
+
+  --c-ink:     #fff;        /* text on dark bg */
+  --c-ink-alt: #000;        /* text on light bg */
+
+  --c-line:    #e6e6e6;     /* light border (headers, footers) */
+
+  /* Translucent scale — 3 levels per color */
+  --c-white-soft:   rgba(255, 255, 255, 0.15);
+  --c-white-mid:    rgba(255, 255, 255, 0.4);
+  --c-white-strong: rgba(255, 255, 255, 0.75);
+
+  --c-black-soft:   rgba(0, 0, 0, 0.25);
+  --c-black-mid:    rgba(0, 0, 0, 0.45);
+  --c-black-strong: rgba(0, 0, 0, 0.75);
+
+
+  /* =================================================================
+     TYPE SCALE
+     ================================================================= */
+
+  --text-2xs:   5.5px;
+  --text-xs:   10px;
+  --text-sm:   11px;
+  --text-base: 12px;
+  --text-md:   13px;
+  --text-lg:   15px;
+  --text-xl:   16px;
+  --text-2xl:  18px;
+  --text-3xl:  22px;
+  --text-4xl:  24px;
+  --text-5xl:  28px;
+  --text-6xl:  32px;
+  --text-7xl:  40px;
+  --text-8xl:  64px;
+
+  --text-fluid-title: clamp(56px, 8vw, 120px);
+
+
+  /* =================================================================
+     LINE HEIGHTS
+     ================================================================= */
+
+  --leading-tight:   1;
+  --leading-snug:    1.05;
+  --leading-short:   1.2;
+  --leading-normal:  1.45;
+  --leading-body:    1.6;
+  --leading-relaxed: 1.7;
+
+
+  /* =================================================================
+     LETTER SPACING
+     ================================================================= */
+
+  --track-tight:   -0.04em;
+  --track-0:        0;
+  --track-near-0:   0.02em;
+  --track-sm:       0.06em;
+  --track-md:       0.08em;
+  --track-lg:       0.12em;
+  --track-xl:       0.14em;
+  --track-2xl:      0.16em;
+  --track-3xl:      0.18em;
+
+  --track-btn:      3px;
+  --track-btn-sm:   2px;
+  --track-btn-xs:   1px;
+
+
+  /* =================================================================
+     FONT WEIGHTS
+     ================================================================= */
+
+  --weight-light:   300;
+  --weight-regular: 400;
+  --weight-bold:    700;
+  --weight-black:   900;
+
+
+  /* =================================================================
+     SPACING
+     ================================================================= */
+
+  --sp-1:   2px;
+  --sp-2:   4px;
+  --sp-3:   6px;
+  --sp-4:   8px;
+  --sp-5:   10px;
+  --sp-6:   12px;
+  --sp-7:   14px;
+  --sp-8:   16px;
+  --sp-9:   18px;
+  --sp-10:  20px;
+  --sp-12:  24px;
+  --sp-14:  28px;
+  --sp-16:  32px;
+  --sp-20:  40px;
+  --sp-22:  48px;
+  --sp-24:  56px;
+  --sp-28:  64px;
+  --sp-32:  80px;
+  --sp-40:  96px;
+  --sp-48:  110px;
+  --sp-52:  120px;
+
+
+  /* =================================================================
+     LAYOUT WIDTHS
+     ================================================================= */
+
+  --w-page-index:     820px;
+  --w-page-radio:    1000px;
+  --w-page-writings: 1200px;
+  --w-page-tag:      1400px;
+
+   --logo-container-size: 24px;
+   --logo-size: 14px;
+   --logo-clickable: 32px;  /* zone cliquable plus grande que visible */
+
+
+  /* =================================================================
+     RADII
+     ================================================================= */
+
+  --radius-sm:   4px;
+  --radius-pill: 40px;
+
+
+  /* =================================================================
+     SHADOWS
+     ================================================================= */
+
+  --shadow-lightbox:      0 18px 50px var(--c-black-strong);
+  --shadow-feature-hover: 0 18px 40px var(--c-black-mid);
+
+
+  /* =================================================================
+     Z-INDEX
+     ================================================================= */
+
+  --z-header:         2000;
+  --z-header-radio:   1000;
+  --z-header-image:   3000;
+  --z-nav:              10;
+  --z-lightbox:       4000;
+  --z-lightbox-image: 5000;
+  --z-lightbox-about: 6000;
+
+
+  /* =================================================================
+     MOTION
+     ================================================================= */
+
+  --ease-smooth: cubic-bezier(.2, .7, .2, 1);
+  --dur-fast:    0.15s;
+  --dur-base:    0.2s;
+  --dur-mid:     0.3s;
+  --dur-slow:    1.4s;
+
+
+  /* =================================================================
+     LEGACY GEOMETRY
+     ================================================================= */
+
+  --rail:          200px;
+  --bg:             #000;
+  --header:        48px;
+  --size:          180px;
+  --seed:          22px;
+  --gap:           12px;
+  --border:        8px;
+  --dur:           1.4s;
+  --ease:          cubic-bezier(.2,.7,.2,1);
+
+  --card-w:        100px;
+  --card-h:        130px;
+  --card-edge:     4px;
+
+  --logo-block-h:  50px;
+}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MGO-space</title>
+  <link rel="stylesheet" href="assets/tokens.css">
   <link rel="stylesheet" href="assets/site.css" />
   <title>MGO-space — Multimedia Archival Online Space</title>
   <meta name="description" content="MGO space is a personal archive of sounds, writings, images and videos." />
@@ -103,8 +103,6 @@
                     <span class="meta-separator">&middot;</span>
                     <span class="feature-bg-year">FEB 2026</span>
                   </div>
-
-                  <div class="feature-bg-cta">CLICK TO ENTER</div>
                 </div>
 
               </div>
@@ -154,8 +152,6 @@
                     <span class="meta-separator">&middot;</span>
                     <span class="feature-bg-year">JAN 2026</span>
                   </div>
-
-                  <div class="feature-bg-cta">CLICK TO ENTER</div>
                 </div>
               </div>
 
@@ -173,7 +169,6 @@
                 <div class="feature-bg-label">RADIO</div>
                 <div class="feature-bg-title">5_MIX</div>
 
-                <!-- ✅ Harmonisé : meta + CTA sur la même ligne -->
                 <div class="feature-meta-row">
                   <div class="feature-bg-meta">
                     <a href="tag-index.html?tag=dakar" class="tag-link">
@@ -185,7 +180,6 @@
                     <span class="feature-bg-year">DEC 2025</span>
                   </div>
 
-                  <div class="feature-bg-cta">CLICK TO ENTER</div>
                 </div>
               </div>
 
@@ -223,7 +217,6 @@
                 <div class="feature-bg-label">IMAGES</div>
                 <div class="feature-bg-title">WATER</div>
 
-                <!-- ✅ Harmonisé : meta + CTA sur la même ligne -->
                 <div class="feature-meta-row">
                   <div class="feature-bg-meta">
                     <a href="tag-index.html?tag=dakar" class="tag-link">
@@ -234,8 +227,6 @@
                     <span class="meta-separator">&middot;</span>
                     <span class="feature-bg-year">NOV 2025</span>
                   </div>
-
-                  <div class="feature-bg-cta">CLICK TO ENTER</div>
                 </div>
               </div>
 
@@ -536,7 +527,7 @@ if (lightbox) {
     const today = new Date();
     const options = { month: "short", day: "numeric", year: "numeric" };
     const formatted = today.toLocaleDateString("en-US", options);
-    coordsEl.textContent = `NOW — Taipei — ${formatted}`;
+    coordsEl.textContent = `NOW — Osaka — ${formatted}`;
   }
 
 });

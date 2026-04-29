@@ -4,16 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Radio — MGO_radio</title>
+  <link rel="stylesheet" href="assets/tokens.css">
   <link rel="stylesheet" href="assets/site.css">
-  <style>
-    body {
-      background: #000;
-      margin: 0;
-      min-height: 100vh;
-      position: relative;
-    }
-  </style>
-
 </head>
 
 <body class="radio-page">
@@ -57,7 +49,7 @@
     <!-- SECTION MAIN CONTENT (Latest Mix) -->
     <section class="main-content">
       <div class="main-feature-box">
-        <img src="assets/laradj.jpg" alt="Lara DJ" class="main-feature-img">
+        <img src="assets/fitin.jpg" alt="Fit in" class="main-feature-img">
       </div>
     </section>
 
@@ -432,12 +424,18 @@
      ========================= */
   (function initHeaderShrink() {
     var maxHeight = window.innerHeight * 0.5;
-    var minHeight = 80;
+    var minHeight = 48;
+    var isCompact = false;
 
     function applyHeight(h) {
       header.style.height = h + 'px';
-      if (h <= minHeight + 1) header.classList.add('header-compact');
-      else header.classList.remove('header-compact');
+    if (h <= minHeight + 1) {
+      header.classList.add('header-compact');
+      isCompact = true;
+    } else {
+      header.classList.remove('header-compact');
+      isCompact = false;
+    }
     }
 
     function refresh() {
@@ -456,7 +454,13 @@
 
     function onScroll() {
       if (isMobile()) return;
-      var newHeight = clamp(maxHeight - window.scrollY, minHeight, maxHeight);
+      
+      if (isCompact) {
+        applyHeight(minHeight);
+        return;
+      }
+      
+      var newHeight = Math.max(minHeight, maxHeight - window.scrollY);
       applyHeight(newHeight);
     }
 

@@ -1,40 +1,9 @@
 /* =========================
-   VARIABLES (root)
+   VARIABLES
+   -------------------------
+   All design tokens are now in tokens.css (imported before this file).
+   Only runtime-mutable vars stay here (see mobile override below).
    ========================= */
-
-@font-face {
-  font-family: "Knewave";
-  src: url("fonts/knewave.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Knewave Outline";
-  src: url("fonts/knewave-outline.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
-
-:root{
-  --rail: 200px;
-  --header: 48px;
-  --size: 180px;
-  --seed: 22px;
-  --gap: 12px;
-  --border: 8px;
-  --dur: 1.4s;
-  --ease: cubic-bezier(.2,.7,.2,1);
-  --bg: #0b0b12;
-
-  /* Cards */
-  --card-w: 100px;
-  --card-h: 130px;
-  --card-edge: 4px;
-
-  /* Footer */
-  --logo-block-h: 50px;
-}
 
 *{ box-sizing:border-box; margin:0; }
 
@@ -44,11 +13,11 @@ html {
 
   body{
     height: 100vh;
-    background:var(--bg);
-    color:#e9ecff;
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background: var(--bg);
+    color: var(--c-ink);
+    font-family: var(--font-system);
     padding-right: 0;
-    overflow-x:hidden;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
   }
@@ -60,13 +29,13 @@ body.has-rail {
 
 /* Liens globaux (les .btn les surchargent localement) */
 a, a:visited{ 
-  color:#fff; 
-  text-decoration:underline; 
-  text-underline-offset:3px; 
-  text-decoration-thickness:2px; 
+  color: var(--c-ink); 
+  text-decoration: underline; 
+  text-underline-offset: 3px; 
+  text-decoration-thickness: 2px; 
 }
-a:hover, a:focus-visible{ color:#f5f5f5; }
-a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
+a:hover, a:focus-visible{ color: var(--c-ink); }
+a{ text-shadow: 0 1px 2px var(--c-black-soft); }
 
 /* =========================
    HEADER
@@ -76,33 +45,52 @@ a{ text-shadow:0 1px 2px rgba(0,0,0,.35); }
   position: fixed;
   top: 0;
   left: 0;
-
   width: 100%;
-  height: var(--header);
-
-  background: #FFFFFC;
-  border-bottom: 1px solid #e6e6e6;
-  z-index: 2000;
-
+  height: var(--header);  /* 48px */
+  background: var(--c-bg-alt);
+  border-bottom: 1px solid var(--c-line);
+  z-index: var(--z-header);
   display: flex;
+  align-items: center;
+  padding: 0 var(--sp-6);
+}
+
+.header-logo,
+.header-logo-link--nav,
+.writing-back,
+.image-back,
+.video-back {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  padding: 0 24px;
-}
-
-/* Logo */
-.header-logo {
-  display: flex;
-  align-items: center;
+  height: var(--logo-clickable);
+  width: var(--logo-clickable);
+  padding: var(--sp-3);
   text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  margin-left: 32px;
 }
 
-.site-header .header-logo img {
-  height: 16px;
+/* Images des logos */
+.header-logo img,
+.header-nav-logo,
+.writing-back__logo,
+.image-back__logo,
+.video-back__logo {
+  height: var(--logo-size);
   width: auto;
   display: block;
   margin: 0;
+}
+
+/* Hover uniforme */
+.header-logo:hover,
+.header-logo-link--nav:hover,
+.writing-back:hover,
+.image-back:hover,
+.video-back:hover {
+  opacity: 0.6;
 }
 
 /* =========================
@@ -131,11 +119,12 @@ main.page{
   grid-row: 1;
 
   text-align: center;
-  font-size: 28px;
-  line-height: 1.05;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  font-family: "Arial Black", Arial, sans-serif;
+  font-size: var(--text-5xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--track-near-0);
+  color: var(--c-ink);
+  font-family: var(--font-display);
+  font-weight: 400;
   margin-top: 0px;
 }
 
@@ -178,18 +167,18 @@ main.page{
 .card {
   width: var(--card-w);
   height: var(--card-h);
-  background: #000;
+  background: var(--c-bg);
   position: relative;
   transform: skewY(-10deg);
-  border: 2px solid #fff;
+  border: 2px solid var(--c-ink);
   box-sizing: border-box;
-  transition: all 0.3s;
+  transition: all var(--dur-mid);
 }
 .card::before,
 .card::after {
   content: '';
   position: absolute;
-  background: #fff;
+  background: var(--c-ink);
   transition: all 0.5s;
 }
 .card::before {
@@ -227,17 +216,18 @@ main.page{
 
 .card__content { 
   height: 100%;
-  padding: 10px;
+  padding: var(--sp-5);
   
   display: flex;
   align-items: center;
   justify-content: center;
-
-  color: #e9ecff; 
+  color: var(--c-ink); 
   text-align: center;
 
-  font-size: 11px;
-  letter-spacing: 0.16em;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 9px;
+  letter-spacing: var(--track-2xl);
   text-transform: uppercase;
 }
 
@@ -254,7 +244,7 @@ main.page{
 .card-link:hover .card,
 .card-link:focus-visible .card {
   transform: skewY(0deg);
-  border-color: #fff; /* exemple : effet visuel léger */
+  border-color: var(--c-ink); /* exemple : effet visuel léger */
 }
 
 .card-link:focus-visible {
@@ -276,12 +266,12 @@ main.page{
 /* Fond flou / radial + flèches (position:relative) */
 .feature-bg{
   position: relative;
-  padding: 18px 27px;
+  padding: var(--sp-9) 27px;
   background: radial-gradient(circle at top left,
     rgba(255,255,255,0.12),
     rgba(255,255,255,0.02)
   );
-  border: 1px solid rgba(255,255,255,0.18);
+  border: 1px solid var(--c-white-soft);
 }
 
 /* Capsule cliquable */
@@ -290,28 +280,28 @@ main.page{
   max-width: 320px;
   margin: 0 auto;
 
-  border: 1px solid rgba(255,255,255,0.35);
-  background: rgba(0,0,0,0.45);
+  border: 1px solid var(--c-white-mid);
+  background: var(--c-black-mid);
 
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--sp-6);
 
-  padding: 16px 20px;
+  padding: var(--sp-8) var(--sp-10);
   cursor: pointer;
 
   transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color var(--dur-base) ease,
+    background var(--dur-base) ease,
+    transform var(--dur-base) ease,
+    box-shadow var(--dur-base) ease;
 }
 
 .feature-bg-inner:hover{
-  border-color: rgba(255,255,255,0.7);
-  background: rgba(0,0,0,0.75);
+  border-color: var(--c-white-strong);
+  background: var(--c-black-strong);
   transform: translateY(-3px);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+  box-shadow: var(--shadow-feature-hover);
 }
 
 /* Stack de spotlights */
@@ -326,15 +316,19 @@ main.page{
 
 /* Typo */
 .feature-bg-label{
-  font-size: 11px;
-  letter-spacing: 0.18em;
+  font-family: var(--font-display);
+  font-size: 100;
+  font-size: var(--text-sm);
+  letter-spacing: var(--track-3xl);
   text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
+  color: var(--c-white-strong);
 }
 
 .feature-bg-title{
-  font-size: 16px;
-  letter-spacing: 0.06em;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--text-xl);
+  letter-spacing: var(--track-sm);
   text-transform: uppercase;
 }
 
@@ -346,22 +340,25 @@ main.page{
 }
 
 .feature-bg-meta{
-  font-size: 12px;
-  color: rgba(255,255,255,0.7);
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 10px;
+  color: var(--c-white-strong);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--sp-4);
 }
 
 .feature-bg-year{ opacity: 0.9; }
 
 .feature-bg-cta{
+  font-family: var(--font-mono);
   margin-left: auto;   /* pousse à droite */
   margin-top: 0;       /* pas de retour ligne via marge */
-  font-size: 11px;
-  letter-spacing: 0.16em;
+  font-size: var(--text-sm);
+  letter-spacing: var(--track-2xl);
   text-transform: uppercase;
-  color: rgba(255,255,255,0.8);
+  color: var(--c-white-strong);
   opacity: 0.9;
   white-space: nowrap;
 }
@@ -373,9 +370,9 @@ main.page{
   position: relative;
   overflow: hidden;
 
-  border: 1px solid #e9ecff;
-  border-radius: 4px;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+  border: 1px solid var(--c-ink);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 1px var(--c-black-soft);
 }
 
 /* Image = remplit exactement le cadre */
@@ -406,11 +403,11 @@ main.page{
   border: none;
   padding: 0;
 
-  font-size: 64px;
-  font-weight: 300;
-  line-height: 1;
+  font-size: var(--text-8xl);
+  font-weight: var(--weight-light);
+  line-height: var(--leading-tight);
 
-  color: rgba(255,255,255,0.75);
+  color: var(--c-white-strong);
   cursor: pointer;
 
   opacity: 0;
@@ -419,8 +416,8 @@ main.page{
   transition: opacity 0.18s ease;
 }
 
-.feature-nav--prev{ left: 24px; }
-.feature-nav--next{ right: 24px; }
+.feature-nav--prev{ left: var(--sp-12); }
+.feature-nav--next{ right: var(--sp-12); }
 
 /* apparition au hover du background */
 .feature-bg:hover .feature-nav{
@@ -432,7 +429,7 @@ main.page{
 .feature-nav:focus-visible{
   outline: none;
   opacity: 1;
-  color: #fff;
+  color: var(--c-ink);
 }
 
 /* Mix — garder le comportement "image réelle" pour que la capsule s'adapte */
@@ -451,29 +448,29 @@ main.page{
   justify-content: center;
   align-items: center;
 
-  border: 2px solid rgba(255,255,255,0.7);
-  border-radius: 4px;
+  border: 2px solid var(--c-white-strong);
+  border-radius: var(--radius-sm);
   padding: 2px;
   box-sizing: border-box;
 }
 
 .tag-text {
   display: inline-block;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  font-weight: 700;
-  font-size:11px;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
   text-transform: uppercase;
-  color: rgba(255,255,255,0.7); 
-  line-height: 1;
-  letter-spacing: 0;
+  color: var(--c-white-strong); 
+  line-height: var(--leading-tight);
+  letter-spacing: var(--track-0);
 }
 
 .tag-wrapper:hover .tag-text {
-  color: #fff;
+  color: var(--c-ink);
 }
 
 .tag-wrapper:hover {
-  border-color: #fff;
+  border-color: var(--c-ink);
 }
 
 
@@ -484,13 +481,13 @@ main.page{
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.72);
+  background: var(--c-black-mid);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: none;                /* caché par défaut */
   align-items: center;
   justify-content: center;
-  z-index: 4000;
+  z-index: var(--z-lightbox);
 }
 
 .lightbox.is-open {
@@ -514,7 +511,7 @@ main.page{
   max-height: 94vh;
   object-fit: contain;
   display: block;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65);
+  box-shadow: var(--shadow-lightbox);
 
   /* POUR LE ZOOM / PAN */
   transform-origin: center center;
@@ -538,12 +535,13 @@ main.page{
 
 /* Caption à droite, petit texte */
 .lightbox-caption {
+  font-family: var(--font-mono);
   max-width: 260px;
-  font-size: 11px;
+  font-size: var(--text-sm);
   line-height: 1.5;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--track-md);
   text-transform: uppercase;
-  color: #e9ecff;
+  color: var(--c-ink);
   opacity: 0.8;
   text-align: left;
 }
@@ -555,19 +553,19 @@ main.page{
   transform: translateY(-50%);
   border: none;
   background: transparent;
-  color: #f5f5f5;
-  font-size: 32px;
+  color: var(--c-ink);
+  font-size: var(--text-6xl);
   cursor: pointer;
-  padding: 0 12px;
+  padding: 0 var(--sp-6);
   display: none;
 }
 
 .lightbox-prev {
-  left: 24px;
+  left: var(--sp-12);
 }
 
 .lightbox-next {
-  right: 24px;
+  right: var(--sp-12);
 }
 
 /* Curseur sur le trigger (l’image dans le slot) */
@@ -612,26 +610,27 @@ body.has-lightbox-open {
 .site-footer {
   width: 100%;
   height: var(--header);
-  background: #fff;     
-  border-top: 1px solid #e6e6e6;
+  background: var(--c-bg-alt);     
+  border-top: 1px solid var(--c-line);
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 32px;                   /* même padding latéral que le header */
+  padding: 0 var(--sp-16);                   /* même padding latéral que le header */
   box-sizing: border-box;
   flex-shrink: 0;
   position: relative;
-  z-index: 2000;
+  z-index: var(--z-header);
 }
 
 /* COORDINATES à gauche */
 .footer-coords {
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: var(--track-lg);
   text-transform: uppercase;
-  color: #000000;
+  color: var(--c-ink-alt);
   white-space: nowrap;
 }
 
@@ -689,7 +688,8 @@ body.has-lightbox-open {
   height: 100%;
   line-height: 38px;
   text-align: center;
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-weight: 400;
   font-size: var(--font-size);
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -809,10 +809,10 @@ body.has-lightbox-open {
     width: 100%;
 
     height: var(--header);
-    padding: 0 12px;
+    padding: 0 var(--sp-6);
 
-    background: #ffffff;
-    border-bottom: 1px solid #e6e6e6;
+    background: var(--c-ink);
+    border-bottom: 1px solid var(--c-line);
 
     display: flex;
     align-items: center;
@@ -1018,89 +1018,78 @@ body.has-lightbox-open {
    PAGE WRITINGS
    ========================= */
 
-/* Writings — back logo (independent, non-destructive) */
-.writing-back{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-  top: -42px;
-  margin-bottom: 12px;
-
-  height: 40px;
-  margin-bottom: 0px;
-
-  opacity: 0.85;
-  transition: opacity .15s ease;
-  text-decoration: none;
-}
-
-.writing-back:hover{
-  opacity: 0.6;
-}
-
-.writing-back__logo{
-  height: 14px;
-  width: auto;
-  display: block;
-}
-
-/* Conteneur global de la page */
-.writing-shell {
-  max-width: 1200px;
-  margin: 40px auto 80px auto;
-  padding: 0 20px;
-}
-
-/* Colonne gauche (nav fixe) */
-.writing-nav {
+.writing-header {
   position: fixed;
-  top: 80px;
-  left: 50px;
-  width: 220px;
-
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header);  /* 48px */
+  background: var(--c-bg);
+  z-index: var(--z-header);
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  z-index: 10;
+  align-items: center;
+  padding: 0 var(--sp-6);
 }
 
-/* Colonne droite (contenu) */
-.writing-content {
+.writing-shell {
+  display: flex;
+  height: calc(100vh - var(--header));
+  margin-top: var(--header);
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.writing-nav {
   position: relative;
-  max-width: 900px;
-  margin-left: 160px;      /* 220 nav + marge approx */
-  padding-top: 110px;
+  top: auto;
+  left: auto;
+  width: 200px;
+  min-width: 200px;
+  height: 100%;
+  padding: 32px 20px;
+  border-right: 0.5px solid rgba(255,255,255,0.09);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.writing-content {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  max-width: none;
 }
 
 /* "MGO" */
 .writing-heading {
   position: relative;
   display: inline-block;
-  font-size: 24px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--track-lg);
   text-transform: uppercase;
-  color: #e9ecff;
-  margin: 0 0 24px;
+  color: var(--c-ink);
+  margin: 0 0 var(--sp-8);
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color var(--dur-base) ease;
   overflow: hidden;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
 }
 
 .writing-heading:hover {
-  color: #999;
+  color: var(--c-white-strong);
 }
 
 .writing-divider {
   width: 50px;
   height: 1px;
-  background: #e9ecff;
-  margin: 20px 0;
+  background: var(--c-ink);
+  margin: var(--sp-10) 0;
   opacity: 0.6;
 }
 
@@ -1112,104 +1101,72 @@ body.has-lightbox-open {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.tree-section {
+  margin-bottom: 28px;
+}
+
+.tree-root-label {
+  font-family: var(--font-line);
+  font-weight: 300;
+  font-size: 9px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #e9ecff;
-}
-
-.writing-tree.is-collapsed {
-  display: none;
-}
-
-.tree-item {
-  margin-bottom: 16px;
-}
-
-/* Racines (Writings / Readings) */
-.tree-label {
+  color: rgba(255,255,255,0.28);
+  margin-bottom: 8px;
   display: block;
-  padding: 0;
-  background: none;
-  border: none;
-  color: #e9ecff;
-  font-size: 18px;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  text-align: left;
-  cursor: pointer;
-  text-decoration: none;
 }
 
-.tree-root {
-  font-size: 22px;
-  opacity: 0.85;
-}
-
-/* Sous-dossiers potentiels, si tu en ajoutes plus tard */
-.tree-folder {
-  font-size: 16px;
-  opacity: 0.8;
-}
-
-/* Sous-listes (enfants) cachées par défaut */
 .tree-children {
   list-style: none;
-  margin: 0 0 0 14px;
+  margin: 0;
   padding: 0;
   display: none;
 }
 
-/* Espacement entre racine et enfants */
-.writing-tree > .tree-item > .tree-children {
-  margin-top: 16px;
-}
-
-/* Espacement entre sous-niveaux imbriqués, au cas où */
-.tree-children > .tree-item > .tree-children {
-  margin-top: 12px;
-}
-
-/* item ouvert */
-.tree-item.is-open > .tree-children {
+.tree-children.is-visible {
   display: block;
 }
 
-/* Boutons de niveau feuille (University, Other, Current, Library) */
 .tree-sublabel {
+  font-family: var(--font-line);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.02em;
   display: block;
-  padding: 0;
+  padding: 5px 0 5px 10px;
   background: none;
   border: none;
-  font-size: 13px;
-  color: #e9ecff;
-  opacity: 0.7;
+  border-left: 1px solid transparent;
+  color: rgba(255,255,255,0.45);
   text-align: left;
   cursor: pointer;
   text-decoration: none;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
+  transition: color 0.15s, border-color 0.15s;
+  width: 100%;
 }
 
-/* Hover / actif */
-.tree-label:hover,
 .tree-sublabel:hover {
-  color: #ffffff;
+  color: rgba(255,255,255,0.75);
 }
 
-.tree-label.is-active,
 .tree-sublabel.is-active {
-  color: #ffffff;
+  color: rgba(255,255,255,0.95);
+  border-left-color: rgba(255,255,255,0.6);
   opacity: 1;
 }
 
 /* Titre principal de la zone contenu (mis à jour en JS) */
 .writing-title {
-  font-size: 12px;
+  font-size: var(--text-base);
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: #e9ecff;
-  margin: 0 0 24px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: var(--track-2xl);
+  color: var(--c-ink);
+  margin: 0 0 var(--sp-12);
+  font-family: var(--font-line);
+  font-weight: 300;
 }
 
 /* =========================
@@ -1223,12 +1180,12 @@ body.has-lightbox-open {
   margin: 0;
   padding: 0;
 
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  line-height: 1.6;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  color: #e9ecff;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--track-near-0);
+  color: var(--c-ink);
 }
 
 /* Grille de "books" */
@@ -1262,6 +1219,138 @@ body.has-lightbox-open {
 }
 
 /* =========================
+   FRAGMENTS (Writings — notes Are.na)
+   ========================= */
+
+.writing-list--fragments {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.writing-list--fragments.is-active {
+  display: block;
+  height: 100%;
+}
+
+.writing-list--fragments li {
+  display: block;
+  justify-content: unset;
+  width: 100%;
+}
+
+.frag-block {
+  border-bottom: 0.5px solid rgba(0,0,0,0.18);
+  cursor: pointer;
+  position: relative;
+}
+
+.frag-block:nth-child(3n+1) { background: #f2efe8; }
+.frag-block:nth-child(3n+2) { background: #b8b5ae; }
+.frag-block:nth-child(3n+3) { background: #1e1c1a; }
+
+.frag-inner {
+  padding: 32px 30px 28px;
+  position: relative;
+  max-width: 100%;
+}
+
+.frag-meta {
+  font-family: var(--font-cmono);
+  font-weight: 400;
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.frag-title {
+  font-family: var(--font-display-c);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.frag-arrow {
+  position: absolute;
+  right: 30px;
+  top: 32px;
+  font-size: 12px;
+  transition: color 0.15s, transform 0.2s;
+}
+
+/* Extrait — apparaît au hover */
+.frag-excerpt {
+  font-size: 12px;
+  font-family: var(--font-core);
+  font-weight: 300;
+  line-height: 1.75;
+  margin-top: 14px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease;
+  max-width: 100%;
+}
+
+.frag-block:hover .frag-excerpt {
+  max-height: 120px;
+  opacity: 1;
+}
+
+/* Corps déployable */
+.frag-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.frag-block.is-open .frag-body {
+  max-height: 600px;
+}
+
+.frag-body-inner {
+  font-family: var(--font-core);
+  font-weight: 300;
+  padding: 0 30px 28px;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.frag-block.is-open .frag-inner {
+  padding-bottom: 12px;
+}
+
+.frag-block.is-open .frag-arrow {
+  transform: rotate(90deg);
+}
+
+/* Couleurs texte selon fond */
+.frag-block:nth-child(3n+1) .frag-meta    { color: rgba(30,28,26,0.35); }
+.frag-block:nth-child(3n+1) .frag-title   { color: rgba(30,28,26,0.88); }
+.frag-block:nth-child(3n+1) .frag-excerpt { color: rgba(30,28,26,0.52); }
+.frag-block:nth-child(3n+1) .frag-body-inner { color: rgba(30,28,26,0.72); }
+.frag-block:nth-child(3n+1) .frag-arrow   { color: rgba(30,28,26,0.2); }
+.frag-block:nth-child(3n+1):hover .frag-arrow { color: rgba(30,28,26,0.55); }
+
+.frag-block:nth-child(3n+2) .frag-meta    { color: rgba(20,18,16,0.4); }
+.frag-block:nth-child(3n+2) .frag-title   { color: rgba(20,18,16,0.9); }
+.frag-block:nth-child(3n+2) .frag-excerpt { color: rgba(20,18,16,0.55); }
+.frag-block:nth-child(3n+2) .frag-body-inner { color: rgba(20,18,16,0.7); }
+.frag-block:nth-child(3n+2) .frag-arrow   { color: rgba(20,18,16,0.25); }
+.frag-block:nth-child(3n+2):hover .frag-arrow { color: rgba(20,18,16,0.6); }
+
+.frag-block:nth-child(3n+3) .frag-meta    { color: rgba(255,255,255,0.28); }
+.frag-block:nth-child(3n+3) .frag-title   { color: rgba(255,255,255,0.88); }
+.frag-block:nth-child(3n+3) .frag-excerpt { color: rgba(255,255,255,0.42); }
+.frag-block:nth-child(3n+3) .frag-body-inner { color: rgba(255,255,255,0.58); }
+.frag-block:nth-child(3n+3) .frag-arrow   { color: rgba(255,255,255,0.18); }
+.frag-block:nth-child(3n+3):hover .frag-arrow { color: rgba(255,255,255,0.55); }
+
+/* =========================
    BOOK DESIGN
    ========================= */
 
@@ -1284,23 +1373,23 @@ body.has-lightbox-open {
   height: 100%;
   margin: 0;
   padding: 0 0.7rem 0.7rem 0;
-  color: #000;
+  color: var(--c-ink-alt);
   text-decoration: none;
-  transition: transform 0.3s;
-  font-family: Georgia, serif;
+  transition: transform var(--dur-mid);
+  font-family: var(--font-book);
 }
 
-/* “Pages” + bordures (arrière du livre) */
+/* "Pages" + bordures (arrière du livre) */
 .book__back {
   position: absolute;
   top: 0.7rem;
   right: 0;
   bottom: 0;
   left: 0.7rem;
-  background-color: #000;
+  background-color: var(--c-bg);
   border-style: solid;
   border-width: 0 2px 2px 0;
-  border-color: #fff;
+  border-color: var(--c-ink);
 }
 
 /* Couverture blanche */
@@ -1310,8 +1399,8 @@ body.has-lightbox-open {
   height: 100%;
   padding: 0.8rem 1rem 1.6rem;
   box-sizing: border-box;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: var(--c-ink);
+  color: var(--c-ink-alt);
 }
 
 /* Spine partant du coin inférieur gauche de la cover */
@@ -1321,7 +1410,7 @@ body.has-lightbox-open {
   left: 0;
   width: 3px;
   height: 0.7rem;
-  background-color: #fff;
+  background-color: var(--c-ink);
   transform-origin: 0 0 0;
   transform: skewX(45deg);
 }
@@ -1331,20 +1420,20 @@ body.has-lightbox-open {
 .book__title {
   display: block;
   margin: 0 0 0.5rem;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-book);
   font-size: 0.75rem;
-  line-height: 1.2;
-  font-weight: 400;
+  line-height: var(--leading-short);
+  font-weight: var(--weight-regular);
 }
 
 .book__author {
   display: block;
   margin: 0;
   font-size: 0.7rem;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-xl);
   text-transform: uppercase;
   font-style: normal;
-  color: #000000;
+  color: var(--c-ink-alt);
   opacity: 0.9;
 }
 
@@ -1359,22 +1448,22 @@ body.has-lightbox-open {
 /* Hover */
 .book:hover,
 .book:focus {
-  color: #fff;
+  color: var(--c-ink);
 }
 
 .book:hover {
   transform: translate(-0.25rem, -0.5rem);
-  transition: transform 0.3s;
+  transition: transform var(--dur-mid);
 }
 
 .book:hover .book__back {
   box-shadow: 0.8rem 0.8rem 1.2rem 0 #FFFFFF40;
-  transition: all 0.3s;
+  transition: all var(--dur-mid);
 }
 
 /* BOOK — tag en noir (cover blanche) */
 .book__front .tag-text {
-  color: #000;
+  color: var(--c-ink-alt);
 }
 
 .book__front .tag-wrapper {
@@ -1382,7 +1471,7 @@ body.has-lightbox-open {
 }
 
 /* Tags dans les books : texte noir */
-.book__tags--black .tag-text { color: #000; }
+.book__tags--black .tag-text { color: var(--c-ink-alt); }
 .book__tags--black .tag-wrapper { border-color: rgba(0,0,0,0.4); }
 
 /* =========================
@@ -1523,11 +1612,11 @@ body.has-lightbox-open {
 /* === IMAGE PAGE === */
 
 .image-body {
-  background: #fbfbfb;        /* blanc très léger */
-  color: #3f3f3f;
+  background: var(--c-bg-alt);
+  color: var(--c-ink-alt);
 
   /* OVERRIDE des règles globales du <body> */
-  padding-right: 0;           /* enlève l’espace réservé au rail */
+  padding-right: 0;           /* enlève l'espace réservé au rail */
   min-height: 100vh;          /* garde un body plein écran */
   overflow-x: auto;           /* plus besoin de cacher le scroll horizontal */
 }
@@ -1536,7 +1625,10 @@ body.has-lightbox-open {
   width: 100vw;
   max-width: 100vw;
   margin: 0;
-  padding: 32px 8px 60px;
+  padding-top: var(--sp-10);
+  padding-left: var(--sp-4);
+  padding-right: var(--sp-4);
+  padding-bottom: 60px;
 }
 
 /* Grille petites tuiles serrées */
@@ -1547,9 +1639,32 @@ body.has-lightbox-open {
   width: 100%;
 }
 
+.gallery-section {
+  position: relative;
+  margin-bottom: 1px;
+}
+
+.gallery-title {
+  position: absolute;
+  top: var(--sp-16);
+  left: var(--sp-8);
+  z-index: 10;
+  
+  opacity: 0.45;
+  pointer-events: none;
+  
+  font-size: var(--text-lg);
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--c-ink-alt);
+  letter-spacing: var(--track-lg);
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
 .image-item {
   display: block;
-  background: #f2f2f2;
+  background: var(--c-bg-alt);
   overflow: hidden;
   aspect-ratio: 4 / 3;
 }
@@ -1578,48 +1693,31 @@ body.has-lightbox-open {
    HEADER SUPER FIN POUR GALLERY
    ----------------------------- */
 
-/* Image header */
-.image-header .image-back{
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  height: 100%;
-  text-decoration: none;
-  transition: opacity .15s ease;
-}
-
-.image-header .image-back__logo{
-  height: 14px;
-  width: auto;
-  display: block;
-}
-
 .image-header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 32px;
-  background: #ffffff;
+  height: 48px;  /* unifié avec site-header */
+  background: var(--c-ink);
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  padding: 0 18px;
-  z-index: 3000;
+  padding: 0 var(--sp-6);
+  z-index: var(--z-header-image);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 15px;
-  color: #000;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: var(--track-lg);
+  font-size: var(--text-lg);
+  color: var(--c-ink-alt);
+  font-family: var(--font-body);
 }
 
 /* Liens + textes */
 .image-header a,
 .image-header div {
   text-decoration: none;
-  color: #000;
-  font-weight: 400;
+  color: var(--c-ink-alt);
+  font-weight: var(--weight-regular);
   text-shadow: none;
 }
 
@@ -1641,16 +1739,280 @@ body.has-lightbox-open {
 .image-header .ih-right { justify-self: end; }
 
 /* =========================
+   IMAGE PAGE LIGHTBOX
+   Cadre fin blanc + aura discrète, fond noir profond
+   ========================= */
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-lightbox-image);
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--c-black-strong);
+
+  cursor: crosshair;
+}
+
+.image-lightbox.is-open {
+  display: flex;
+}
+
+body.has-image-lightbox-open {
+  overflow: hidden;
+}
+
+.image-lightbox-figure {
+  position: relative;
+  margin: 0;
+  max-width: 90vw;
+  max-height: 85vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: default;
+}
+
+.image-lightbox-media {
+  display: block;
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+
+  border: 1px solid var(--c-white-strong);
+
+  box-shadow:
+    0 0 60px 8px rgba(255, 255, 255, 0.06),
+    0 0 140px 30px rgba(255, 255, 255, 0.03);
+  cursor: none;
+}
+
+/* Exception : sur une vidéo, on laisse le curseur visible pour pouvoir atteindre les contrôles */
+.image-lightbox-media[src$=".mov"],
+.image-lightbox-media[src$=".mp4"],
+.image-lightbox-media[src$=".webm"],
+video.image-lightbox-media {
+  cursor: default;
+}
+
+.image-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: none;
+  color: var(--c-white-strong);
+  font-size: var(--text-7xl);
+  font-family: inherit;
+  line-height: var(--leading-tight);
+
+  cursor: pointer;
+  transition: color var(--dur-base) ease, transform var(--dur-base) ease;
+  z-index: 2;
+}
+
+.image-lightbox-nav:hover,
+.image-lightbox-nav:focus-visible {
+  color: var(--c-ink);
+  outline: none;
+}
+
+.image-lightbox-nav--prev { left: var(--sp-12); }
+.image-lightbox-nav--next { right: var(--sp-12); }
+
+.image-lightbox-close {
+  position: absolute;
+  top: var(--sp-12);
+  right: var(--sp-12);
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: none;
+  color: var(--c-white-strong);
+  font-size: var(--text-4xl);
+  font-family: inherit;
+  line-height: var(--leading-tight);
+
+  cursor: pointer;
+  transition: color var(--dur-base) ease;
+  z-index: 2;
+}
+
+.image-lightbox-close:hover,
+.image-lightbox-close:focus-visible {
+  color: var(--c-ink);
+  outline: none;
+}
+
+.image-lightbox-counter {
+  font-family: var(--font-mono);
+  position: absolute;
+  bottom: var(--sp-12);
+  left: 50%;
+  transform: translateX(-50%);
+
+  color: rgba(255, 255, 255, 0.5);
+  font-size: var(--text-sm);
+  letter-spacing: var(--track-2xl);
+  text-transform: uppercase;
+
+  pointer-events: none;
+  z-index: 2;
+}
+
+@media (max-width: 700px) {
+  .image-lightbox-nav {
+    width: 44px;
+    height: 44px;
+    font-size: 32px;
+  }
+  .image-lightbox-nav--prev { left: 8px; }
+  .image-lightbox-nav--next { right: 8px; }
+
+  .image-lightbox-close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .image-lightbox-figure {
+    max-width: 94vw;
+    max-height: 80vh;
+  }
+  .image-lightbox-media {
+    max-width: 94vw;
+    max-height: 80vh;
+  }
+}
+
+/* =========================
+   IMAGE GRID — VOILE DE FLOU + DÉVOILEMENT CURSEUR
+   Exploration pure : les images sont floutées par défaut,
+   une zone circulaire autour du curseur les révèle.
+   ========================= */
+
+.image-grid {
+  position: relative;
+}
+
+.image-grid__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+
+  pointer-events: none;
+
+  /* Flou ambiant : moyen. saturate retiré pour perf. */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  background-color: rgba(10, 10, 12, 0.15);
+
+  --reveal-x: 50%;
+  --reveal-y: 50%;
+  --reveal-radius: 200px;
+
+  -webkit-mask-image: radial-gradient(
+    circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y),
+    transparent 0%,
+    transparent 40%,
+    #000 100%
+  );
+  mask-image: radial-gradient(
+    circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y),
+    transparent 0%,
+    transparent 40%,
+    #000 100%
+  );
+
+  /* Optimisation : force le voile sur une couche GPU dédiée */
+  will-change: mask-image, -webkit-mask-image;
+  transform: translateZ(0);
+
+  transition: opacity 0.3s ease;
+}
+
+/* Optimisation : désactive complètement le voile quand sa grille n'est pas visible.
+   Restreint au desktop : sur mobile le voile est fixed, pas lié à la position de la grille */
+@media (hover: hover) and (pointer: fine) {
+  .image-grid:not(.is-in-view) .image-grid__veil {
+    display: none;
+  }
+}
+
+.image-grid {
+  cursor: crosshair;
+}
+
+body.has-image-lightbox-open .image-grid__veil {
+  opacity: 0;
+}
+
+@media (max-width: 700px) {
+  .image-grid__veil {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+
+    --reveal-x: 50%;
+    --reveal-y: 50%;
+    --reveal-radius: 140px;
+
+    -webkit-mask-image: radial-gradient(
+      circle var(--reveal-radius) at 50% 50%,
+      transparent 0%,
+      transparent 40%,
+      #000 100%
+    );
+    mask-image: radial-gradient(
+      circle var(--reveal-radius) at 50% 50%,
+      transparent 0%,
+      transparent 40%,
+      #000 100%
+    );
+  }
+
+  .image-grid:not(:first-of-type) .image-grid__veil {
+    display: none;
+  }
+
+  .image-grid {
+    cursor: default;
+  }
+}
+
+/* =========================
    RADIO PAGE — BASE
    ========================= */
 
 body.radio-page {
-  background: #ffffff;
-  color: #000000;
+  background: var(--c-bg-alt);
+  color: var(--c-ink-alt);
 }
 
 body.radio-page main {
   padding-top: 50vh;
+  transition: padding-top 0.3s ease;
 }
 
 /* =========================
@@ -1658,20 +2020,17 @@ body.radio-page main {
    ========================= */
 
 .radio-header {
-  background: #000000;
-  color: #ffffff;
+  background: var(--c-bg);
+  color: var(--c-ink);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
-
-  /* hauteur initiale = 50% de la fenêtre (ajustée par JS) */
+  z-index: var(--z-header-radio);
   height: 50vh;
   overflow: hidden;
 }
 
-/* Conteneur interne : prend 100% de la hauteur du header */
 .radio-header-inner {
   position: relative;
   display: flex;
@@ -1681,7 +2040,7 @@ body.radio-page main {
   padding: 24px 32px;
 }
 
-/* RADIO ONLY */
+/* Logo central dynamique (grandit/rétrécit avec le header) */
 .radio-header .header-logo {
   position: absolute;
   top: 50%;
@@ -1691,80 +2050,73 @@ body.radio-page main {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--sp-3);
 }
 
-.header-logo-img {
+.radio-header .header-logo-img {
   height: 100%;
   width: auto;
   display: block;
 }
 
-/* NAV LOGO: hidden by default (only when header is shrinked) */
-.radio-header .header-logo-link--nav{
+/* Nav logo PETIT (en haut à gauche, visible quand compact) */
+.radio-header .header-logo-link--nav {
   position: absolute;
-  left: 20px;
+  left: var(--sp-6);
   top: 50%;
   transform: translateY(-50%);
-
   z-index: 1200;
-  cursor: pointer;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
   opacity: 0;
   pointer-events: none;
-  transition: opacity .15s ease;
+  transition: opacity 0.15s ease;
 }
 
-/* visible only when shrinked */
-.radio-header.header-compact .header-logo-link--nav{
+.radio-header.header-compact {
+  height: var(--header);
+}
+
+.radio-header.header-compact .header-logo-link--nav {
   opacity: 1;
   pointer-events: auto;
 }
 
-.radio-header .header-logo-link--nav:hover{
+.radio-header .header-logo-link--nav:hover {
   opacity: 0.6;
 }
 
-/* image sizing (smaller) */
-.radio-header .header-nav-logo{
-  height: 18px;   /* plus petit */
+.radio-header .header-nav-logo {
+  height: 14px;
   width: auto;
   display: block;
+  margin: 0;
 }
-
 /* =========================
    PLAYER (HEADER)
    ========================= */
 
-/* Box PLAYER, masquée par défaut */
 .header-player {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 0 10px;
-  min-width: 140px;
-  height: 40px;
+  padding: 0 var(--sp-4);
+  height: 32px;
 
   background: transparent;
-  color: #ffffff;
-  border: 1px solid #ffffff;
+  color: var(--c-ink);
+  border: 1px solid var(--c-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
-  opacity: 0;              /* caché tant que header non compact */
-  pointer-events: none;    /* non cliquable tant que caché */
+  opacity: 0;
+  pointer-events: none;
   transition: opacity 0.25s ease;
 
-  /* → prend maintenant toute la place ancien player + gap + chat */
   margin-right: 0;
-  min-width: 460px;        /* 320 + 20 + 120 */
-  width: 460px;            /* largeur fixe pour éviter les sauts */
-  padding-left: 12px;
+  min-width: 440px;
+  width: 440px;
+  padding-left: var(--sp-5);
 }
 
 /* État : un audio est chargé */
@@ -1789,52 +2141,51 @@ body.radio-page main {
   display: none;
 }
 
-/* Symbole PLAY/PAUSE à gauche */
 .header-player-icon {
-  font-size: 26px;         /* augmente si tu veux encore plus gros */
+  font-size: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;             /* réserve un bloc fixe pour l’icône */
+  width: 22px;
   flex-shrink: 0;
-  margin-right: 12px;      /* espace entre l’icône et le texte */
+  margin-right: var(--sp-5);
   cursor: pointer;
 }
 
 /* Texte NOW PLAYING (au centre, prend l'espace) */
 .header-player-title {
-  font-size: 11px;
-  line-height: 1.3;
+  font-size: var(--text-xs);
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-right: 8px;
+  margin-right: var(--sp-3);
 }
 
 /* Timer aligné à droite de la box */
 .header-player-time {
-  font-size: 11px;
-  line-height: 1.3;
+  font-size: var(--text-xs);
+  line-height: 1.2;
   flex-shrink: 0;
-  margin-left: 8px;
+  margin-left: var(--sp-3);
 }
 
 .player-skip-btn {
   border: none;
   background: transparent;
-  color: #ffffff;
+  color: var(--c-ink);
 
-  font-size: 18px;     /* un peu plus fin que 20, plus élégant pour ⟲ ⟳ */
-  line-height: 1;
-  padding: 0 2px;      /* boutons plus proches */
-  margin: 0 2px;       /* ← RAPPROCHEMENT ici */
+  font-size: var(--text-lg);
+  line-height: var(--leading-tight);
+  padding: 0 1px;
+  margin: 0 1px;
 
   cursor: pointer;
 
   opacity: 0;
   pointer-events: none;
 
-  transition: opacity 0.25s ease, transform 0.15s ease;
+  transition: opacity 0.25s ease, transform var(--dur-fast) ease;
 }
 
 /* visibles seulement quand header compact + audio chargé */
@@ -1856,15 +2207,15 @@ body.radio-page main {
    ========================= */
 
 .main-content {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 0 20px;
+  max-width: var(--w-page-radio);
+  margin: 0 auto var(--sp-20);
+  padding: 0 var(--sp-10);
 }
 
 .main-feature-box {
   width: 100%;
-  height: 360px;
-  border: 1px solid #000000;
+  height: 480px;
+  border: 1px solid var(--c-ink-alt);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -1877,29 +2228,10 @@ body.radio-page main {
 .main-feature-img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* remplit tout le cadre sans distorsion */
+  object-fit: contain;
   object-position: center 40%;
   display: block;
-}
-
-.main-feature-text {
-  position: absolute;
-  top: 32px;           /* léger décalage vers le bas → padding haut */
-  left: 32px;          /* padding à gauche pour ne pas coller la bordure */
-  max-width: 45%;      /* largeur limitée → belles lignes courtes */
-
-  margin: 0;
-
-  font-size: 42px;     /* assez gros, tu peux passer à 20/24 selon ton œil */
-  font-weight: 400;    /* normal pour commencer */
-  line-height: 1.6;    /* espacement de lignes "plutôt haut" */
-  color: #000000;      /* noir comme demandé */
-  text-transform: none;/* pour désactiver l’uppercase de la box si héritée */
-  font-family: "Knewave", sans-serif;
-  color: #000;
-  text-shadow:
-    0 -1px 0 rgba(255,255,255,0.6),
-    0  1px 0 rgba(0,0,0,0.25);
+  background: #000;
 }
 
 
@@ -1908,14 +2240,14 @@ body.radio-page main {
    ========================= */
 
 .archive-section {
-  max-width: 1000px;
+  max-width: var(--w-page-radio);
   margin: 60px auto 80px;
-  padding: 0 20px;
+  padding: 0 var(--sp-10);
 }
 
 .archive-header {
   position: relative;
-  margin-bottom: 32px;
+  margin-bottom: var(--sp-16);
   height: 40px;
 }
 
@@ -1925,7 +2257,7 @@ body.radio-page main {
   left: 50%;
   width: 50%;
   height: 1px;
-  background: #000000;
+  background: var(--c-ink-alt);
 }
 
 .archive-filters {
@@ -1933,33 +2265,35 @@ body.radio-page main {
   bottom: 100%;
   right: 0;
   display: flex;
-  gap: 12px;
-  font-size: 12px;
+  gap: var(--sp-6);
+  font-size: var(--text-base);
   text-transform: uppercase;
 }
 
 .filter-pill {
-  padding: 4px 8px;
-  border: 1px solid #000000;
-  background: #ffffff;
-  font-size: 11px;
-  padding: 6px 10px;
+  font-family: var(--font-display);
+  font-weight: 300;
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--c-ink-alt);
+  background: var(--c-ink);
+  font-size: var(--text-sm);
+  padding: var(--sp-3) var(--sp-5);
   cursor: pointer;
 }
 
 .archive-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: var(--sp-12);
 }
 
 /* Chaque item reste un carré strict */
 .audio-item {
   position: relative;
   aspect-ratio: 1 / 1;
-  border: 1px solid #000000;
+  border: 1px solid var(--c-ink-alt);
   overflow: hidden;
-  background: #000000;
+  background: var(--c-ink-alt);
 }
 
 /* Le lien occupe tout le carré */
@@ -1991,13 +2325,15 @@ body.radio-page main {
   right: 0;
   bottom: 0;
 
-  background: rgba(0, 0, 0, 0.65);
-  color: #ffffff;
+  background: var(--c-black-mid);
+  color: var(--c-ink);
 
-  padding: 6px 8px;           /* même padding tout le temps */
-  font-size: 11px;
+  padding: var(--sp-3) var(--sp-4);           /* même padding tout le temps */
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--text-sm);
   text-transform: uppercase;
-  line-height: 1.2;
+  line-height: var(--leading-short);
   box-sizing: border-box;
 
   /* Hauteur initiale (bandeau fin) */
@@ -2017,7 +2353,7 @@ body.radio-page main {
 
 /* État hover : le bandeau s'étend */
 .audio-item:hover .audio-title {
-  height: 40%;                /* taille finale du bandeau */
+  height: 32%;                /* taille finale du bandeau */
 }
 
 /* Conteneur tags : en ligne + retour à la ligne si manque de place */
@@ -2055,8 +2391,8 @@ body.radio-page main {
 
 .audio-title .tag-text {
   font-size: 9px;
-  line-height: 1;
-  letter-spacing: 0.08em;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--track-md);
 }
 
 /* Icône play au centre */
@@ -2068,10 +2404,10 @@ body.radio-page main {
   align-items: center;
   justify-content: center;
   font-size: 52px;
-  color: #ffffff;
+  color: var(--c-ink);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--dur-base) ease;
 }
 
 .audio-item:hover::after {
@@ -2079,8 +2415,8 @@ body.radio-page main {
 }
 
 .filter-pill.is-active {
-  background: #000000;
-  color: #ffffff;
+  background: var(--c-ink-alt);
+  color: var(--c-ink);
 }
 
 .audio-item.is-hidden {
@@ -2089,13 +2425,14 @@ body.radio-page main {
 
 .audio-type {
   position: absolute;
-  left: 8px;
-  bottom: 6px;
+  left: var(--sp-4);
+  bottom: var(--sp-3);
 
-  font-size: 10px;
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
   text-transform: uppercase;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--dur-mid) ease;
 }
 
 .audio-item:hover .audio-type {
@@ -2109,11 +2446,11 @@ body.radio-page main {
 .rail{
   position:fixed; top:0; right:0;
   width:var(--rail); height:100dvh;
-  background:#fff; border-left:1px solid #e6e6e6;
+  background: var(--c-ink); border-left:1px solid var(--c-line);
   display:grid;
   grid-template-rows:auto 1fr auto; /* header tiles | scroll | footer */
-  padding:12px 10px 14px; 
-  gap:10px;
+  padding: var(--sp-6) var(--sp-5) var(--sp-7); 
+  gap: var(--sp-5);
 }
 .vgrid{
   overflow:auto; 
@@ -2152,12 +2489,12 @@ body.radio-page main {
 .seed::before{
   content:""; position:absolute; left:50%; top:50%;
   width:var(--seed); height:var(--seed); transform:translate(-50%,-50%);
-  background:#000; transition:width var(--dur) var(--ease), height var(--dur) var(--ease), opacity .8s ease .2s; opacity:1;
+  background: var(--c-bg); transition:width var(--dur) var(--ease), height var(--dur) var(--ease), opacity .8s ease .2s; opacity:1;
 }
 .seed::after{
   content:""; position:absolute; left:50%; top:50%;
   width:var(--seed); height:var(--seed); transform:translate(-50%,-50%);
-  border:var(--border) solid #000; background:transparent;
+  border:var(--border) solid var(--c-bg); background:transparent;
   transition:width var(--dur) var(--ease), height var(--dur) var(--ease); pointer-events:none; z-index:3;
 }
 .tile:hover .seed::before, .tile:focus-within .seed::before,
@@ -2166,14 +2503,14 @@ body.radio-page main {
 
 .rail-link,
 .rail-link:visited{
-  color:#000;
+  color: var(--c-ink-alt);
   text-decoration:underline;
   text-underline-offset:3px;
   text-decoration-thickness:2px;
   text-shadow:none;
   font-size:.9em;
 }
-.rail-link:hover{ color:#333; }
+.rail-link:hover{ color: #333; }
 
 
 /* =========================
@@ -2235,7 +2572,7 @@ body.radio-page main {
 
   body.radio-page .back-arrow{
     position: absolute;
-    left: 12px;
+    left: var(--sp-6);
     top: 50%;
     transform: translateY(-50%);
 
@@ -2244,10 +2581,10 @@ body.radio-page main {
     justify-content: center;
 
     font-size: 26px;
-    line-height: 1;
-    padding: 8px 10px;
+    line-height: var(--leading-tight);
+    padding: var(--sp-4) var(--sp-5);
 
-    color: #fff;
+    color: var(--c-ink);
     text-decoration: none;
 
     z-index: 3000;
@@ -2283,10 +2620,6 @@ body.radio-page main {
 
   .main-feature-box{
     height: 220px;
-  }
-
-  .main-feature-text{
-    display: none !important;
   }
 
   /* ===== ARCHIVE LAYOUT ===== */
@@ -2400,14 +2733,14 @@ body.radio-page main {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 4000;
+  z-index: var(--z-lightbox);
 
-  padding: 10px 12px;
+  padding: var(--sp-5) var(--sp-6);
   background: rgba(0,0,0,0.92);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 
-  display: none; /* caché tant que rien n’a été lancé */
+  display: none; /* caché tant que rien n'a été lancé */
 }
 
 .mobile-player.is-visible{
@@ -2419,7 +2752,6 @@ body.radio-page main {
   width: 100%;
 }
 
-/* On réutilise EXACTEMENT le style “header-player” en l’adaptant en full width */
 @media (max-width: 700px){
   .mobile-player .header-player{
     display: flex !important;
@@ -2434,12 +2766,11 @@ body.radio-page main {
     pointer-events: auto !important;
 
     height: 42px;
-    padding: 0 10px;
-    border: 1px solid #fff;
+    padding: 0 var(--sp-5);
+    border: 1px solid var(--c-ink);
     background: transparent;
-    color: #fff;
+    color: var(--c-ink);
   }
-}
 
   .mobile-player .header-player-title,
   .mobile-player .header-player-time{
@@ -2460,6 +2791,22 @@ body.radio-page main {
   body.radio-page main{
     padding-bottom: 76px; /* hauteur bandeau + marge */
   }
+}
+
+/* =========================
+   VIDEO
+   === */
+
+body.video-page .site-header {
+  background: var(--c-bg);
+  border-bottom-color: transparent;
+}
+
+body.video-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* =========================
@@ -2507,8 +2854,8 @@ body.radio-page main {
 
 /* Colonne gauche : bloc texte large, stable */
 .about-text-box {
-  background: #080808;
-  border: 1px solid #444;
+  background: var(--c-bg);
+  border: 1px solid var(--c-white-mid);
 
   display: flex;
   flex-direction: column;
@@ -2542,7 +2889,7 @@ body.radio-page main {
 }
 
 .about-panel h1 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
   font-weight: 400;
   font-size: 1.6rem;
   letter-spacing: 1px;
@@ -2550,29 +2897,29 @@ body.radio-page main {
 }
 
 .about-panel p {
-  margin: 0 0 10px 0;
+  margin: 0 0 var(--sp-5) 0;
   font-size: 0.85rem;
-  line-height: 1.7;
-  color: #ffffff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  color: var(--c-ink);
+  font-family: var(--font-nav);
+  font-weight: 300;
 }
 
 /* ABOUT panel: 2 colonnes */
 .about-panel[data-about-panel="about"] .about-two-cols{
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: var(--sp-12);
   align-items: start;
 }
 
 .about-panel[data-about-panel="about"] .about-two-cols .about-col{
   margin: 0;
   font-size: 0.85rem;
-  line-height: 1.7;
-  color: #ffffff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  color: var(--c-ink);
+  font-family: var(--font-nav);
+  font-weight: 300;
 }
 
 /* CURSOR: default par défaut dans les panels */
@@ -2616,7 +2963,7 @@ body.radio-page main {
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;  /* ← important */
-  gap: 48px;                    /* tu ajustes ici maintenant */
+  gap: 80px;                    /* tu ajustes ici maintenant */
   width: 100%;
   height: auto;                 /* ← pour que le contenu décide de la hauteur */
 }
@@ -2636,9 +2983,9 @@ body.radio-page main {
 
 /* Bouton actif : variation visuelle */
 .about-sidebar .radio-wrapper.is-active .btn {
-  --primary: #fff;
-  --shadow-primary: #000;
-  --color: #000;
+  --primary: var(--c-ink);
+  --shadow-primary: var(--c-bg);
+  --color: var(--c-bg);
 }
 
 /* =========================
@@ -2673,8 +3020,8 @@ body.radio-page main {
 
   /* BOX encadrée */
   .about-text-box{
-    border: 1px solid #444 !important;
-    background: #080808 !important;
+    border: 1px solid var(--c-white-mid) !important;
+    background: var(--c-bg) !important;
 
     height: calc(100dvh - var(--about-nav-h) - 24px) !important; /* 24px = padding layout haut+bas */
     min-height: 0 !important;
@@ -2814,14 +3161,14 @@ body.radio-page main {
     display: block !important;
     text-align: center !important;
 
-    border: 1px solid #fff !important;
+    border: 1px solid var(--c-ink) !important;
     background: transparent !important;
-    color: #fff !important;
+    color: var(--c-ink) !important;
 
     line-height: 40px !important;
     font-size: 8px !important;
-    font-weight: 700 !important;
-    letter-spacing: 1px !important;
+    font-weight: var(--weight-bold) !important;
+    letter-spacing: var(--track-btn-xs) !important;
     text-transform: uppercase !important;
 
     padding: 0 !important;
@@ -2837,8 +3184,8 @@ body.radio-page main {
   /* état actif : simple inversion */
   .about-sidebar .radio-wrapper.is-active .btn,
   .about-sidebar .btn.is-active{
-    background: #fff !important;
-    color: #000 !important;
+    background: var(--c-ink) !important;
+    color: var(--c-bg) !important;
   }
 
   /* neutralise tout grossissement éventuel hérité */
@@ -2888,16 +3235,16 @@ body.radio-page main {
 }
 
 .who-subtext{
-  margin: 0 0 10px 0;
+  margin: 0 0 var(--sp-5) 0;
   font-size: 0.85rem;
-  line-height: 1.7;
-  color: #ffffff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  color: var(--c-ink);
+  font-family: var(--font-nav);
+  font-weight: 300;
 }
 
 .who-text .accordion-item:first-of-type {
-  margin-top: 32px;
+  margin-top: var(--sp-16);
 }
 
 /* =========================
@@ -2923,17 +3270,17 @@ body.radio-page main {
   width: 100%;
   background: transparent;
   border: none;
-  padding: 6px 0;
+  padding: var(--sp-3) 0;
   margin: 0;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  color: #ffffff;
-  font-size: 0.85rem;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 400;
+  color: var(--c-ink);
+  font-size: 1rem;
+  font-family: var(--font-b);
+  font-weight: 300;
   text-align: left;
   cursor: pointer;
 }
@@ -2957,10 +3304,12 @@ body.radio-page main {
 .accordion-panel p {
   margin: 0 0 10px 0;
   font-size: 0.85rem;
+  font-family: var(--font-nav);
+  font-weight: 300;
 }
 
 .accordion-item + .accordion-item {
-  margin-top: 16px;
+  margin-top: var(--sp-8);
 }
 
 .what-image-wrapper {
@@ -2981,15 +3330,15 @@ body.radio-page main {
    ========================= */
 
 .tag-index-body {
-  background: #000;
-  color: #fff;
+  background: var(--c-bg);
+  color: var(--c-ink);
 }
 
 .tag-index-page {
-  max-width: 1400px;
+  max-width: var(--w-page-tag);
   margin: 0;
-  padding: 80px 20px 120px; /* MODIF : 40px -> 20px pour ancrer plus à gauche */
-  width: min(1400px, 100%);
+  padding: 80px var(--sp-10) 120px; /* MODIF : 40px -> 20px pour ancrer plus à gauche */
+  width: min(var(--w-page-tag), 100%);
 }
 
 .tag-index-header {
@@ -2997,16 +3346,16 @@ body.radio-page main {
 }
 
 .tag-index-title {
-  font-size: clamp(56px, 8vw, 120px);
-  font-weight: 700;
+  font-size: var(--text-fluid-title);
+  font-weight: var(--weight-bold);
   line-height: 0.95;
-  letter-spacing: -0.04em;
-  color: #fff;
-  margin-left: 12px;
+  letter-spacing: var(--track-tight);
+  color: var(--c-ink);
+  margin-left: var(--sp-6);
 }
 
 .tag-index-title::first-letter {
-  font-weight: 300;      /* plus fin */
+  font-weight: var(--weight-light);      /* plus fin */
 }
 
 .tag-index-items {
@@ -3037,9 +3386,9 @@ body.radio-page main {
 
 .tag-index-item-right {
   max-width: 520px;
-  font-size: 13px;
-  line-height: 1.45;
-  color: rgba(255,255,255,0.7);
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+  color: var(--c-white-strong);
 }
 
 .tag-index-item-right p {
@@ -3050,12 +3399,12 @@ body.radio-page main {
 .tag-index-image {
   width: 100%;
   display: block;
-  border: 1px solid rgba(255,255,255,0.28);
+  border: 1px solid var(--c-white-mid);
 }
 
 .tag-index-empty {
-  color: rgba(255,255,255,0.7);
-  font-size: 16px;
+  color: var(--c-white-strong);
+  font-size: var(--text-xl);
 }
 
 /* TAG INDEX — remove bullets for are.na books */
@@ -3088,7 +3437,7 @@ body.radio-page main {
 /* TAG INDEX — meta livre */
 .tag-index-page .book__author {
   font-size: 0.85rem;
-  letter-spacing: 0.16em;
+  letter-spacing: var(--track-2xl);
   opacity: 0.9;
 }
 
@@ -3110,7 +3459,7 @@ body.radio-page main {
 .tag-index-page .audio-item {
   width: 100%;
   max-width: 420px;
-  border-color: rgba(255,255,255,0.35);
+  border-color: var(--c-white-mid);
 }
 
 /* Safe : toutes les images dans tag-index restent contenues */
@@ -3124,4 +3473,3 @@ body.radio-page main {
   .tag-index-item { grid-template-columns: 1fr; gap: 28px; }
   .tag-index-item-right { max-width: none; }
 }
-

@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tag</title>
+  <title>Tag — MGO space</title>
+  <link rel="stylesheet" href="assets/tokens.css">
   <link rel="stylesheet" href="assets/site.css">
 </head>
 
@@ -45,13 +46,13 @@
 
     if (!tag) {
       titleEl.textContent = "TAG";
-      document.title = "Tag";
+      document.title = "Tag — MGO space";
       setEmpty("Aucun tag fourni.");
       return;
     }
 
     titleEl.innerHTML = `<span class="tag-prefix">_</span>${escapeHtml(tag.toUpperCase())}`;
-    document.title = `Tag — _${tag.toUpperCase()}`;
+    document.title = `_${tag.toUpperCase()} — MGO space`;
 
     // 1) items.json (notes + meta + books)
     let itemsData = {};
