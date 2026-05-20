@@ -75,6 +75,22 @@
 }
 
 @font-face {
+  font-family: 'SchengenCore';
+  src: url('fonts/ABCSchengenCore-Medium-Trial.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SchengenCore';
+  src: url('fonts/ABCSchengenCore-MediumItalic-Trial.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'SchengenA';
   src: url('fonts/ABCSchengenA-Light-Trial.woff') format('woff');
   font-weight: 300;
@@ -130,6 +146,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'SchengenC';
+  src: url('fonts/ABCSchengenC-Medium-Trial.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
 
   /* =================================================================
@@ -139,6 +163,7 @@
    --font-display:        'Schengen', Arial, sans-serif;
    --font-display-weight: 400;
    --font-display-c: 'SchengenC', Arial, sans-serif;
+   --font-display-c-medium: 500;
    --font-line:         'SchengenLine', Arial, sans-serif;
    --font-b: 'SchengenB', Arial, sans-serif;
 
@@ -151,6 +176,7 @@
 
    --font-zone:  'SchengenZone', 'Didot', Georgia, serif;
    --font-core:  'SchengenCore', 'Helvetica Neue', Arial, sans-serif;
+   --font-core-medium: 500;
    --font-nav:   'SchengenA', 'Helvetica Neue', Arial, sans-serif;
    --font-cmono: 'SchengenCMono', 'Departure Mono', monospace;
 

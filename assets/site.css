@@ -388,6 +388,25 @@ main.page{
   object-fit: cover;
 }
 
+.feature-media--text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.feature-media-text {
+  font-family: var(--font-display-c);
+  font-weight: var(--font-display-c-medium);
+  font-size: 22px;
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  pointer-events: none;
+  letter-spacing: var(--track-xl);
+  text-transform: uppercase;
+}
+
 /* =========================
    FEATURE NAV — STRUCTURAL ARROWS
    ========================= */
@@ -1240,6 +1259,94 @@ body.has-lightbox-open {
   width: 100%;
 }
 
+/* =========================
+   LIBRARY — sections par année
+   ========================= */
+
+[data-list-id="writings-library"].is-active {
+  display: block;
+}
+
+[data-list-id="writings-library"] > li.lib-year-section {
+  display: block;
+}
+
+.lib-year-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-top: 0.5px solid rgba(255,255,255,0.09);
+  padding: 18px 32px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.lib-year-label {
+  font-family: var(--font-cmono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+
+.lib-year-arrow {
+  font-size: 9px;
+  color: rgba(255,255,255,0.25);
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.lib-year-header[aria-expanded="false"] .lib-year-arrow {
+  transform: rotate(-90deg);
+}
+
+.lib-year-grid {
+  list-style: none;
+  padding: 0 32px 32px;
+  margin: 0;
+  display: none;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  column-gap: 12px;
+  row-gap: 48px;
+}
+
+.lib-year-grid.is-open {
+  display: grid;
+}
+
+.lib-year-grid .bookwrapper {
+  width: 6.5rem;
+  height: 9rem;
+}
+
+.lib-year-grid .book__front {
+  padding: 0.5rem 0.6rem 1.2rem;
+}
+
+.lib-year-grid .book__title {
+  font-size: 0.55rem;
+  margin-bottom: 0.3rem;
+}
+
+.lib-year-grid .book__author {
+  font-size: 0.5rem;
+  margin-top: 1.2rem;
+}
+
+.lib-year-grid .book__publisher {
+  font-size: 0.45rem;
+  bottom: 0.6rem;
+  left: 0.6rem;
+}
+
+.lib-year-grid > li {
+  display: flex;
+  justify-content: center;
+}
+
 .frag-block {
   border-bottom: 0.5px solid rgba(0,0,0,0.18);
   cursor: pointer;
@@ -1440,9 +1547,13 @@ body.has-lightbox-open {
 /* (Optionnel si tu utilises un publisher plus tard) */
 .book__publisher {
   position: absolute;
-  bottom: 1.5rem;
-  left: 2rem;
-  font-size: 0.75rem;
+  bottom: 1rem;
+  left: 1rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-ink-alt);
+  opacity: 0.55;
 }
 
 /* Hover */
@@ -3472,4 +3583,187 @@ body.video-page {
   .tag-index-page { padding: 56px 20px 96px; }
   .tag-index-item { grid-template-columns: 1fr; gap: 28px; }
   .tag-index-item-right { max-width: none; }
+}
+
+/* =========================
+   FIELD OVERLAY
+   ========================= */
+
+.field-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.field-overlay.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.field-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 18, 16, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.field-overlay__box {
+  position: relative;
+  z-index: 1;
+  width: 70vw;
+  height: 85vh;
+  background: var(--c-black-strong, #0e0d0b);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  overflow: auto;
+}
+
+.field-overlay__canvas {
+  position: relative;
+  width: 2400px;
+  height: 1800px;
+}
+
+.field-overlay__controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 4px 10px;
+  pointer-events: all;
+}
+
+.field-overlay__title {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  font-family: var(--font-core);
+  font-weight: var(--font-core-medium);
+  font-size: var(--text-6xl);
+  font-style: italic;
+  letter-spacing: var(--track-xl);
+  text-transform: uppercase;
+  color: rgba(255,255,255,1);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.field-zoom-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.field-zoom-btn:hover {
+  color: rgba(255,255,255,1);
+}
+
+.field-zoom-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.08em;
+  min-width: 32px;
+  text-align: center;
+}
+
+.field-block {
+  position: absolute;
+  cursor: default;
+  user-select: none;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.field-block--text {
+  min-width: 60px;
+  min-height: 40px;
+}
+
+.field-block--image {
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.field-block__handle {
+  height: 24px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.07), transparent);
+  cursor: grab;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.field-block__handle:active {
+  cursor: grabbing;
+}
+
+.field-block__label {
+  display: block;
+  padding: 0 10px;
+  line-height: 24px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.field-block__content {
+  padding: 16px;
+  color: rgba(255,255,255,0.85);
+  font-family: var(--font-line);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  width: 100%;
+  height: calc(100% - 24px);
+  box-sizing: border-box;
+}
+
+.field-block--image .field-block__content {
+  padding: 0;
+  height: calc(100% - 24px);
+}
+
+.field-block__content img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.field-block__resize {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.2);
+  cursor: se-resize;
+  line-height: 1;
+  transition: color 0.15s;
+  user-select: none;
+}
+
+.field-block__resize:hover {
+  color: rgba(255,255,255,0.6);
 }
