@@ -990,8 +990,8 @@ document.querySelector('.field-overlay__box').addEventListener('wheel', (e) => {
     const COARSE = matchMedia('(pointer: coarse)').matches;
     if (matchMedia('(max-width: 700px)').matches) {
       // ⟵ les chiffres à régler au feeling (taille des blocs, longueur des gaps)
-      SIZE = { image: { wMin: 120, wMax: 210 }, video: { wMin: 150, wMax: 240 } };
-      GAP  = { image: { min: 120, max: 420 }, video: { min: 300, max: 560 } };
+      SIZE = { image: { wMin: 200, wMax: 320 }, video: { wMin: 230, wMax: 360 } };
+      GAP  = { image: { min: 300, max: 700 }, video: { min: 500, max: 900 } };
     }
 
   const rand = (a, b) => a + Math.random() * (b - a);
