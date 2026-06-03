@@ -283,6 +283,7 @@
     <div class="walk-overlay" id="walk-overlay" aria-hidden="true">
       <div class="walk-overlay__backdrop"></div>
       <div class="walk-overlay__box" id="walk-box">
+        <button class="walk-overlay__close" id="walk-close" aria-label="Fermer">✕</button>
         <div class="walk-stage" id="walk-stage" tabindex="0">
 
           <div class="walk-ground"></div>
@@ -978,14 +979,20 @@ document.querySelector('.field-overlay__box').addEventListener('wheel', (e) => {
   const OVERLAP_PAD    = 60;
   const VIDEO_CLEAR    = 1.0;
 
-  const SIZE = {
-    image: { wMin: 420, wMax: 650 },
-    video: { wMin: 520, wMax: 750 }
-  };
-  const GAP = {
-    image: { min: 150, max: 600 },
-    video: { min: 500, max: 800 }
-  };
+  let SIZE = {
+      image: { wMin: 420, wMax: 650 },
+      video: { wMin: 520, wMax: 750 }
+    };
+    let GAP = {
+      image: { min: 150, max: 600 },
+      video: { min: 500, max: 800 }
+    };
+    const COARSE = matchMedia('(pointer: coarse)').matches;
+    if (matchMedia('(max-width: 700px)').matches) {
+      // ⟵ les chiffres à régler au feeling (taille des blocs, longueur des gaps)
+      SIZE = { image: { wMin: 120, wMax: 210 }, video: { wMin: 150, wMax: 240 } };
+      GAP  = { image: { min: 120, max: 420 }, video: { min: 300, max: 560 } };
+    }
 
   const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -1061,7 +1068,7 @@ document.querySelector('.field-overlay__box').addEventListener('wheel', (e) => {
 
   // Ajoute la poignée de resize à chaque bloc
   blocks.forEach(block => {
-    if (!block.querySelector('.walk-block__resize')) {
+    if (!COARSE && !block.querySelector('.walk-block__resize')) {
       const handle = document.createElement('span');
       handle.className = 'walk-block__resize';
       handle.textContent = '↘';
@@ -1084,6 +1091,7 @@ block.appendChild(handle);
   });
 
   overlay.addEventListener('mousedown', e => {
+    if (COARSE) return;
     // RESIZE — clic sur la poignée ↘
     const resizeHandle = e.target.closest('.walk-block__resize');
     if (resizeHandle) {
@@ -1245,6 +1253,19 @@ block.appendChild(handle);
     if (!dot) return;
     dot.closest('.walk-block').classList.toggle('is-open');
   });
+  const closeBtn = document.getElementById('walk-close');
+  if (closeBtn) closeBtn.addEventListener('click', closeWalk);
+
+  /* ── tap gauche/droite pour marcher (tactile) ── */
+  const stopWalk = () => { keys.delete('ArrowLeft'); keys.delete('ArrowRight'); };
+  stage.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse') return;                          // desktop garde le clavier
+    if (e.target.closest('.walk-block__dot, .walk-block__sound')) return; // laisse le dot/son
+    const r = stage.getBoundingClientRect();
+    keys.add((e.clientX - r.left) < r.width / 2 ? 'ArrowLeft' : 'ArrowRight');
+  });
+  window.addEventListener('pointerup', stopWalk);
+  window.addEventListener('pointercancel', stopWalk);
 
   window.openWalk = openWalk;
 })();
