@@ -3767,3 +3767,42 @@ body.video-page {
 .field-block__resize:hover {
   color: rgba(255,255,255,0.6);
 }
+
+/* ===================================================================
+   WALK OVERLAY
+   =================================================================== */
+.walk-overlay { position:fixed; inset:0; z-index:9000; opacity:0; pointer-events:none; transition:opacity .3s ease; }
+.walk-overlay.is-open { opacity:1; pointer-events:all; }
+.walk-overlay__backdrop { position:absolute; inset:0; background:rgba(20,18,16,.85); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+.walk-overlay__box { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1; width:80vw; height:80vh; background:var(--c-bg-alt); border:1px solid var(--c-ink-alt); overflow:hidden; }
+
+/* variables locales de marche (à ajuster au feeling) */
+.walk-stage { position:relative; width:100%; height:100%; overflow:hidden; outline:none;
+  --ground-y:72%; --char-x:34%; --walk-dur:.6s;
+  color:var(--c-ink-alt); font-family:var(--font-mono); }
+
+.walk-ground { position:absolute; left:0; right:0; top:var(--ground-y); height:2px; background:var(--c-ink-alt); z-index:2; }
+
+.walk-world { position:absolute; inset:0; z-index:1; }
+.walk-layer { position:absolute; inset:0; will-change:transform; }
+
+.walk-block { position:absolute; }
+.walk-block img, .walk-block video { display:block; width:100%; height:100%; object-fit:cover; border:1px solid var(--c-ink-alt); background:var(--c-bg-alt); }
+.walk-block__dot { position:absolute; top:0; right:-20px; width:12px; height:12px; padding:0; border:1px solid var(--c-ink-alt); background:var(--c-bg-alt); cursor:pointer; z-index:4; }
+.walk-block.is-open .walk-block__dot { background:var(--c-ink-alt); }
+.walk-block__text { position:absolute; left:calc(100% + 16px); top:22px; width:180px; font-size:var(--text-sm); line-height:var(--leading-normal); letter-spacing:var(--track-near-0); display:none; }
+.walk-block.is-open .walk-block__text { display:block; }
+
+.walk-walker { position:absolute; left:var(--char-x); top:var(--ground-y); width:48px; height:96px; transform:translate(-50%,-100%); z-index:3; }
+.walk-walker.face-left { transform:translate(-50%,-100%) scaleX(-1); }
+.walk-walker svg { display:block; width:100%; height:100%; overflow:visible; }
+.walk-fig line, .walk-fig circle { stroke:var(--c-ink-alt); stroke-width:3; stroke-linecap:round; fill:none; }
+.walk-fig circle.head { fill:var(--c-ink-alt); }
+.walk-limb { transform-box:fill-box; transform-origin:top center; }
+@keyframes walkSwingA { 0%{rotate:24deg} 50%{rotate:-24deg} 100%{rotate:24deg} }
+@keyframes walkSwingB { 0%{rotate:-24deg} 50%{rotate:24deg} 100%{rotate:-24deg} }
+.walk-walker.is-walking .legL, .walk-walker.is-walking .armR { animation:walkSwingA var(--walk-dur) linear infinite; }
+.walk-walker.is-walking .legR, .walk-walker.is-walking .armL { animation:walkSwingB var(--walk-dur) linear infinite; }
+.walk-block__resize { position:absolute; bottom:-20px; right:-20px; width:24px; height:24px; font-size:18px; cursor:grab; z-index:5; user-select:none; opacity:1; }
+.walk-block { position:absolute; cursor:grab; }
+.walk-stage { user-select:none; }
