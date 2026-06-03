@@ -813,9 +813,9 @@ body.has-lightbox-open {
   /* ---- Variables ---- */
   :root{
     --header: 28px;     /* hauteur du bandeau */
-    --card-w: 120px;
-    --card-h: 160px;
-    --card-edge: 8px;
+    --card-w: 68px;
+    --card-h: 90px;
+    --card-edge: 5px;
   }
 
   /* =========================
@@ -878,20 +878,13 @@ body.has-lightbox-open {
     letter-spacing: 0.18em;
   }
 
-  /* ---- Doors (2x2) ---- */
+/* ---- Doors (1×4 horizontal) ---- */
   .index-doors{
     grid-column: 1 / -1;
     grid-row: auto;
-
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 20px;
-    row-gap: 48px;
-
-    justify-items: center;
-    margin-top: 40px;
-
-    position: relative; /* overlay axis */
+    display: block;
+    margin-top: 20px;
+    position: relative;
   }
 
   .doors-axis{
@@ -908,16 +901,32 @@ body.has-lightbox-open {
 
   .axis-line{ display: none; }
 
+  .index-doors-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    margin: 0;
+  }
+
+  .card-link{
+    flex: 1 1 0;
+    display: flex;
+    justify-content: center;
+  }
+
   .card__content{
-    font-size: 13px;
-    letter-spacing: 0.14em;
-    padding: 14px;
+    font-size: 7px;
+    letter-spacing: 0.08em;
+    padding: 6px 4px;
   }
 
   /* ---- Feature ---- */
   .feature{
     grid-column: 1 / -1;
-    margin-top: 64px;
+    margin-top: 24px;
   }
 
   .feature-bg{ 
@@ -928,6 +937,7 @@ body.has-lightbox-open {
   .feature-bg-inner{
     padding: 16px;
     gap: 12px;
+    max-width: 100%;
   }
 
   .feature-bg-inner.is-spotlight-open .feature-media::after{
@@ -1020,15 +1030,9 @@ body.has-lightbox-open {
 @media (max-width: 420px){
 
   :root{
-    --card-w: 112px;
-    --card-h: 150px;
-    --card-edge: 8px;
-  }
-
-  .index-doors{
-    column-gap: 14px;
-    row-gap: 40px;
-    margin-top: 32px;
+    --card-w: 58px;
+    --card-h: 78px;
+    --card-edge: 4px;
   }
 }
 
