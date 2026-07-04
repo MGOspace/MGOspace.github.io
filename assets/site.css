@@ -53,6 +53,7 @@ a{ text-shadow: 0 1px 2px var(--c-black-soft); }
   display: flex;
   align-items: center;
   padding: 0 var(--sp-6);
+  position: fixed;
 }
 
 .header-logo,
@@ -113,19 +114,21 @@ main.page{
   padding-bottom: 48px;
 }
 
-/* LABEL AU-DESSUS DES DOORS */
+/* LABEL DANS LE HEADER — centré */
 .doors-label {
-  grid-column: 1 / -1;
-  grid-row: 1;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 
   text-align: center;
   font-size: var(--text-5xl);
   line-height: var(--leading-snug);
   letter-spacing: var(--track-near-0);
-  color: var(--c-ink);
+  color: var(--c-ink-alt);
   font-family: var(--font-display);
   font-weight: 400;
-  margin-top: 0px;
+  pointer-events: none;
 }
 
 /* LIGNE DES DOORS (section + overlay axis) */
@@ -140,7 +143,7 @@ main.page{
   display: block;
 
   /* ton offset vertical reste ici */
-  margin-top: 28px;
+
 }
 
 .index-doors-row {
@@ -256,17 +259,25 @@ main.page{
    MAIN PAGE
    ========================= */
 
-/* Bloc global (derrière les doors) */
+/* Conteneur (reste dans la grille) */
 .feature{
   grid-column: 1 / span 12;
   grid-row: 3;
-  margin-top: 16px;
+  margin-top: 32px;
 }
 
-/* Fond flou / radial + flèches (position:relative) */
 .feature-bg{
+  --bg-w: 85vw;      /* ⟵ largeur de la box grise — baisse pour la réduire */
+  --gap: 32px;       /* ⟵ écart entre cartes */
+  --visible: 5;      /* ⟵ nb de cartes visibles à l'écran */
+
   position: relative;
-  padding: var(--sp-9) 27px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--bg-w);
+  overflow: hidden;
+
+  padding: var(--sp-8) 0;
   background: radial-gradient(circle at top left,
     rgba(255,255,255,0.12),
     rgba(255,255,255,0.02)
@@ -274,19 +285,49 @@ main.page{
   border: 1px solid var(--c-white-soft);
 }
 
-/* Capsule cliquable */
-.feature-bg-inner{
-  width: 100%;
-  max-width: 320px;
-  margin: 0 auto;
+/* Voile d'assombrissement au survol d'une carte */
+.feature-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,0.55);   /* ⟵ force de l'assombrissement */
+  opacity:0;
+  transition: opacity var(--dur-base) ease;
+  pointer-events:none;
+  z-index:1;
+}
+.feature-bg:has(.spotlight-box:hover)::after{ opacity:1; }
 
-  border: 1px solid var(--c-white-mid);
-  background: var(--c-black-mid);
+/* Ruban qui défile droite→gauche */
+.feature-track{
+  position: relative;
+  z-index: 2;                  /* au-dessus du voile */
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: spotlight-marquee 60s linear infinite;   /* ⟵ vitesse (plus grand = plus lent) */
+}
+@keyframes spotlight-marquee{
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }   /* -50% = un set complet (cartes dupliquées en JS) */
+}
+
+/* Pause + flou des autres cartes quand on en survole une */
+.feature-track:has(.spotlight-box:hover){ animation-play-state: paused; }
+.feature-track:has(.spotlight-box:hover) .spotlight-box:not(:hover){ filter: blur(2px); }  /* ⟵ force du flou */
+
+/* Carte spotlight (ex-.feature-bg-inner, taille inchangée) */
+.spotlight-box{
+  flex: 0 0 auto;
+  width: calc(var(--bg-w) / var(--visible) - var(--gap));
+  margin-right: var(--gap);
 
   display: flex;
   flex-direction: column;
-  gap: var(--sp-6);
+  gap: 16px;
 
+  border: 1px solid var(--c-white-mid);
+  background: var(--c-black-mid);
   padding: var(--sp-8) var(--sp-10);
   cursor: pointer;
 
@@ -294,30 +335,20 @@ main.page{
     border-color var(--dur-base) ease,
     background var(--dur-base) ease,
     transform var(--dur-base) ease,
-    box-shadow var(--dur-base) ease;
+    box-shadow var(--dur-base) ease,
+    filter var(--dur-base) ease;
 }
 
-.feature-bg-inner:hover{
+.spotlight-box:hover{
   border-color: var(--c-white-strong);
   background: var(--c-black-strong);
   transform: translateY(-3px);
   box-shadow: var(--shadow-feature-hover);
 }
 
-/* Stack de spotlights */
-.feature-spotlights{ position: relative; }
-
-.feature-item{
-  display: none;
-  flex-direction: column;
-  gap: 16px;
-}
-.feature-item.is-active{ display: flex; }
-
 /* Typo */
 .feature-bg-label{
   font-family: var(--font-display);
-  font-size: 100;
   font-size: var(--text-sm);
   letter-spacing: var(--track-3xl);
   text-transform: uppercase;
@@ -332,7 +363,6 @@ main.page{
   text-transform: uppercase;
 }
 
-/* Ligne meta (TAG + DATE à gauche, CTA à droite) */
 .feature-meta-row{
   display: flex;
   align-items: center;
@@ -353,8 +383,8 @@ main.page{
 
 .feature-bg-cta{
   font-family: var(--font-mono);
-  margin-left: auto;   /* pousse à droite */
-  margin-top: 0;       /* pas de retour ligne via marge */
+  margin-left: auto;
+  margin-top: 0;
   font-size: var(--text-sm);
   letter-spacing: var(--track-2xl);
   text-transform: uppercase;
@@ -369,13 +399,11 @@ main.page{
   aspect-ratio: 5 / 4;
   position: relative;
   overflow: hidden;
-
   border: 1px solid var(--c-ink);
   border-radius: var(--radius-sm);
   box-shadow: 0 0 0 1px var(--c-black-soft);
 }
 
-/* Image = remplit exactement le cadre */
 .feature-media-el{
   display: block;
   width: 100%;
@@ -384,11 +412,13 @@ main.page{
 }
 
 /* Mix = plein cadre */
-.feature-item[data-feature="mix"] .feature-media-el{
+.spotlight-box[data-feature="mix"] .feature-media-el{
   object-fit: cover;
+  height: auto;
+  max-height: 420px;
 }
 
-.feature-media--text {
+.feature-media--text{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -396,7 +426,7 @@ main.page{
   height: 100%;
 }
 
-.feature-media-text {
+.feature-media-text{
   font-family: var(--font-display-c);
   font-weight: var(--font-display-c-medium);
   font-size: 22px;
@@ -405,57 +435,6 @@ main.page{
   pointer-events: none;
   letter-spacing: var(--track-xl);
   text-transform: uppercase;
-}
-
-/* =========================
-   FEATURE NAV — STRUCTURAL ARROWS
-   ========================= */
-
-/* flèches nues, typographiques */
-.feature-nav{
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 30;
-
-  background: none;
-  border: none;
-  padding: 0;
-
-  font-size: var(--text-8xl);
-  font-weight: var(--weight-light);
-  line-height: var(--leading-tight);
-
-  color: var(--c-white-strong);
-  cursor: pointer;
-
-  opacity: 0;
-  pointer-events: none;
-
-  transition: opacity 0.18s ease;
-}
-
-.feature-nav--prev{ left: var(--sp-12); }
-.feature-nav--next{ right: var(--sp-12); }
-
-/* apparition au hover du background */
-.feature-bg:hover .feature-nav{
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* focus clavier */
-.feature-nav:focus-visible{
-  outline: none;
-  opacity: 1;
-  color: var(--c-ink);
-}
-
-/* Mix — garder le comportement "image réelle" pour que la capsule s'adapte */
-.feature-item[data-feature="mix"] .feature-media-el{
-  height: auto;
-  max-height: 420px;
-  object-fit: contain;
 }
 
 /* =========================
@@ -870,11 +849,9 @@ body.has-lightbox-open {
     padding-top: calc(var(--header) + 72px);
   }
 
-  /* ---- Doors label ---- */
+/* ---- Doors label (dans le header) ---- */
   .doors-label{
-    grid-column: 1 / -1;
-    grid-row: auto;
-    font-size: 32px;
+    font-size: 14px;
     letter-spacing: 0.18em;
   }
 
@@ -929,23 +906,24 @@ body.has-lightbox-open {
     margin-top: 24px;
   }
 
-  .feature-bg{ 
-    padding: 18px;
-    position: relative; 
+  .feature-bg{
+    --bg-w: 90vw;
+    --gap: 18px;
+    --visible: 2;
+    padding: 16px 0;
+    position: relative;
   }
 
-  .feature-bg-inner{
+  .spotlight-box{
     padding: 16px;
     gap: 12px;
-    max-width: 100%;
   }
 
-  .feature-bg-inner.is-spotlight-open .feature-media::after{
+  .spotlight-box.is-spotlight-open .feature-media::after{
     content: "";
     position: absolute;
     inset: 0;
-
-    border: 1px solid rgba(255,255,255,0.18); /* exactement comme feature-bg */
+    border: 1px solid rgba(255,255,255,0.18);
     pointer-events: none;
   } 
 
