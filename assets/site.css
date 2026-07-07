@@ -418,6 +418,12 @@ main.page{
   max-height: 420px;
 }
 
+.spotlight-box[data-feature="walk"] .feature-media-el{
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
 .feature-media--text{
   display: flex;
   align-items: center;
@@ -2104,8 +2110,7 @@ body.radio-page {
 }
 
 body.radio-page main {
-  padding-top: 50vh;
-  transition: padding-top 0.3s ease;
+  padding-top: calc(50vh + var(--sp-12));
 }
 
 /* =========================

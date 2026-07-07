@@ -427,8 +427,12 @@
     var minHeight = 48;
     var isCompact = false;
 
+    var GAP  = 24; // respiration header <-> image (= --sp-12)
+    var main = document.querySelector('body.radio-page main');
+
     function applyHeight(h) {
       header.style.height = h + 'px';
+      if (main) main.style.paddingTop = (h + GAP) + 'px';
     if (h <= minHeight + 1) {
       header.classList.add('header-compact');
       isCompact = true;
@@ -445,6 +449,7 @@
         // mobile: ne touche pas la hauteur, le CSS gère
         header.classList.remove('header-compact');
         header.style.height = '';
+        if (main) main.style.paddingTop = '';
         return;
       }
 
@@ -454,12 +459,12 @@
 
     function onScroll() {
       if (isMobile()) return;
-      
+
       if (isCompact) {
         applyHeight(minHeight);
         return;
       }
-      
+
       var newHeight = Math.max(minHeight, maxHeight - window.scrollY);
       applyHeight(newHeight);
     }
