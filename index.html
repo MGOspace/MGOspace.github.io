@@ -1133,40 +1133,17 @@ if (lightbox) {
      ========================= */
 const featureTrack = document.querySelector('.feature-track');
 
-  // Slide manuel : drag souris (le tactile passe par le scroll natif)
-  if (featureTrack) {
-    let dragging = false, startX = 0, startScroll = 0, moved = false;
+const featureTrack = document.querySelector('.feature-track');
 
-    featureTrack.addEventListener('pointerdown', (e) => {
-      if (e.pointerType === 'touch') return;
-      dragging = true; moved = false;
-      startX = e.clientX;
-      startScroll = featureTrack.scrollLeft;
-      featureTrack.classList.add('is-dragging');
+  // Duplique le set de cartes pour une boucle sans couture (-50%)
+  if (featureTrack && !featureTrack.dataset.cloned) {
+    Array.from(featureTrack.children).forEach(card => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      clone.tabIndex = -1;
+      featureTrack.appendChild(clone);
     });
-
-    window.addEventListener('pointermove', (e) => {
-      if (!dragging) return;
-      const dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) moved = true;
-      featureTrack.scrollLeft = startScroll - dx;
-    });
-
-    const endDrag = () => {
-      if (!dragging) return;
-      dragging = false;
-      featureTrack.classList.remove('is-dragging');
-    };
-    window.addEventListener('pointerup', endDrag);
-    window.addEventListener('pointercancel', endDrag);
-
-    // Un drag ne doit pas ouvrir la carte
-    featureTrack.addEventListener('click', (e) => {
-      if (!moved) return;
-      moved = false;
-      e.preventDefault();
-      e.stopPropagation();
-    }, true);
+    featureTrack.dataset.cloned = '1';
   }
 
   if (featureTrack) {

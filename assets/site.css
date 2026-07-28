@@ -298,36 +298,28 @@ main.page{
 }
 .feature-bg:has(.spotlight-box:hover)::after{ opacity:1; }
 
-/* Ruban à défilement manuel (drag souris / swipe tactile) */
+/* Ruban qui défile droite→gauche */
 .feature-track{
   position: relative;
   z-index: 2;                  /* au-dessus du voile */
   display: flex;
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  cursor: grab;
+  width: max-content;
+  will-change: transform;
+  animation: spotlight-marquee 60s linear infinite;   /* ⟵ vitesse (plus grand = plus lent) */
 }
-.feature-track::-webkit-scrollbar{ display: none; }
-.feature-track.is-dragging{
-  cursor: grabbing;
-  scroll-behavior: auto;
-  scroll-snap-type: none;
+@keyframes spotlight-marquee{
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }   /* -50% = un set complet (cartes dupliquées en JS) */
 }
 
-/* Flou des autres cartes quand on en survole une */
+/* Pause + flou des autres cartes quand on en survole une */
+.feature-track:has(.spotlight-box:hover){ animation-play-state: paused; }
 .feature-track:has(.spotlight-box:hover) .spotlight-box:not(:hover){ filter: blur(2px); }  /* ⟵ force du flou */
 
 .spotlight-box{
   flex: 0 0 auto;
   width: calc(var(--bg-w) / var(--visible) - var(--gap));
   margin-right: var(--gap);
-  scroll-snap-align: start;
 
   display: flex;
   flex-direction: column;
@@ -931,17 +923,35 @@ body.has-lightbox-open {
     margin-top: 24px;
   }
 
-  .feature-bg{
+.feature-bg{
     --bg-w: 90vw;
     --gap: 18px;
-    --visible: 1.15;
+    --visible: 2;
     padding: 16px 0;
     position: relative;
   }
 
+  /* Spotlights : scroll latéral manuel, pas d'auto-défilement */
+  .feature-track{
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    animation: none;
+    transform: none;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .feature-track::-webkit-scrollbar{ display: none; }
+
+  /* cartes clonées : utiles seulement pour la boucle desktop */
+  .feature-track > .spotlight-box[aria-hidden="true"]{ display: none; }
+
   .spotlight-box{
     padding: 16px;
     gap: 12px;
+    scroll-snap-align: start;
   }
 
   .spotlight-box.is-spotlight-open .feature-media::after{
