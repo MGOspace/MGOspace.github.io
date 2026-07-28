@@ -860,14 +860,15 @@ body.has-lightbox-open {
 
   .doors-label{
     position: absolute;
-    left: 50%;
+    left: auto;
+    right: 12px;                    /* ⟵ aligné sur le padding du header */
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
     font-size: 13px;
     line-height: 1;
     letter-spacing: 0.18em;
     white-space: nowrap;
-    max-width: calc(100% - 96px);   /* ne recouvre jamais le logo */
+    max-width: calc(100% - 60px);   /* garde-fou vs le logo à gauche */
     overflow: hidden;
     text-overflow: ellipsis;
   }
