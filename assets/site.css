@@ -298,29 +298,36 @@ main.page{
 }
 .feature-bg:has(.spotlight-box:hover)::after{ opacity:1; }
 
-/* Ruban qui défile droite→gauche */
+/* Ruban à défilement manuel (drag souris / swipe tactile) */
 .feature-track{
   position: relative;
   z-index: 2;                  /* au-dessus du voile */
   display: flex;
-  width: max-content;
-  will-change: transform;
-  animation: spotlight-marquee 60s linear infinite;   /* ⟵ vitesse (plus grand = plus lent) */
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  cursor: grab;
 }
-@keyframes spotlight-marquee{
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }   /* -50% = un set complet (cartes dupliquées en JS) */
+.feature-track::-webkit-scrollbar{ display: none; }
+.feature-track.is-dragging{
+  cursor: grabbing;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
 }
 
-/* Pause + flou des autres cartes quand on en survole une */
-.feature-track:has(.spotlight-box:hover){ animation-play-state: paused; }
+/* Flou des autres cartes quand on en survole une */
 .feature-track:has(.spotlight-box:hover) .spotlight-box:not(:hover){ filter: blur(2px); }  /* ⟵ force du flou */
 
-/* Carte spotlight (ex-.feature-bg-inner, taille inchangée) */
 .spotlight-box{
   flex: 0 0 auto;
   width: calc(var(--bg-w) / var(--visible) - var(--gap));
   margin-right: var(--gap);
+  scroll-snap-align: start;
 
   display: flex;
   flex-direction: column;
@@ -820,7 +827,7 @@ body.has-lightbox-open {
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;   /* logo calé à gauche */
 
     z-index: 3000;
   }
@@ -828,8 +835,12 @@ body.has-lightbox-open {
   body.index-page .header-logo{
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 100%;
+    width: auto;
+    padding: 0;
+    margin-left: 0;                /* annule le margin-left:32px global */
+    flex: 0 0 auto;
   }
 
   body.index-page .header-logo img{
@@ -855,10 +866,18 @@ body.has-lightbox-open {
     padding-top: calc(var(--header) + 72px);
   }
 
-/* ---- Doors label (dans le header) ---- */
   .doors-label{
-    font-size: 14px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 13px;
+    line-height: 1;
     letter-spacing: 0.18em;
+    white-space: nowrap;
+    max-width: calc(100% - 96px);   /* ne recouvre jamais le logo */
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
 /* ---- Doors (1×4 horizontal) ---- */
@@ -915,7 +934,7 @@ body.has-lightbox-open {
   .feature-bg{
     --bg-w: 90vw;
     --gap: 18px;
-    --visible: 2;
+    --visible: 1.15;
     padding: 16px 0;
     position: relative;
   }
@@ -1659,6 +1678,31 @@ body.has-lightbox-open {
     display: block;
     justify-content: unset;
   }
+
+  /* ===== FRAGMENTS : colonne, pas de rangée scrollable ===== */
+  .writing-list--fragments.is-active{
+    display: block;
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+    scroll-snap-type: none;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .writing-list--fragments.is-active > li{
+    flex: 0 0 auto;
+    width: 100%;
+    scroll-snap-align: none;
+  }
+
+  .frag-inner{ padding: 22px 18px 18px; }
+  .frag-meta{ margin-bottom: 10px; }
+  .frag-title{ font-size: 18px; padding-right: 26px; }
+  .frag-arrow{ right: 18px; top: 22px; }
+  .frag-body-inner{ padding: 0 18px 20px; }
+  .frag-block.is-open .frag-body{ max-height: 4000px; }          /* plus de texte coupé */
+  .frag-block:hover .frag-excerpt{ max-height: 0; opacity: 0; }  /* pas de hover fantôme au tactile */
 
   /* Taille mobile du book (plus petit) */
   .bookwrapper{
@@ -3804,7 +3848,8 @@ body.video-page {
   .walk-overlay__box { width:100vw; height:100dvh; top:0; left:0; transform:none; border:none; }
   .walk-overlay__close { display:block; }
   .walk-block__dot  { width:16px; height:16px; right:-22px; }        /* cible tactile + grande */
-  .walk-block__text { left:calc(100% + 12px); width:150px; top:0; } /* reste à droite, contraint */
+  /* texte sous le bloc/le carré, plus aucun recouvrement */
+  .walk-block__text { left:0; top:calc(100% + 10px); width:100%; min-width:150px; max-width:60vw; }
   .walk-block__resize { display:none; }                             /* resize supprimé */
   .walk-block { cursor:default; }
 }
