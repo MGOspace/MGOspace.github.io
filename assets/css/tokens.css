@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: 'Departure Mono';
-  src: url('fonts/DepartureMono-Regular.woff2') format('woff2');
+  src: url('../fonts/DepartureMono-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -12,7 +12,7 @@
 
 @font-face {
   font-family: 'Redaction';
-  src: url('fonts/Redaction_10-Regular.woff2') format('woff2');
+  src: url('../fonts/Redaction_10-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -20,7 +20,7 @@
 
 @font-face {
   font-family: 'Schengen';
-  src: url('fonts/ABCSchengenC-Thin-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenC-Thin-Trial.woff') format('woff');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -28,7 +28,7 @@
 
 @font-face {
   font-family: 'Schengen';
-  src: url('fonts/ABCSchengenC-Light-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenC-Light-Trial.woff') format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -36,7 +36,7 @@
 
 @font-face {
   font-family: 'Schengen';
-  src: url('fonts/ABCSchengenC-Book-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenC-Book-Trial.woff') format('woff');
   font-weight: 350;
   font-style: normal;
   font-display: swap;
@@ -44,7 +44,7 @@
 
 @font-face {
   font-family: 'Schengen';
-  src: url('fonts/ABCSchengenC-Regular-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenC-Regular-Trial.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -52,7 +52,7 @@
 
 @font-face {
   font-family: 'SchengenZone';
-  src: url('fonts/ABCSchengenZone-Thin-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenZone-Thin-Trial.woff') format('woff');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -60,7 +60,7 @@
 
 @font-face {
   font-family: 'SchengenZone';
-  src: url('fonts/ABCSchengenZone-Light-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenZone-Light-Trial.woff') format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -68,7 +68,7 @@
 
 @font-face {
   font-family: 'SchengenCore';
-  src: url('fonts/ABCSchengenCore-Light-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenCore-Light-Trial.woff') format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -76,7 +76,7 @@
 
 @font-face {
   font-family: 'SchengenCore';
-  src: url('fonts/ABCSchengenCore-Medium-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenCore-Medium-Trial.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -84,7 +84,7 @@
 
 @font-face {
   font-family: 'SchengenCore';
-  src: url('fonts/ABCSchengenCore-MediumItalic-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenCore-MediumItalic-Trial.woff') format('woff');
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -92,7 +92,7 @@
 
 @font-face {
   font-family: 'SchengenA';
-  src: url('fonts/ABCSchengenA-Light-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenA-Light-Trial.woff') format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -100,7 +100,7 @@
 
 @font-face {
   font-family: 'SchengenCMono';
-  src: url('fonts/ABCSchengenCMono-Regular-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenCMono-Regular-Trial.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -108,7 +108,7 @@
 
 @font-face {
   font-family: 'SchengenC';
-  src: url('fonts/ABCSchengenC-Regular-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenC-Regular-Trial.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -116,7 +116,7 @@
 
 @font-face {
   font-family: 'SchengenLine';
-  src: url('fonts/ABCSchengenLine-Light-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenLine-Light-Trial.woff') format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -124,7 +124,7 @@
 
 @font-face {
   font-family: 'SchengenAMono';
-  src: url('fonts/ABCSchengenAMono-Book-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenAMono-Book-Trial.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -132,7 +132,7 @@
 
 @font-face {
   font-family: 'SchengenAMono';
-  src: url('fonts/ABCSchengenAMono-Medium-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenAMono-Medium-Trial.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -140,7 +140,7 @@
 
 @font-face {
   font-family: 'SchengenB';
-  src: url('fonts/ABCSchengenB-Book-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenB-Book-Trial.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -148,7 +148,7 @@
 
 @font-face {
   font-family: 'SchengenC';
-  src: url('fonts/ABCSchengenC-Medium-Trial.woff') format('woff');
+  src: url('../fonts/ABCSchengenC-Medium-Trial.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
